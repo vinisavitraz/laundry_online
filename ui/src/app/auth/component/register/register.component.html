@@ -1,0 +1,52 @@
+<body>
+<div class="container-fluid d-flex align-items-center justify-content-center bg-light">
+    <div class="border bg-white border-2 rounded">
+        <br>
+        <div class="mx-5 d-flex justify-content-center">
+            <h1>LOL - Lavanderia OnLine</h1>
+        </div>
+<!--        <div class="mx-5">-->
+<!--            <img src="/assets/logo.png" class="img-fluid" width="300" height="100" alt="">-->
+<!--        </div>-->
+        <hr class="bg-dark border-1 border-top border-dark mx-3">
+        <br>
+        <form method="POST" action="/dashboard/register" class="needs-validation" novalidate="" autocomplete="off">
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="document">CPF</label>
+                <input id="document" type="text" class="form-control" name="document" placeholder="Informe" required autofocus>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="email">Email</label>
+                <input id="email" type="email" class="form-control" name="email" placeholder="Ex: joao.silva@mail.com" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="name">Nome</label>
+                <input id="name" type="text" class="form-control" name="name" placeholder="Ex: João Silva" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="phone">Telefone</label>
+                <input id="phone" type="text" class="form-control" name="phone" placeholder="Ex: (41)99999-9999" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="address">Endereço</label>
+                <input id="address" type="text" class="form-control" name="address" placeholder="Ex: Rua Amarela, 10 - Curitiba" required>
+            </div>
+            <br>
+            <br>
+            <div class="row mx-5">
+                <button type="submit" class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <a href="/login" class="btn btn-light btn-lg ms-auto">Voltar</a>
+            </div>
+            <br>
+            <br>
+        </form>
+    </div>
+</div>
+</body>

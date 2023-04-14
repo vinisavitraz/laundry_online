@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  database:
+    image: "postgres:15.2-bullseye"
+    container_name: database
+    volumes:
+      - bantads-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=bantads
+      - POSTGRES_USER=bantads
+      - POSTGRES_PASSWORD=bantads
+  bantads-app:
+    build: ./bantads-app
+    container_name: bantads-app
+    environment:
+      - DB_SERVER=database
+      - POSTGRES_DB=bantads
+      - POSTGRES_USER=bantads
+      - POSTGRES_PASSWORD=bantads
+    ports:
+      - 8080:8080
+    links:
+      - database
+  bantads-ui:
+    build: ./bantads-ui
+    container_name: bantads-ui
+    ports:
+      - 4200:80
+    links:
+      - bantads-app
+volumes:
+  bantads-data:
