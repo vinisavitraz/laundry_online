@@ -6,31 +6,31 @@ services:
     image: "postgres:15.2-bullseye"
     container_name: database
     volumes:
-      - bantads-data:/var/lib/postgresql/data
+      - laundry-online-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=bantads
-      - POSTGRES_USER=bantads
-      - POSTGRES_PASSWORD=bantads
-  bantads-app:
-    build: ./bantads-app
-    container_name: bantads-app
+      - POSTGRES_DB=laundry-online
+      - POSTGRES_USER=laundry-online
+      - POSTGRES_PASSWORD=laundry-online
+  laundry-online-app:
+    build: ./app
+    container_name: laundry-online-app
     environment:
       - DB_SERVER=database
-      - POSTGRES_DB=bantads
-      - POSTGRES_USER=bantads
-      - POSTGRES_PASSWORD=bantads
+      - POSTGRES_DB=laundry-online
+      - POSTGRES_USER=laundry-online
+      - POSTGRES_PASSWORD=laundry-online
     ports:
-      - 8080:8080
+      - "8080:8080"
     links:
       - database
-  bantads-ui:
-    build: ./bantads-ui
-    container_name: bantads-ui
+  laundry-online-ui:
+    build: ./ui
+    container_name: laundry-online-ui
     ports:
-      - 4200:80
-    links:
-      - bantads-app
+      - "4200:4200"
+    depends_on:
+      - laundry-online-app
 volumes:
-  bantads-data:
+  laundry-online-data:
