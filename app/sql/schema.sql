@@ -5,5 +5,10 @@ CREATE SEQUENCE users_sequence
 CREATE TABLE users
 (
     id BIGINT NOT NULL PRIMARY KEY,
-    name VARCHAR(250)
+    name VARCHAR(250) NOT NULL,
+    document VARCHAR(11) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    cep VARCHAR(12) NOT NULL,
+    address VARCHAR(250) NOT NULL
 );
