@@ -9,6 +9,7 @@ public class AppController {
     @CrossOrigin
     @RequestMapping(value="/")
     public static String Welcome() {
+        System.out.println("dsads");
         return "Welcome to Spring Boot \n" +
                 "Remember to subscribe and leave a comment";
     }

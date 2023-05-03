@@ -1,4 +1,4 @@
-package com.tads.br.app;
+package com.tads.br;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
