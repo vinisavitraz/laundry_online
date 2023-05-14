@@ -13,3 +13,4 @@ app/src/test/*.iml
 app/target/
 
 ui/node_modules
+ui/.angular
