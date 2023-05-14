@@ -1,4 +1,5 @@
 export enum RoutesEnum {
+    //HOME = 'home',
     LOGIN = 'login',
     REGISTER = 'register',
     CUSTOMER_HOME = 'customer',

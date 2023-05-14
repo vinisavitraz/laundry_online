@@ -12,8 +12,15 @@ import {EmployeeHomeComponent} from "./employee/components/employee-home/employe
 import {CreateOrderComponent} from "./order/components/create-order/create-order.component";
 import {OrderSummaryComponent} from "./order/components/order-summary/order-summary.component";
 import {SearchOrderComponent} from "./order/components/search-order/search-order.component";
+import {AuthGuard} from "./auth/guards/auth.guard";
+import {RolesEnum} from "./commons/enums/roles.enum";
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: RoutesEnum.LOGIN,
+    pathMatch: 'full',
+  },
   {
     path: RoutesEnum.LOGIN,
     component: LoginComponent,
@@ -25,10 +32,22 @@ const routes: Routes = [
   {
     path: RoutesEnum.CUSTOMER_HOME,
     component: CustomerHomeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+          RolesEnum.CUSTOMER
+      ],
+    },
   },
   {
     path: RoutesEnum.EMPLOYEE_HOME,
     component: EmployeeHomeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
   },
   {
     path: RoutesEnum.CREATE_ORDER,
@@ -49,6 +68,12 @@ const routes: Routes = [
   {
     path: RoutesEnum.LIST_CLOTHINGS,
     component: ListClothingsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
   },
   {
     path: RoutesEnum.CREATE_CLOTHING,

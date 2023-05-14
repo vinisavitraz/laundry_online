@@ -12,8 +12,19 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pedidos</a>
                 </li>
-                <li class="nav-item">
+                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
                     <a class="nav-link" href="#">Peças de roupa</a>
+                </li>
+                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
+                    <a class="nav-link" href="#">Funcionários</a>
+                </li>
+                <li class="nav-item">
+                    <a (click)="logout()" class="nav-link" href="#">Sair</a>
+                </li>
+                <li class="nav-item">
+                    <p class="navbar-text mb-0 text-secondary">
+                        <i class="fa fa-user"></i> {{ authenticatedUser?.name }}
+                    </p>
                 </li>
             </ul>
         </div>

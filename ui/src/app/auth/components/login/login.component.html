@@ -11,27 +11,37 @@
         <!--        </div>-->
         <hr class="bg-dark border-1 border-top border-dark mx-3">
         <br>
-        <form method="POST" action="/dashboard/login" class="needs-validation" novalidate="" autocomplete="off">
+        <form #loginForm="ngForm">
             <div class="row mx-5">
                 <label class="mb-2 text-muted" for="email">Email</label>
-                <input id="email" type="email" class="form-control" name="email" required autofocus>
-                <div class="invalid-feedback">
-                    Email inválido
+                <input type="text" [(ngModel)]="dto.email" #name="ngModel" class="form-control" id="email" name="email" required autofocus>
+                <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+                    <div [hidden]="!name.errors['required']" >Digite o email</div>
                 </div>
             </div>
             <br>
             <div class="row mx-5">
                 <label class="mb-2 text-muted" for="password">Senha</label>
-                <input id="password" type="password" class="form-control" name="password" required>
-                <div class="invalid-feedback">
-                    Senha inválida
+                <input type="password" [(ngModel)]="dto.password" #password="ngModel" class="form-control" id="password" name="password" required>
+                <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
+                    <div [hidden]="!password.errors['required']" >Digite a senha</div>
                 </div>
             </div>
             <br>
             <br>
+            <div *ngIf="message" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="close" (click)="$event.preventDefault()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <br>
+            <br>
             <div class="row mx-5">
-                <a [routerLink]="'/customer'" class="btn success btn-lg ms-auto">Entrar</a>
-<!--                <button type="submit" class="btn btn-success btn-lg ms-auto">Entrar</button>-->
+                <button type="button" class="btn success btn-lg ms-auto" (click)="executeLogin()" [disabled]="!loginForm.form.valid">
+                    Entrar
+                </button>
             </div>
             <br>
             <div class="row mx-5">

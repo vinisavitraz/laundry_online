@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { OnlyNumbersDirective } from './directives';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import {RouterModule} from "@angular/router";
+import {AuthModule} from "../auth/auth.module";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -11,6 +14,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     OnlyNumbersDirective,
     NavbarComponent
   ],
-  imports: []
+  imports: [
+    CommonModule,
+    RouterModule,
+    AuthModule,
+  ]
 })
 export class CommonsModule { }
