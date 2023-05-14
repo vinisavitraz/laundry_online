@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthService} from "../services/auth.service";
-import {AuthenticatedUser} from "../../commons/models/authenticated-user.model";
+import {User} from "../../commons/models/user.model";
 import {RoutesEnum} from "../../commons/enums/routes.enum";
 
 @Injectable({
@@ -21,10 +21,8 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const user: AuthenticatedUser | null = this.authService.getAuthenticatedUser();
+    const user: User | null = this.authService.getAuthenticatedUser();
 
-    console.log('authenticatedUser');
-    console.log(user);
     if (user === null) {
       this.router.navigate([RoutesEnum.LOGIN], { queryParams: { error: 'Usuário não autenticado' } })
       return false;

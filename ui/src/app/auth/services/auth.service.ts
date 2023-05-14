@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import {AuthenticatedUser} from "../../commons/models/authenticated-user.model";
+import {User} from "../../commons/models/user.model";
 import {Observable, of} from "rxjs";
 import {RequestLoginDto} from "../dto/request-login.dto";
-import {RolesEnum} from "../../commons/enums/roles.enum";
+import {UserService} from "../../user/services/user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public getAuthenticatedUser(): AuthenticatedUser | null {
+  constructor(
+      private userService: UserService,
+  ) {}
+
+  public getAuthenticatedUser(): User | null {
     const authenticatedUser: string | null = localStorage.getItem('authenticatedUser');
 
     if (authenticatedUser === null) {
@@ -19,11 +23,11 @@ export class AuthService {
     return JSON.parse(authenticatedUser);
   }
 
-  public setAuthenticatedUser(authenticatedUser: AuthenticatedUser): void {
+  public setAuthenticatedUser(authenticatedUser: User): void {
     localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser));
   }
 
-  public login(requestLoginDto: RequestLoginDto): Observable<AuthenticatedUser | null> {
+  public login(requestLoginDto: RequestLoginDto): Observable<User | null> {
     if (requestLoginDto.email === undefined) {
       throw new Error('User email not provided');
     }
@@ -31,9 +35,13 @@ export class AuthService {
       throw new Error('User password not provided');
     }
 
-    const authenticatedUser: AuthenticatedUser =  new AuthenticatedUser(1, 'Jones', requestLoginDto.email, RolesEnum.EMPLOYEE);
+    const user: User | undefined = this.userService.findUserByEmail(requestLoginDto.email);
 
-    return of(authenticatedUser);
+    if (user === undefined) {
+      throw new Error('User with email provided not found');
+    }
+
+    return of(user);
   }
 
   public logout(): void {

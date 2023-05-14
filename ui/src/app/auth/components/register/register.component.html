@@ -10,20 +10,20 @@
 <!--        </div>-->
         <hr class="bg-dark border-1 border-top border-dark mx-3">
         <br>
-        <form method="POST" action="/dashboard/register" class="needs-validation" novalidate="" autocomplete="off">
+        <form [formGroup]="registerForm">
             <div class="row mx-5">
                 <label class="mb-2 text-muted" for="document">CPF</label>
-                <input id="document" type="text" class="form-control" name="document" placeholder="Informe" required autofocus>
+                <input id="document" type="text" class="form-control" name="document" placeholder="Informe" formControlName="document" required autofocus>
             </div>
             <br>
             <div class="row mx-5">
                 <label class="mb-2 text-muted" for="email">Email</label>
-                <input id="email" type="email" class="form-control" name="email" placeholder="Ex: joao.silva@mail.com" required>
+                <input id="email" type="email" class="form-control" name="email" placeholder="Ex: joao.silva@mail.com" formControlName="email" required>
             </div>
             <br>
             <div class="row mx-5">
                 <label class="mb-2 text-muted" for="name">Nome</label>
-                <input id="name" type="text" class="form-control" name="name" placeholder="Ex: João Silva" required>
+                <input id="name" type="text" class="form-control" name="name" placeholder="Ex: João Silva" formControlName="name" required>
             </div>
             <br>
             <div class="row mx-5">
@@ -32,13 +32,38 @@
             </div>
             <br>
             <div class="row mx-5">
-                <label class="mb-2 text-muted" for="address">Endereço</label>
-                <input id="address" type="text" class="form-control" name="address" placeholder="Ex: Rua Amarela, 10 - Curitiba" required>
+                <label class="mb-2 text-muted" for="cep">CEP</label>
+                <input id="cep" type="text" class="form-control" name="cep" placeholder="Ex: 82900123" formControlName="cep" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="street">Rua</label>
+                <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="streetNumber">Número</label>
+                <input id="streetNumber" type="text" class="form-control" name="streetNumber" placeholder="Ex: 1234" formControlName="streetNumber" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="district">Bairro</label>
+                <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Cajuru" formControlName="district" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="city">Cidade</label>
+                <input id="city" type="text" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" required>
+            </div>
+            <br>
+            <div class="row mx-5">
+                <label class="mb-2 text-muted" for="state">Estado</label>
+                <input id="state" type="text" class="form-control" name="state" placeholder="Ex: PR" formControlName="state" required>
             </div>
             <br>
             <br>
             <div class="row mx-5">
-                <button type="submit" class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
+                <button type="button" (click)="registerUser()" [disabled]="!registerForm.valid"  class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
             </div>
             <br>
             <div class="row mx-5">

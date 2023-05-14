@@ -9,6 +9,7 @@ import {CommonsModule} from "./commons";
 import {ClothingModule} from "./clothing/clothing.module";
 import {EmployeeModule} from "./employee/employee.module";
 import {HttpClientModule} from "@angular/common/http";
+import {UserModule} from "./user/user.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {HttpClientModule} from "@angular/common/http";
     ClothingModule,
     EmployeeModule,
     HttpClientModule,
+    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

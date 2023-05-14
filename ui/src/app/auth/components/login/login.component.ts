@@ -3,7 +3,7 @@ import {NgForm} from "@angular/forms";
 import {RequestLoginDto} from "../../dto/request-login.dto";
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticatedUser} from "../../../commons/models/authenticated-user.model";
+import {User} from "../../../commons/models/user.model";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {RolesEnum} from "../../../commons/enums/roles.enum";
 
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.dto = new RequestLoginDto();
     this.loading = false;
 
-    const authenticatedUser: AuthenticatedUser | null = this.authService.getAuthenticatedUser();
+    const authenticatedUser: User | null = this.authService.getAuthenticatedUser();
 
     if (authenticatedUser != null) {
       this.routeToHomePage(authenticatedUser);
@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.dto).subscribe((authenticatedUser) => {
-      console.log('login subscribe obs');
       this.loading = false;
 
       if (authenticatedUser === null) {
@@ -63,8 +62,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private async routeToHomePage(authenticatedUser: AuthenticatedUser): Promise<void> {
-    console.log('routeToHomePage');
+  private async routeToHomePage(authenticatedUser: User): Promise<void> {
     if (authenticatedUser.role === RolesEnum.CUSTOMER) {
       await this.router.navigate([RoutesEnum.CUSTOMER_HOME]);
       return;
