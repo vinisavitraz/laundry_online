@@ -1,14 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ClothingService} from "../../services/clothing.service";
 import {Clothing} from "src/app/commons";
-import {ClothingDetailComponent} from "../clothing-detail/clothing-detail.component";
 
 @Component({
   selector: 'app-list-clothings',
   templateUrl: './list-clothings.component.html',
   styleUrls: ['./list-clothings.component.css']
 })
-export class ListClothingsComponent implements OnInit {
+export class ListClothingsComponent {
 
   clothings: Clothing[] = [];
 

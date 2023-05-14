@@ -6,6 +6,7 @@ export enum RoutesEnum {
     EMPLOYEE_HOME = 'employee',
     CREATE_ORDER = 'orders/create',
     ORDER_SUMMARY = 'orders/summary',
+    LIST_ORDERS = 'orders/list',
     SEARCH_ORDER = 'orders/search',
     ORDER_DETAIL = 'orders/detail',
     LIST_CLOTHINGS = 'clothings/list',

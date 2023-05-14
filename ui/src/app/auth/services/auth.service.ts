@@ -9,18 +9,18 @@ import {RolesEnum} from "../../commons/enums/roles.enum";
 })
 export class AuthService {
 
-  private authenticatedUser: AuthenticatedUser | null;
-
-  constructor() {
-    this.authenticatedUser = null;
-  }
-
   public getAuthenticatedUser(): AuthenticatedUser | null {
-    return this.authenticatedUser;
+    const authenticatedUser: string | null = localStorage.getItem('authenticatedUser');
+
+    if (authenticatedUser === null) {
+      return null;
+    }
+
+    return JSON.parse(authenticatedUser);
   }
 
   public setAuthenticatedUser(authenticatedUser: AuthenticatedUser): void {
-    this.authenticatedUser = authenticatedUser;
+    localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser));
   }
 
   public login(requestLoginDto: RequestLoginDto): Observable<AuthenticatedUser | null> {
@@ -31,12 +31,13 @@ export class AuthService {
       throw new Error('User password not provided');
     }
 
-    const authenticatedUser: AuthenticatedUser =  new AuthenticatedUser(1, 'Jones', requestLoginDto.email, RolesEnum.CUSTOMER);
+    const authenticatedUser: AuthenticatedUser =  new AuthenticatedUser(1, 'Jones', requestLoginDto.email, RolesEnum.EMPLOYEE);
 
     return of(authenticatedUser);
   }
 
   public logout(): void {
+    localStorage.removeItem('authenticatedUser');
 
   }
 }

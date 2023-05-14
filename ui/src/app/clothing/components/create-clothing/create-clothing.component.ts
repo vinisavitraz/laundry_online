@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ClothingService} from "../../services/clothing.service";
 import {Router} from "@angular/router";
@@ -10,7 +10,7 @@ import {Clothing} from "src/app/commons";
   templateUrl: './create-clothing.component.html',
   styleUrls: ['./create-clothing.component.css']
 })
-export class CreateClothingComponent implements OnInit {
+export class CreateClothingComponent {
   @ViewChild('createClothingForm') createClothingForm!: NgForm;
   clothing!: Clothing;
 

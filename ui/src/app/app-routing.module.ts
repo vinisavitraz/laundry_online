@@ -14,6 +14,7 @@ import {OrderSummaryComponent} from "./order/components/order-summary/order-summ
 import {SearchOrderComponent} from "./order/components/search-order/search-order.component";
 import {AuthGuard} from "./auth/guards/auth.guard";
 import {RolesEnum} from "./commons/enums/roles.enum";
+import {ListOrdersComponent} from "./order/components/list-orders/list-orders.component";
 
 const routes: Routes = [
   {
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path: RoutesEnum.ORDER_SUMMARY,
     component: OrderSummaryComponent,
+  },
+  {
+    path: RoutesEnum.LIST_ORDERS,
+    component: ListOrdersComponent,
   },
   {
     path: RoutesEnum.SEARCH_ORDER,

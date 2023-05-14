@@ -5,13 +5,15 @@ import { OrderDetailComponent } from './components/order-detail/order-detail.com
 import { CreateOrderComponent } from './components/create-order/create-order.component';
 import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
 import { SearchOrderComponent } from './components/search-order/search-order.component';
+import { ListOrdersComponent } from './components/list-orders/list-orders.component';
 
 @NgModule({
   declarations: [
     OrderDetailComponent,
     CreateOrderComponent,
     OrderSummaryComponent,
-    SearchOrderComponent
+    SearchOrderComponent,
+    ListOrdersComponent
   ],
   imports: [
     CommonModule

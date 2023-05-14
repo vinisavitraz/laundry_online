@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.dto).subscribe((authenticatedUser) => {
+      console.log('login subscribe obs');
       this.loading = false;
 
       if (authenticatedUser === null) {
@@ -63,6 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   private async routeToHomePage(authenticatedUser: AuthenticatedUser): Promise<void> {
+    console.log('routeToHomePage');
     if (authenticatedUser.role === RolesEnum.CUSTOMER) {
       await this.router.navigate([RoutesEnum.CUSTOMER_HOME]);
       return;

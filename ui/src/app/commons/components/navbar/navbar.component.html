@@ -7,16 +7,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" [routerLink]="'/'">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pedidos</a>
+                    <a class="nav-link" [routerLink]="'/orders/list'">Pedidos</a>
                 </li>
                 <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                    <a class="nav-link" href="#">Peças de roupa</a>
+                    <a class="nav-link" [routerLink]="'/clothings/list'">Peças de roupa</a>
                 </li>
                 <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                    <a class="nav-link" href="#">Funcionários</a>
+                    <a class="nav-link" [routerLink]="'/employees/list'">Funcionários</a>
                 </li>
                 <li class="nav-item">
                     <a (click)="logout()" class="nav-link" href="#">Sair</a>

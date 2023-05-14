@@ -22,6 +22,9 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     const user: AuthenticatedUser | null = this.authService.getAuthenticatedUser();
+
+    console.log('authenticatedUser');
+    console.log(user);
     if (user === null) {
       this.router.navigate([RoutesEnum.LOGIN], { queryParams: { error: 'Usuário não autenticado' } })
       return false;

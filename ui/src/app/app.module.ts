@@ -8,6 +8,7 @@ import {OrderModule} from "./order/order.module";
 import {CommonsModule} from "./commons";
 import {ClothingModule} from "./clothing/clothing.module";
 import {EmployeeModule} from "./employee/employee.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {EmployeeModule} from "./employee/employee.module";
     CommonsModule,
     ClothingModule,
     EmployeeModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
