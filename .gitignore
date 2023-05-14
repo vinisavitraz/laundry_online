@@ -2,4 +2,14 @@
 
 .idea/
 
+app/.idea/
+
+app/node_modules
+
+app/*.iml
+app/src/main/*.iml
+app/src/test/*.iml
+
+app/target/
+
 ui/node_modules

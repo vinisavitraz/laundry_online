@@ -6,16 +6,70 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
+
 @Repository
 public class UserRepository implements UserRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
+    private static final String QUERY_CREATE = "INSERT INTO users (id, name, document, phone, password, cep, street, streetNumber, district, city, state) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Override
+    public Long create(UserEntity user, String password) {
+        Long id = jdbcTemplate.query(UserRepository.QUERY_SEQUENCE, rs -> {
+            if (rs.next()) {
+                return rs.getLong(1);
+            } else {
+                throw new SQLException("Unable to retrieve value from sequence users_sequence");
+            }
+        });
+
+        jdbcTemplate.update(UserRepository.QUERY_CREATE,
+                id, user.getName(), user.getDocument(), user.getPhone(), password, user.getCep(), user.getStreet(), user.getStreetNumber(), user.getDistrict(), user.getCity(), user.getState());
+
+        return id;
+    }
+
+//    @Override
+//    public int update(Tutorial tutorial) {
+//        return jdbcTemplate.update("UPDATE tutorials SET title=?, description=?, published=? WHERE id=?",
+//                new Object[] { tutorial.getTitle(), tutorial.getDescription(), tutorial.isPublished(), tutorial.getId() });
+//    }
+//
+//    @Override
+//    public int deleteById(Long id) {
+//        return jdbcTemplate.update("DELETE FROM tutorials WHERE id=?", id);
+//    }
+//
+//    @Override
+//    public List<Tutorial> findAll() {
+//        return jdbcTemplate.query("SELECT * from tutorials", BeanPropertyRowMapper.newInstance(Tutorial.class));
+//    }
+//
+//    @Override
+//    public List<Tutorial> findByPublished(boolean published) {
+//        return jdbcTemplate.query("SELECT * from tutorials WHERE published=?",
+//                BeanPropertyRowMapper.newInstance(Tutorial.class), published);
+//    }
+//
+//    @Override
+//    public List<Tutorial> findByTitleContaining(String title) {
+//        String q = "SELECT * from tutorials WHERE title LIKE '%" + title + "%'";
+//
+//        return jdbcTemplate.query(q, BeanPropertyRowMapper.newInstance(Tutorial.class));
+//    }
+//
+//    @Override
+//    public int deleteAll() {
+//        return jdbcTemplate.update("DELETE from tutorials");
+//    }
 
     @Override
     public UserEntity findById(Long id) {

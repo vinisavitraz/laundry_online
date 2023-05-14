@@ -10,5 +10,9 @@ CREATE TABLE users
     phone VARCHAR(20) NOT NULL,
     password VARCHAR(250) NOT NULL,
     cep VARCHAR(12) NOT NULL,
-    address VARCHAR(250) NOT NULL
+    street VARCHAR(250) NOT NULL,
+    streetNumber VARCHAR(10) NOT NULL,
+    district VARCHAR(250) NOT NULL,
+    city VARCHAR(250) NOT NULL,
+    state CHAR(2) NOT NULL
 );
