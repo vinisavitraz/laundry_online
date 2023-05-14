@@ -1,0 +1,36 @@
+<h1>Nova peça de roupa</h1>
+
+<div class="well">
+    <form #createClothingForm="ngForm">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" [(ngModel)]="clothing.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" required>
+            <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+                <div [hidden]="!name.errors['required']" >Digite o nome da peça de roupa</div>
+                <div [hidden]="!name.errors['minLength']" >O nome deve conter ao menos 2 caracteres</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="washPrice">Preço de lavagem</label>
+            <input type="text" [(ngModel)]="clothing.washPrice" #washPrice="ngModel" class="form-control" id="washPrice" name="washPrice" required>
+            <div *ngIf="washPrice.errors && (washPrice.dirty || washPrice.touched)" class="alert alert-danger">
+                <div [hidden]="!washPrice.errors['required']" >Digite o preço de lavagem da peça de roupa</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="washTime">Tempo de lavagem</label>
+            <input type="text" [(ngModel)]="clothing.washTime" #washTime="ngModel" class="form-control" id="washTime" name="washTime" required>
+            <div *ngIf="washTime.errors && (washTime.dirty || washTime.touched)" class="alert alert-danger">
+                <div [hidden]="!washTime.errors['required']" >Digite o tempo de lavagem da peça de roupa</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!createClothingForm.form.valid">
+                <i class="fa fa-save" aria-hidden="true"></i> Salvar
+            </button>
+            <a [routerLink]="'/clothings/list'" class="btn btn-secondary">
+                <i class="fa arrow-left" aria-hidden="true"></i> Voltar
+            </a>
+        </div>
+    </form>
+</div>

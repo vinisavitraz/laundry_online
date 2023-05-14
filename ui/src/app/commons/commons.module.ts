@@ -1,10 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { OnlyNumbersDirective } from './directives';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
-  declarations: [],
-  imports: [
-
-  ]
+  declarations: [
+    OnlyNumbersDirective,
+    NavbarComponent
+  ],
+  exports: [
+    OnlyNumbersDirective,
+    NavbarComponent
+  ],
+  imports: []
 })
 export class CommonsModule { }

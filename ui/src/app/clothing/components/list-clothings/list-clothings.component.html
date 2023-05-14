@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <br>
+    <div class="row g-5">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+            <h1>Peças de roupa</h1>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+            <a [routerLink]="'/clothings/create'" href="#" title="Adicionar" class="btn btn-xs btn-success">
+                <i class="fa fa-plus" aria-hidden="true"></i> Adicionar
+            </a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="row g-3">
+        <div class="col-md-12 col-lg-10">
+            <table class="table table-striped table-bordered table-hover" *ngIf="clothings.length > 0">
+                <tbody>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço de lavagem</th>
+                    <th>Tempo de lavagem</th>
+                    <th class="text-center">
+
+                    </th>
+                </tr>
+                <tr *ngFor="let clothing of clothings">
+                    <td> {{ clothing.name }} </td>
+                    <td> {{ clothing.washPrice }} </td>
+                    <td> {{ clothing.washTime }} </td>
+                    <td class="text-center" style="width: 300px">
+                        <a [routerLink]="'/clothings/edit/' + clothing.id" href="#" title="Editar" class="btn btn-xs btn-info">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" (click)="remove($event, clothing)" title="Remover" class="btn btn-xs btn-danger">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p *ngIf="clothings.length === 0">Nenhuma peça de roupa cadastrada</p>
+        </div>
+    </div>
+</div>
+
+
+
