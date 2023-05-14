@@ -15,4 +15,5 @@ export enum RoutesEnum {
     LIST_EMPLOYEES = 'employees/list',
     CREATE_EMPLOYEE = 'employees/create',
     EDIT_EMPLOYEE = 'employees/edit/:id',
+    SELECT_REPORT = 'reports/select',
 }

@@ -18,6 +18,7 @@ import {ListOrdersComponent} from "./order/components/list-orders/list-orders.co
 import {ListEmployeesComponent} from "./employee/components/list-employees/list-employees.component";
 import {CreateEmployeeComponent} from "./employee/components/create-employee/create-employee.component";
 import {EditEmployeeComponent} from "./employee/components/edit-employee/edit-employee.component";
+import {SelectReportComponent} from "./report/components/select-report/select-report.component";
 
 const routes: Routes = [
   {
@@ -138,6 +139,16 @@ const routes: Routes = [
   {
     path: RoutesEnum.EDIT_EMPLOYEE,
     component: EditEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
+  },
+  {
+    path: RoutesEnum.SELECT_REPORT,
+    component: SelectReportComponent,
     canActivate: [AuthGuard],
     data: {
       role: [

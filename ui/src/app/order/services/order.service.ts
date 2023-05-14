@@ -8,7 +8,7 @@ export class OrderService {
 
   constructor() { }
 
-  public listOpenOrders(): Order[] {
+  public listOpenOrders(userRole: string): Order[] {
     return [];
   }
 }

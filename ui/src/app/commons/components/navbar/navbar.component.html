@@ -12,7 +12,7 @@
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="'/orders/list'">Pedidos</a>
                 </li>
-                <li class="nav-item">
+                <li *ngIf="authenticatedUser?.role === 'customer'"  class="nav-item">
                     <a class="nav-link" [routerLink]="'/orders/search'">Buscar pedido</a>
                 </li>
                 <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
@@ -20,6 +20,9 @@
                 </li>
                 <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
                     <a class="nav-link" [routerLink]="'/employees/list'">Funcionários</a>
+                </li>
+                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
+                    <a class="nav-link" [routerLink]="'/reports/select'">Relatórios</a>
                 </li>
                 <li class="nav-item">
                     <a (click)="logout()" class="nav-link" href="#">Sair</a>
