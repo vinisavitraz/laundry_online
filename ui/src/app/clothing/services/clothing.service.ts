@@ -6,37 +6,69 @@ import {Clothing} from "../../commons";
 })
 export class ClothingService {
 
-  idCounter: number = 0;
-  clothings: Clothing[] = [];
+  static CLOTHINGS_KEY = 'clothings';
 
   constructor() { }
 
-  public listClothings(): Clothing[] {
-    return this.clothings;
+  public getClothings(): Clothing[] {
+    const clothingsStorage: string | null = localStorage.getItem(ClothingService.CLOTHINGS_KEY);
+
+    if (clothingsStorage === null) {
+      return [];
+    }
+
+    return JSON.parse(clothingsStorage);
   }
 
   public saveClothing(clothing: Clothing): void {
-    if (clothing.id === undefined) {
+    const clothings: Clothing[] = this.getClothings();
+
+    if (clothings.length === 0) {
       clothing.id = this.getNextId();
-      this.clothings.push(clothing);
+
+      localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify([clothing]));
+    }
+
+    if (clothing.id === undefined) {
+      clothing.id = this.getNextId(clothings);
+      clothings.push(clothing);
+
+      localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(clothings));
       return;
     }
 
-    let index: number = this.clothings.findIndex(clothingArray => clothingArray.id === clothing.id);
-    this.clothings[index] = clothing;
+    let index: number = clothings.findIndex(clothingArray => clothingArray.id === clothing.id);
+    clothings[index] = clothing;
+
+    localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(clothings));
   }
 
   public findById(id: number): Clothing | undefined {
-    return this.clothings.find(clothing => clothing.id === id);
+    const clothings: Clothing[] = this.getClothings();
+
+    return clothings.find(clothing => clothing.id === id);
   }
 
   public remove(clothing: Clothing): void {
-    this.clothings = this.clothings.filter(clothingArray => clothingArray.id !== clothing.id);
+    const clothings: Clothing[] = this.getClothings();
+    const newClothings: Clothing[] = clothings.filter(clothingArray => clothingArray.id !== clothing.id);
+
+    localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(newClothings));
   }
 
-  private getNextId(): number {
-    this.idCounter++;
+  private getNextId(clothings: Clothing[] = []): number {
+    if (clothings.length === 0) {
+      return 1;
+    }
 
-    return this.idCounter;
+    let nextId: number = 0;
+
+    clothings.forEach(clothing => {
+      if (clothing.id! > nextId) {
+        nextId = clothing.id! + 1;
+      }
+    });
+
+    return nextId;
   }
 }

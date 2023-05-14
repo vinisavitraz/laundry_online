@@ -9,9 +9,11 @@ import {Clothing} from "src/app/commons";
 })
 export class ListClothingsComponent {
 
-  clothings: Clothing[] = [];
+  clothings: Clothing[];
 
-  constructor(private clothingService: ClothingService) {}
+  constructor(private clothingService: ClothingService) {
+    this.clothings = [];
+  }
 
   ngOnInit(): void {
     this.clothings = this.listClothings();
@@ -27,6 +29,6 @@ export class ListClothingsComponent {
   }
 
   private listClothings(): Clothing[] {
-    return this.clothingService.listClothings();
+    return this.clothingService.getClothings();
   }
 }

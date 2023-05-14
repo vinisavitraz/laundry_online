@@ -12,6 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="'/orders/list'">Pedidos</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/orders/search'">Buscar pedido</a>
+                </li>
                 <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
                     <a class="nav-link" [routerLink]="'/clothings/list'">Peças de roupa</a>
                 </li>

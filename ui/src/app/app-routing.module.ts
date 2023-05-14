@@ -15,6 +15,9 @@ import {SearchOrderComponent} from "./order/components/search-order/search-order
 import {AuthGuard} from "./auth/guards/auth.guard";
 import {RolesEnum} from "./commons/enums/roles.enum";
 import {ListOrdersComponent} from "./order/components/list-orders/list-orders.component";
+import {ListEmployeesComponent} from "./employee/components/list-employees/list-employees.component";
+import {CreateEmployeeComponent} from "./employee/components/create-employee/create-employee.component";
+import {EditEmployeeComponent} from "./employee/components/edit-employee/edit-employee.component";
 
 const routes: Routes = [
   {
@@ -53,10 +56,22 @@ const routes: Routes = [
   {
     path: RoutesEnum.CREATE_ORDER,
     component: CreateOrderComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.CUSTOMER
+      ],
+    },
   },
   {
     path: RoutesEnum.ORDER_SUMMARY,
     component: OrderSummaryComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.CUSTOMER
+      ],
+    },
   },
   {
     path: RoutesEnum.LIST_ORDERS,
@@ -83,10 +98,52 @@ const routes: Routes = [
   {
     path: RoutesEnum.CREATE_CLOTHING,
     component: CreateClothingComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
   },
   {
     path: RoutesEnum.EDIT_CLOTHING,
     component: EditClothingComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
+  },
+  {
+    path: RoutesEnum.LIST_EMPLOYEES,
+    component: ListEmployeesComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
+  },
+  {
+    path: RoutesEnum.CREATE_EMPLOYEE,
+    component: CreateEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
+  },
+  {
+    path: RoutesEnum.EDIT_EMPLOYEE,
+    component: EditEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: [
+        RolesEnum.EMPLOYEE
+      ],
+    },
   },
 ];
 

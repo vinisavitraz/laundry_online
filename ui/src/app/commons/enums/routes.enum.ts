@@ -12,4 +12,7 @@ export enum RoutesEnum {
     LIST_CLOTHINGS = 'clothings/list',
     CREATE_CLOTHING = 'clothings/create',
     EDIT_CLOTHING = 'clothings/edit/:id',
+    LIST_EMPLOYEES = 'employees/list',
+    CREATE_EMPLOYEE = 'employees/create',
+    EDIT_EMPLOYEE = 'employees/edit/:id',
 }
