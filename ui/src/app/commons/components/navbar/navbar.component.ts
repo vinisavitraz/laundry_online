@@ -4,6 +4,7 @@ import {AuthService} from "../../../auth/services/auth.service";
 import {User} from "../../models/user.model";
 import {RoutesEnum} from "../../enums/routes.enum";
 import {Observable, of} from "rxjs";
+import {NavbarOptionsEnum} from "../../enums/navbar-options.enum";
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ import {Observable, of} from "rxjs";
 })
 export class NavbarComponent {
 
+  activeNavbarOption: string = NavbarOptionsEnum.HOME;
   authenticated: Observable<boolean>;
 
   constructor(
@@ -19,10 +21,16 @@ export class NavbarComponent {
       private authService: AuthService,
   ) {
     this.authenticated = of(false);
+    this.activeNavbarOption = NavbarOptionsEnum.HOME;
   }
 
   ngOnInit(): void {
     this.authenticated = of(this.authService.getAuthenticatedUser() != null);
+  }
+
+  public goToOption(optionName: string, uri: string): void {
+    this.activeNavbarOption = optionName;
+    this.router.navigate([uri]);
   }
 
   get authenticatedUser(): User | null {

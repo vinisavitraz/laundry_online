@@ -30,13 +30,13 @@
                         <button *ngIf="order.status == 'open'" (click)="setStatus(order, 'collected')" type="button" title="Coletado">
                             Coletar
                         </button>
-                        <button *ngIf="order.status == 'collected'" (click)="setStatus(order, 'waiting_payment')" type="button" title="Confirmar lavagem">
+                        <button *ngIf="order.status == 'collected' && user?.role === 'employee'" (click)="setStatus(order, 'waiting_payment')" type="button" title="Confirmar lavagem">
                             Confirmar lavagem
                         </button>
-                        <button *ngIf="order.status == 'waiting_payment'" (click)="setStatus(order, 'paid')" type="button" title="Confirmar pagamento">
+                        <button *ngIf="order.status == 'waiting_payment' && user?.role === 'customer'" (click)="setStatus(order, 'paid')" type="button" title="Confirmar pagamento">
                             Confirmar pagamento
                         </button>
-                        <button *ngIf="order.status == 'paid'" (click)="setStatus(order, 'finished')" type="button" title="Finalizar">
+                        <button *ngIf="order.status == 'paid' && user?.role === 'employee'" (click)="setStatus(order, 'finished')" type="button" title="Finalizar">
                             Finalizar
                         </button>
                         <!--                        <a href="#" (click)="remove($event, order)" title="Remover" class="btn btn-xs btn-danger">-->

@@ -1,38 +1,37 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">LOL - Lavanderia Online</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" [routerLink]="'/'">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="'/orders/list'">Pedidos</a>
-                </li>
-                <li *ngIf="authenticatedUser?.role === 'customer'"  class="nav-item">
-                    <a class="nav-link" [routerLink]="'/orders/search'">Buscar pedido</a>
-                </li>
-                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                    <a class="nav-link" [routerLink]="'/clothings/list'">Peças de roupa</a>
-                </li>
-                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                    <a class="nav-link" [routerLink]="'/employees/list'">Funcionários</a>
-                </li>
-                <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                    <a class="nav-link" [routerLink]="'/reports/select'">Relatórios</a>
-                </li>
-                <li class="nav-item">
-                    <a (click)="logout()" class="nav-link" href="#">Sair</a>
-                </li>
-                <li class="nav-item">
-                    <p class="navbar-text mb-0 text-secondary">
-                        <i class="fa fa-user"></i> {{ authenticatedUser?.name }}
-                    </p>
-                </li>
-            </ul>
-        </div>
+<nav *ngIf="authenticatedUser !== null"  class="navbar navbar-expand-md navbar-dark bg-dark">
+    <button type="button" (click)="goToOption('home', '/')" class="navbar-brand btn btn-dark bg-dark btn-outline-dark">LOL - Lavanderia Online</button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav  mr-auto">
+            <li class="nav-item">
+                <button type="button" (click)="goToOption('home', '/')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'home' ? 'active' : ''">Home</button>
+            </li>
+            <li class="nav-item">
+                <button type="button" (click)="goToOption('orders', '/orders/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'orders' ? 'active' : ''">Pedidos</button>
+            </li>
+            <li *ngIf="authenticatedUser?.role === 'customer'"  class="nav-item">
+                <button type="button" (click)="goToOption('searchOrder', '/orders/search')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'searchOrder' ? 'active' : ''">Buscar pedido</button>
+            </li>
+            <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
+                <button type="button" (click)="goToOption('clothings', '/clothings/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'clothings' ? 'active' : ''">Peças de roupa</button>
+            </li>
+            <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
+                <button type="button" (click)="goToOption('employees', '/employees/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'employees' ? 'active' : ''">Funcionários</button>
+            </li>
+            <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
+                <button type="button" (click)="goToOption('reports', '/reports/select')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'reports' ? 'active' : ''">Relatórios</button>
+            </li>
+            <li class="nav-item">
+                <a (click)="logout()" class="nav-link" href="#">Sair</a>
+            </li>
+        </ul>
     </div>
+    <div>
+        <p class="navbar-text mb-0 pe-2 text-white">
+            <i class="fa fa-user"></i> {{ authenticatedUser ? authenticatedUser.name + ' - ' + (authenticatedUser.role === 'customer' ? 'Cliente' : 'Funcionário') : '' }}
+        </p>
+    </div>
+
 </nav>

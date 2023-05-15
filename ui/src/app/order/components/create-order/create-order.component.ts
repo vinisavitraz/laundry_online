@@ -47,10 +47,14 @@ export class CreateOrderComponent {
   }
 
   public addNewClothing(): void {
-    const clothingId: string = this.clothingId.getRawValue();
-    const clothingQuantity: string = this.clothingQuantity.getRawValue();
+    const clothingId: number = Number(this.clothingId.getRawValue());
+    const clothingQuantity: number = Number(this.clothingQuantity.getRawValue());
 
-    if (clothingId === '' || clothingQuantity === '') {
+    if (isNaN(clothingId) || isNaN(clothingQuantity)) {
+      return;
+    }
+
+    if (clothingId <= 0 || clothingQuantity <= 0) {
       return;
     }
 

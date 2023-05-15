@@ -13,27 +13,28 @@ import {RoutesEnum} from "../../../commons/enums/routes.enum";
 })
 export class ListOrdersComponent {
 
+  user: User | null;
   orders: Order[];
 
   constructor(
       private authService: AuthService,
       private orderService: OrderService,
   ) {
+    this.user = null;
     this.orders = [];
   }
 
   ngOnInit(): void {
+    this.user = this.authService.getAuthenticatedUser();
     this.orders = this.listOrders();
   }
 
   private listOrders(): Order[] {
-    const user: User | null = this.authService.getAuthenticatedUser();
-
-    if (user === null) {
+    if (this.user === null) {
       return [];
     }
 
-    return this.orderService.listOrders(user);
+    return this.orderService.listOrders(this.user);
   }
 
   public setStatus(order: Order, status: string): void {
