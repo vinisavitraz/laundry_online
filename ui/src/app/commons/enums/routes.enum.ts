@@ -1,11 +1,10 @@
 export enum RoutesEnum {
-    //HOME = 'home',
     LOGIN = 'login',
     REGISTER = 'register',
     CUSTOMER_HOME = 'customer',
     EMPLOYEE_HOME = 'employee',
     CREATE_ORDER = 'orders/create',
-    ORDER_SUMMARY = 'orders/summary',
+    ORDER_SUMMARY = 'orders/summary/:id',
     LIST_ORDERS = 'orders/list',
     SEARCH_ORDER = 'orders/search',
     ORDER_DETAIL = 'orders/detail',

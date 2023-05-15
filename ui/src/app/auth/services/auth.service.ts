@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User} from "../../commons/models/user.model";
 import {Observable, of} from "rxjs";
-import {RequestLoginDto} from "../dto/request-login.dto";
+import {RequestLoginDto} from "../dto/request/request-login.dto";
 import {UserService} from "../../user/services/user.service";
 
 @Injectable({

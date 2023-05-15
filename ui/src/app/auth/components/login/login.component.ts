@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {RequestLoginDto} from "../../dto/request-login.dto";
+import {RequestLoginDto} from "../../dto/request/request-login.dto";
 import {AuthService} from "../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../commons/models/user.model";

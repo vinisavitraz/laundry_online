@@ -21,12 +21,17 @@ export class ClothingService {
   }
 
   public saveClothing(clothing: Clothing): void {
+    console.log('saveclothing');
     const clothings: Clothing[] = this.getClothings();
 
     if (clothings.length === 0) {
       clothing.id = this.getNextId();
 
+      console.log('empty');
+      console.log(clothing);
+
       localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify([clothing]));
+      return;
     }
 
     if (clothing.id === undefined) {
@@ -65,10 +70,10 @@ export class ClothingService {
 
     clothings.forEach(clothing => {
       if (clothing.id! > nextId) {
-        nextId = clothing.id! + 1;
+        nextId = clothing.id!;
       }
     });
 
-    return nextId;
+    return nextId + 1;
   }
 }

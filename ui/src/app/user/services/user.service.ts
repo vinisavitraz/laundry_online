@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {RequestRegisterDto} from "../../auth/dto/request-register.dto";
+import {RequestRegisterDto} from "../../auth/dto/request/request-register.dto";
 import {Observable, of} from "rxjs";
 import {Customer} from "../../commons/models/customer.model";
 import {User} from "../../commons/models/user.model";

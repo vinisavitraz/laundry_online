@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import {Order} from "../../../commons";
 import {OrderService} from "../../../order/services/order.service";
-import {RolesEnum} from "../../../commons/enums/roles.enum";
+import {AuthService} from "../../../auth/services/auth.service";
+import {User} from "../../../commons/models/user.model";
 
 @Component({
   selector: 'app-customer-home',
@@ -12,7 +13,10 @@ export class CustomerHomeComponent {
 
   openOrders: Order[];
 
-  constructor(private orderService: OrderService) {
+  constructor(
+      private orderService: OrderService,
+      private authService: AuthService,
+  ) {
     this.openOrders = [];
   }
 
@@ -21,7 +25,13 @@ export class CustomerHomeComponent {
   }
 
   private listOpenOrders(): Order[] {
-    return this.orderService.listOpenOrders(RolesEnum.CUSTOMER);
+    const user: User | null = this.authService.getAuthenticatedUser();
+
+    if (user === null) {
+      return [];
+    }
+
+    return this.orderService.listOpenOrders(user);
   }
 
 }

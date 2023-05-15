@@ -27,9 +27,12 @@
                     <td> {{ order.washTime }} </td>
                     <td> {{ order.status }} </td>
                     <td class="text-center" style="width: 300px">
-                        <a [routerLink]="'/orders/edit/' + order.id" href="#" title="Editar" class="btn btn-xs btn-info">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </a>
+                        <button *ngIf="order.status == 'open'" (click)="setCollected(order)" type="button" title="Coletado">
+                            Coletar
+                        </button>
+<!--                        <a [routerLink]="'/orders/edit/' + order.id" href="#" title="Editar" class="btn btn-xs btn-info">-->
+<!--                            <i class="fa fa-edit" aria-hidden="true"></i>-->
+<!--                        </a>-->
                         <!--                        <a href="#" (click)="remove($event, order)" title="Remover" class="btn btn-xs btn-danger">-->
                         <!--                            <i class="fa fa-times" aria-hidden="true"></i>-->
                         <!--                        </a>-->

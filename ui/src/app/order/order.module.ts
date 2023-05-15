@@ -6,6 +6,9 @@ import { CreateOrderComponent } from './components/create-order/create-order.com
 import { OrderSummaryComponent } from './components/order-summary/order-summary.component';
 import { SearchOrderComponent } from './components/search-order/search-order.component';
 import { ListOrdersComponent } from './components/list-orders/list-orders.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ClothingModule} from "../clothing/clothing.module";
+import {RouterLink} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -15,9 +18,13 @@ import { ListOrdersComponent } from './components/list-orders/list-orders.compon
     SearchOrderComponent,
     ListOrdersComponent
   ],
-  imports: [
-    CommonModule
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ClothingModule,
+        RouterLink,
+    ],
   providers: [
       OrderService
   ],

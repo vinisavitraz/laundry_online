@@ -1,1 +1,63 @@
-<p>create-order works!</p>
+<h1>Novo pedido</h1>
+
+<div class="well">
+    <form [formGroup]="orderForm">
+        <div class="form-group">
+            <label for="clothingId">Peça de roupa</label>
+            <select class="form-control" formControlName="clothingId" id="clothingId">
+                <option *ngFor="let clothing of clothings" [value]="clothing.id">{{clothing.name}}</option>
+            </select>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="clothingQuantity">Quantidade</label>
+            <input type="text" formControlName="clothingQuantity" name="clothingQuantity" id="clothingQuantity" required>
+        </div>
+        <br>
+        <br>
+        <div class="row g-3">
+            <div class="col-md-12 col-lg-10">
+                <table class="table table-striped table-bordered table-hover" *ngIf="dto.items!.length > 0">
+                    <tbody>
+                    <tr>
+                        <th>Peça de roupa</th>
+                        <th>Quantidade</th>
+                        <th class="text-center">
+
+                        </th>
+                    </tr>
+                    <tr *ngFor="let item of dto.items">
+                        <td> {{ item.clothing!.name }} </td>
+                        <td> {{ item.quantity }} </td>
+                        <td class="text-center" style="width: 300px">
+                            <button type="button" (click)="editItem(item)" class="btn btn-xs btn-info" title="Editar">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" (click)="removeItem($event, item)" class="btn btn-xs btn-danger" title="Remover">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+<!--                            <a [routerLink]="'/clothings/edit/' + item.id" href="#" title="Editar" class="btn btn-xs btn-danger">-->
+<!--                                <i class="fa fa-times" aria-hidden="true"></i>-->
+<!--                            </a>-->
+<!--                            <a href="#" (click)="remove($event, clothing)" title="Remover" class="btn btn-xs btn-danger">-->
+<!--                                <i class="fa fa-times" aria-hidden="true"></i>-->
+<!--                            </a>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p *ngIf="dto.items!.length === 0">Nenhuma peça de roupa adicionada</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <button type="button" class="btn btn-success" (click)="addNewClothing()">
+            <i class="fa fa-save" aria-hidden="true"></i> Adicionar roupa
+        </button>
+        <br>
+        <br>
+        <button type="button" class="btn btn-success" (click)="showOrderSummary()">
+            <i class="fa fa-save" aria-hidden="true"></i> Criar orçamento
+        </button>
+    </form>
+</div>

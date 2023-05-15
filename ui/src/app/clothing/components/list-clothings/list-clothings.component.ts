@@ -29,6 +29,8 @@ export class ListClothingsComponent {
   }
 
   private listClothings(): Clothing[] {
+    console.log('listClothings');
+    console.log(this.clothingService.getClothings());
     return this.clothingService.getClothings();
   }
 }

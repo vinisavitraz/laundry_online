@@ -1,1 +1,21 @@
-<p>order-summary works!</p>
+<div class="container-fluid">
+    <div class="container px-4 py-5" id="featured-3">
+        <div class="feature col">
+            <div class="card text-dark bg-white mb-3">
+                <div class="card-header bg-primary-color">Dados do pedido #{{ order.id }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">#{{ order.id }}</h5>
+                    <p class="card-text">Status: {{ order.status }}</p>
+                    <p class="card-text">Valor: {{ order.washPrice }}</p>
+                    <p class="card-text">Prazo de entrega em dias: {{ order.washTime }}</p>
+                    <button type="button" class="btn btn-success" (click)="setStatus(order.id!, 'open')">
+                        Aprovar
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="setStatus(order.id!, 'rejected')">
+                        Rejeitar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

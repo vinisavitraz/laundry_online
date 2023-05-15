@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {RequestRegisterDto} from "../../dto/request-register.dto";
+import {RequestRegisterDto} from "../../dto/request/request-register.dto";
 import {CepService} from "../../../commons/services/cep.service";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {Router} from "@angular/router";
@@ -64,7 +64,7 @@ export class RegisterComponent {
       document: this.documentInput,
       email: this.emailInput,
       phone: this.phoneInput,
-    })
+    });
   }
 
   public findCep(cep: string): void {
