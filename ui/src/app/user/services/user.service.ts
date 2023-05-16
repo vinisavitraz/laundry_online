@@ -5,6 +5,7 @@ import {Customer} from "../../commons/models/customer.model";
 import {User} from "../../commons/models/user.model";
 import {Employee} from "../../commons/models/employee.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
+import {Clothing} from "../../commons";
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,12 @@ export class UserService {
     const users: User[] = this.getUsers();
 
     return users.find(user => user.email === email);
+  }
+
+  public findById(id: number): User | undefined {
+    const users: User[] = this.getUsers();
+    console.log(users);
+    return users.find(user => user.id === id);
   }
 
   public getUsers(): User[] {

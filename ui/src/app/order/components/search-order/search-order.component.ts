@@ -42,13 +42,22 @@ export class SearchOrderComponent {
 
     console.log('search order'  + orderId);
 
-    this.order = this.orderService.findById(orderId);
+    const order: Order | undefined = this.orderService.findById(orderId);
 
-    console.log(this.order);
-    if (this.order === undefined) {
-      console.log('entro');
+    console.log(order);
+    if (order === undefined) {
       this.notFound = true;
+      return;
     }
+
+    console.log(order!.customerId);
+    console.log(this.user!.id);
+    if (order!.customerId !== this.user!.id) {
+      this.notFound = true;
+      return;
+    }
+
+    this.order = order;
   }
 
   public setStatus(order: Order, status: string): void {

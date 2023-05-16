@@ -7,6 +7,7 @@ import {ItemOrderRequestDto} from "../dto/request/item-order-request.dto";
 import {OrderItem} from "../../commons/models/order-item.model";
 import {User} from "../../commons/models/user.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
+import {UserService} from "../../user/services/user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,12 @@ export class OrderService {
 
   static ORDERS_KEY = 'orders';
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   public listOrders(user: User): Order[] {
     const orders: Order[] = this.getOrders();
+
+    console.log(orders);
 
     if (user.role === RolesEnum.EMPLOYEE) {
       orders.sort(function (a, b) {
@@ -31,8 +34,14 @@ export class OrderService {
       return orders;
     }
 
+    console.log(orders);
+
     return orders
-        .filter(order => order.customerId !== user.id)
+        .filter(function (order) {
+          console.log(order.customerId);
+          console.log(user.id);
+          return order.customerId === user.id;
+        })
         .sort(function (a, b) {
           const newDateA: Date = new Date(a.createDate!);
           const newDateB: Date = new Date(b.createDate!);
@@ -44,6 +53,8 @@ export class OrderService {
   public listOpenOrders(user: User): Order[] {
     const orders: Order[] = this.getOrders();
 
+    console.log(orders);
+
     if (user.role === RolesEnum.EMPLOYEE) {
       return orders.filter(order => {
         return order.status === OrderStatusEnum.OPEN
@@ -51,7 +62,7 @@ export class OrderService {
     }
 
     return orders.filter(order => {
-      return order.customerId !== user.id && order.status === OrderStatusEnum.OPEN
+      return order.customerId === user.id && order.status === OrderStatusEnum.OPEN
     })
   }
 
@@ -65,7 +76,16 @@ export class OrderService {
     return JSON.parse(ordersStorage);
   }
 
-  public createOrder(dto: CreateOrderRequestDto): Observable<Order> {
+  public createOrder(dto: CreateOrderRequestDto): Observable<Order | null> {
+    console.log('createOrder');
+    console.log(dto.customerId!);
+    const user: User | undefined = this.userService.findById(dto.customerId!);
+
+    if (user === undefined) {
+      console.log('createOrder undefined');
+      return of(null);
+    }
+
     const orders: Order[] = this.getOrders();
     const id: number = this.getNextId(orders);
 
@@ -92,7 +112,8 @@ export class OrderService {
         totalWashPrice,
         totalWashTime,
         items,
-        dto.customerId,
+        user.id,
+        user.name,
         new Date(),
     );
 

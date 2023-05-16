@@ -60,7 +60,7 @@
                             <span class="badge bg-success text-white">Finalizado</span>
                         </p>
                         <br>
-                        <p class="card-text">Cliente: {{ order.customerId }}</p>
+                        <p class="card-text">Cliente: {{ order.customerName }}</p>
                         <p class="card-text">Valor total: R${{ order.washPrice }}</p>
                         <p class="card-text">Quantidade de itens: R${{ order.items!.length }}</p>
                         <p class="card-text">Entrega em: {{ order.items!.length }} dia(s)</p>

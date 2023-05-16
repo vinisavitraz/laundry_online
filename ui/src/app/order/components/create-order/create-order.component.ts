@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {Clothing} from "../../../commons";
 import {ClothingService} from "../../../clothing/services/clothing.service";
 import {ItemOrderRequestDto} from "../../dto/request/item-order-request.dto";
+import {User} from "../../../commons/models/user.model";
+import {AuthService} from "../../../auth/services/auth.service";
 
 @Component({
   selector: 'app-create-order',
@@ -14,6 +16,7 @@ import {ItemOrderRequestDto} from "../../dto/request/item-order-request.dto";
 })
 export class CreateOrderComponent {
 
+  user: User | null;
   clothings: Clothing[];
   orderForm!: FormGroup;
   clothingId!: FormControl;
@@ -25,6 +28,7 @@ export class CreateOrderComponent {
   totalWashPrice: number;
 
   constructor(
+      private authService: AuthService,
       private orderService: OrderService,
       private clothingService: ClothingService,
       private router: Router,
@@ -36,10 +40,12 @@ export class CreateOrderComponent {
     this.totalQuantity = 0;
     this.totalWashTime = 0;
     this.totalWashPrice = 0;
+    this.user = null;
   }
 
   ngOnInit(): void {
     this.createForm();
+    this.user = this.authService.getAuthenticatedUser();
   }
 
   private createForm(): void {
@@ -107,11 +113,19 @@ export class CreateOrderComponent {
   }
 
   public showOrderSummary(): void {
+    console.log('showOrderSummary');
+
     if (this.dto.items!.length === 0) {
       return;
     }
 
+    this.dto.customerId = this.user!.id;
+
     this.orderService.createOrder(this.dto).subscribe(order => {
+      if (order === null) {
+        return;
+      }
+
       this.router.navigate(['orders/summary/' + order.id]);
     });
   }
