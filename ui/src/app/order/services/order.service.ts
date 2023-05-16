@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Clothing, Order} from "../../commons";
+import {Order} from "../../commons";
 import {Observable, of} from "rxjs";
 import {CreateOrderRequestDto} from "../dto/request/create-order-request.dto";
 import {OrderStatusEnum} from "../../commons/enums/order-status.enum";
@@ -21,10 +21,24 @@ export class OrderService {
     const orders: Order[] = this.getOrders();
 
     if (user.role === RolesEnum.EMPLOYEE) {
+      orders.sort(function (a, b) {
+        const newDateA: Date = new Date(a.createDate!);
+        const newDateB: Date = new Date(b.createDate!);
+        // @ts-ignore
+        return newDateA - newDateB;
+      });
+
       return orders;
     }
 
-    return orders.filter(order => order.customerId !== user.id);
+    return orders
+        .filter(order => order.customerId !== user.id)
+        .sort(function (a, b) {
+          const newDateA: Date = new Date(a.createDate!);
+          const newDateB: Date = new Date(b.createDate!);
+          // @ts-ignore
+          return newDateB - newDateA;
+        });
   }
 
   public listOpenOrders(user: User): Order[] {
@@ -54,8 +68,7 @@ export class OrderService {
   public createOrder(dto: CreateOrderRequestDto): Observable<Order> {
     const orders: Order[] = this.getOrders();
     const id: number = this.getNextId(orders);
-    console.log('create order id: ' + id);
-    console.log(orders);
+
     let totalWashPrice: number = 0;
     let totalWashTime: number = 0;
     const items: OrderItem[] = [];
@@ -70,7 +83,7 @@ export class OrderService {
         totalWashTime = item.clothing!.washTime!;
       }
 
-      items.push(new OrderItem(item.clothing!.id, washPrice));
+      items.push(new OrderItem(item.clothing!.id, item.clothing!.name!, item.quantity!, washPrice));
     }
 
     const order: Order = new Order(
@@ -80,6 +93,7 @@ export class OrderService {
         totalWashTime,
         items,
         dto.customerId,
+        new Date(),
     );
 
     orders.push(order);
@@ -114,21 +128,16 @@ export class OrderService {
   public setStatus(id: number, status: string): void {
     const orders: Order[] = this.getOrders();
 
-    console.log('setStatus!');
     for (let i = 0; i < orders.length!; i++) {
       const order: Order = orders[i];
 
       if (order.id === id) {
-        console.log('found!');
-        console.log('setStatus!');
         order.status = status;
         orders[i] = order;
-        console.log(orders[i].status);
         break;
       }
     }
-    console.log('saveStorage!');
-    console.log(orders);
+
     localStorage.setItem(OrderService.ORDERS_KEY, JSON.stringify(orders));
   }
 }

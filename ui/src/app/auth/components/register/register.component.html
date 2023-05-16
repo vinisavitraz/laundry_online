@@ -10,68 +10,142 @@
 <!--        </div>-->
         <hr class="bg-dark border-1 border-top border-dark mx-3">
         <br>
-        <form [formGroup]="registerForm">
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="document">CPF</label>
-                <input id="document" type="text" class="form-control" name="document" placeholder="Informe" formControlName="document" required autofocus>
+        <div class="row g-5 d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <form [formGroup]="registerForm">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="name" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="name" name="name" value="" formControlName="name" placeholder="Ex: João Silva" required autofocus>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" value="" formControlName="email" placeholder="Ex: joao.silva@mail.com" required>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="document" class="form-label">CPF</label>
+                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 806.949.290-26" formControlName="document"  required>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="phone" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="" formControlName="phone" placeholder="Ex: (41)99999-9999">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="cep" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" value="">
+                    </div>
+                    <br>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="street" class="form-label">Rua</label>
+                            <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" required>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="streetNumber" class="form-label">Número</label>
+                            <input type="streetNumber" class="form-control" id="streetNumber" name="streetNumber" value="" formControlName="streetNumber" placeholder="Ex: 123">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <label for="district" class="form-label">Bairro</label>
+                            <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Centro" formControlName="district" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="city" class="form-label">Cidade</label>
+                            <input id="city" type="city" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" required>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="state" class="form-label">Estado</label>
+                            <input type="state" class="form-control" id="state" name="state" value="" formControlName="state" placeholder="Ex: PR">
+                        </div>
+                    </div>
+                    <br>
+                    <hr class="my-4">
+                    <div class="row mx-5">
+                        <button type="button" (click)="registerUser()" [disabled]="!registerForm.valid"  class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
+                    </div>
+                    <br>
+                    <div class="row mx-5">
+                        <a [routerLink]="'/login'" class="btn btn-light btn-lg ms-auto">Voltar</a>
+                    </div>
+                    <br>
+                    <br>
+                </form>
             </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="email">Email</label>
-                <input id="email" type="email" class="form-control" name="email" placeholder="Ex: joao.silva@mail.com" formControlName="email" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="name">Nome</label>
-                <input id="name" type="text" class="form-control" name="name" placeholder="Ex: João Silva" formControlName="name" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="phone">Telefone</label>
-                <input id="phone" type="text" class="form-control" name="phone" placeholder="Ex: (41)99999-9999" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="cep">CEP</label>
-                <input id="cep" type="text" class="form-control" name="cep" placeholder="Ex: 82900123" formControlName="cep" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="street">Rua</label>
-                <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="streetNumber">Número</label>
-                <input id="streetNumber" type="text" class="form-control" name="streetNumber" placeholder="Ex: 1234" formControlName="streetNumber" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="district">Bairro</label>
-                <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Cajuru" formControlName="district" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="city">Cidade</label>
-                <input id="city" type="text" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" required>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <label class="mb-2 text-muted" for="state">Estado</label>
-                <input id="state" type="text" class="form-control" name="state" placeholder="Ex: PR" formControlName="state" required>
-            </div>
-            <br>
-            <br>
-            <div class="row mx-5">
-                <button type="button" (click)="registerUser()" [disabled]="!registerForm.valid"  class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
-            </div>
-            <br>
-            <div class="row mx-5">
-                <a [routerLink]="'/login'" class="btn btn-light btn-lg ms-auto">Voltar</a>
-            </div>
-            <br>
-            <br>
-        </form>
+        </div>
+
+<!--        <form [formGroup]="registerForm">-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="document">CPF</label>-->
+<!--                <input id="document" type="text" class="form-control" name="document" placeholder="Informe" formControlName="document" required autofocus>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="email">Email</label>-->
+<!--                <input id="email" type="email" class="form-control" name="email" placeholder="Ex: joao.silva@mail.com" formControlName="email" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="name">Nome</label>-->
+<!--                <input id="name" type="text" class="form-control" name="name" placeholder="Ex: João Silva" formControlName="name" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="phone">Telefone</label>-->
+<!--                <input id="phone" type="text" class="form-control" name="phone" placeholder="Ex: (41)99999-9999" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="cep">CEP</label>-->
+<!--                <input id="cep" type="text" class="form-control" name="cep" placeholder="Ex: 82900123" formControlName="cep" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="street">Rua</label>-->
+<!--                <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="streetNumber">Número</label>-->
+<!--                <input id="streetNumber" type="text" class="form-control" name="streetNumber" placeholder="Ex: 1234" formControlName="streetNumber" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="district">Bairro</label>-->
+<!--                <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Cajuru" formControlName="district" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="city">Cidade</label>-->
+<!--                <input id="city" type="text" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <label class="mb-2 text-muted" for="state">Estado</label>-->
+<!--                <input id="state" type="text" class="form-control" name="state" placeholder="Ex: PR" formControlName="state" required>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <button type="button" (click)="registerUser()" [disabled]="!registerForm.valid"  class="btn btn-success btn-lg ms-auto">Criar nova conta</button>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <div class="row mx-5">-->
+<!--                <a [routerLink]="'/login'" class="btn btn-light btn-lg ms-auto">Voltar</a>-->
+<!--            </div>-->
+<!--            <br>-->
+<!--            <br>-->
+<!--        </form>-->
     </div>
 </div>
 </body>

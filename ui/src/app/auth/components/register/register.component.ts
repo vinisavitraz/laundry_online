@@ -37,6 +37,7 @@ export class RegisterComponent {
     this.createForm();
 
     this.registerForm!.get('cep')?.valueChanges.subscribe(cep => {
+      console.log(cep);
       this.findCep(cep);
     });
   }

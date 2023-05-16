@@ -8,6 +8,8 @@ export class Order {
         public washTime?: number,
         public items?: OrderItem[],
         public customerId?: number,
+        public createDate?: Date,
+        public paymentDate?: Date,
     ) {
     }
 }

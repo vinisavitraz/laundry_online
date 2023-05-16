@@ -1,19 +1,43 @@
 <div class="container-fluid">
-    <div class="container px-4 py-5" id="featured-3">
-        <div class="feature col">
-            <div class="card text-dark bg-white mb-3">
-                <div class="card-header bg-primary-color">Dados do pedido #{{ order.id }}</div>
-                <div class="card-body">
-                    <h5 class="card-title">#{{ order.id }}</h5>
-                    <p class="card-text">Status: {{ order.status }}</p>
-                    <p class="card-text">Valor: {{ order.washPrice }}</p>
-                    <p class="card-text">Prazo de entrega em dias: {{ order.washTime }}</p>
-                    <button type="button" class="btn btn-success" (click)="setStatus(order.id!, 'open')">
-                        Aprovar
-                    </button>
-                    <button type="button" class="btn btn-danger" (click)="setStatus(order.id!, 'rejected')">
-                        Rejeitar
-                    </button>
+    <br>
+    <div class="row g-5">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8 mx-3">
+            <h1>Avaliar orçamento</h1>
+        </div>
+    </div>
+    <br>
+    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-10 border rounded mx-2">
+        <div class="row bg-light">
+            <div class="feature col">
+                <div class="card text-dark mb-3">
+                    <div class="card-header bg-secondary text-white">Pedido #{{ order.id }}</div>
+                    <div class="card-body">
+                        <div class="mx-n5 px-5 py-4 bg-light text-dark">
+                            <div class="row" *ngFor="let orderItem of order.items!">
+                                <div class="col-md-4 col-lg-3">
+                                    <p>Item: {{ orderItem.clothingName }}</p>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <p>Quantidade: {{ orderItem.totalQuantity }}</p>
+                                </div>
+                                <div class="col-md-4 col-lg-3">
+                                    <p>Valor: R${{ orderItem.totalWashPrice! }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <hr class="bg-dark border-1 border-top border-dark">
+                        <p class="card-text">Valor total: R${{ order.washPrice }}</p>
+                        <p class="card-text">Quantidade de itens: {{ totalProducts }}</p>
+                        <p class="card-text">Entrega em: {{ order.washTime }} dia(s)</p>
+                        <br>
+                        <button type="button" class="btn btn-success ms-2" (click)="setStatus(order.id!, 'open')">
+                            Aprovar
+                        </button>
+                        <button type="button" class="btn btn-danger ms-2" (click)="setStatus(order.id!, 'rejected')">
+                            Rejeitar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

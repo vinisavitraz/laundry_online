@@ -3,6 +3,7 @@ import {OrderService} from "../../services/order.service";
 import {Order} from "../../../commons";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
+import {OrderItem} from "../../../commons/models/order-item.model";
 
 @Component({
   selector: 'app-order-summary',
@@ -11,12 +12,15 @@ import {RoutesEnum} from "../../../commons/enums/routes.enum";
 })
 export class OrderSummaryComponent {
   order!: Order;
+  totalProducts: number;
 
   constructor(
       private orderService: OrderService,
       private router: Router,
       private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.totalProducts = 0;
+  }
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.params['id'];
@@ -27,6 +31,12 @@ export class OrderSummaryComponent {
     }
 
     this.order = order;
+
+    for (let i = 0; i < order.items!.length; i++) {
+      const item: OrderItem = order.items![i];
+      console.log(item);
+      this.totalProducts += item.totalQuantity ?? 0;
+    }
   }
 
   public setStatus(id: number, status: string): void {
