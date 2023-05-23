@@ -1,41 +1,43 @@
-<div class="container-fluid">
-    <br>
-    <div class="row g-5">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-8">
-            <h1>Peças de roupa</h1>
+<div class="container-fluid d-flex justify-content-center">
+    <div class="col-11">
+        <br>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+                <h1>Peças de roupa</h1>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 d-flex justify-content-end">
+                <a [routerLink]="'/clothings/create'" href="#" title="Adicionar" class="btn btn-lg btn-success">
+                    Adicionar
+                </a>
+            </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-            <a [routerLink]="'/clothings/create'" href="#" title="Adicionar" class="btn btn-lg btn-success">
-                Adicionar
-            </a>
-        </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="row g-3">
-        <div class="col-md-12 col-lg-10">
-            <div *ngIf="clothings.length > 0">
-                <div class="card my-3" *ngFor="let clothing of clothings">
-                    <h5 class="card-header bg-secondary text-white">#{{ clothing.id }} - {{ clothing.name }}</h5>
-                    <div class="card-body">
-                        <br>
-                        <p class="card-text">Preço: R${{ clothing.washPrice }}</p>
-                        <p class="card-text">Tempo de lavagem: {{ clothing.washTime }} dia(s)</p>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div *ngIf="clothings.length > 0">
+                    <div class="card my-3" *ngFor="let clothing of clothings">
+                        <h5 class="card-header bg-secondary text-white">#{{ clothing.id }} - {{ clothing.name }}</h5>
+                        <div class="card-body  bg-light">
+                            <br>
+                            <p class="card-text">Preço: R${{ clothing.washPrice }}</p>
+                            <p class="card-text">Tempo de lavagem: {{ clothing.washTime }} dia(s)</p>
 
-                        <a [routerLink]="'/clothings/edit/' + clothing.id" href="#" title="Editar" class="btn btn-xs btn-warning mx-2">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" (click)="remove($event, clothing)" title="Remover" class="btn btn-xs btn-danger">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
+                            <a [routerLink]="'/clothings/edit/' + clothing.id" href="#" title="Editar" class="btn btn-xs btn-warning mx-2">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" (click)="remove($event, clothing)" title="Remover" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="text-center" *ngIf="clothings.length === 0">
-                <br>
-                <p class="text-secondary">Nenhuma peça de roupa cadastrada</p>
-                <br>
+                <div class="text-center" *ngIf="clothings.length === 0">
+                    <br>
+                    <p class="text-secondary">Nenhuma peça de roupa cadastrada</p>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

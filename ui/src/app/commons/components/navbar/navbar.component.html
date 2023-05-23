@@ -1,37 +1,33 @@
-<nav *ngIf="authenticatedUser !== null"  class="navbar navbar-expand-md navbar-dark bg-dark">
-    <button type="button" (click)="goToOption('home', '/')" class="navbar-brand btn btn-dark bg-dark btn-outline-dark">LOL - Lavanderia Online</button>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav  mr-auto">
+<nav *ngIf="authenticatedUser !== null" class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <button type="button" (click)="goToOption('home', '/')" class="navbar-brand btn btn-dark bg-dark btn-outline-dark">LOL - Lavanderia Online</button>
             <li class="nav-item">
-                <button type="button" (click)="goToOption('home', '/')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'home' ? 'active' : ''">Home</button>
+                <button type="button" (click)="goToOption('home', '/')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Home</button>
             </li>
             <li class="nav-item">
-                <button type="button" (click)="goToOption('orders', '/orders/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'orders' ? 'active' : ''">Pedidos</button>
+                <button type="button" (click)="goToOption('orders', '/orders/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Pedidos</button>
             </li>
             <li *ngIf="authenticatedUser?.role === 'customer'"  class="nav-item">
-                <button type="button" (click)="goToOption('searchOrder', '/orders/search')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'searchOrder' ? 'active' : ''">Buscar pedido</button>
+                <button type="button" (click)="goToOption('searchOrder', '/orders/search')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Buscar pedido</button>
             </li>
             <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                <button type="button" (click)="goToOption('clothings', '/clothings/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'clothings' ? 'active' : ''">Peças de roupa</button>
+                <button type="button" (click)="goToOption('clothings', '/clothings/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Peças de roupa</button>
             </li>
             <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                <button type="button" (click)="goToOption('employees', '/employees/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'employees' ? 'active' : ''">Funcionários</button>
+                <button type="button" (click)="goToOption('employees', '/employees/list')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Funcionários</button>
             </li>
             <li *ngIf="authenticatedUser?.role === 'employee'" class="nav-item">
-                <button type="button" (click)="goToOption('reports', '/reports/select')" class="nav-link btn btn-dark bg-dark btn-outline-dark" [ngClass]="activeNavbarOption === 'reports' ? 'active' : ''">Relatórios</button>
+                <button type="button" (click)="goToOption('reports', '/reports/select')" class="nav-link btn btn-dark bg-dark btn-outline-dark">Relatórios</button>
             </li>
             <li class="nav-item">
                 <a (click)="logout()" class="nav-link" href="#">Sair</a>
             </li>
         </ul>
+        <div>
+            <p class="navbar-text mb-0 pe-2 text-white">
+                <i class="fa fa-user"></i> {{ authenticatedUser ? authenticatedUser.name + ' - ' + (authenticatedUser.role === 'customer' ? 'Cliente' : 'Funcionário') : '' }}
+            </p>
+        </div>
     </div>
-    <div>
-        <p class="navbar-text mb-0 pe-2 text-white">
-            <i class="fa fa-user"></i> {{ authenticatedUser ? authenticatedUser.name + ' - ' + (authenticatedUser.role === 'customer' ? 'Cliente' : 'Funcionário') : '' }}
-        </p>
-    </div>
-
 </nav>

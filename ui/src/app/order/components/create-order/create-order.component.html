@@ -3,6 +3,7 @@
     <div class="row g-5">
         <div class="col-12 col-sm-12 col-md-6 col-lg-8 mx-3">
             <h1>Novo pedido</h1>
+            <p>Criando novo pedido de lavagem</p>
         </div>
     </div>
     <br>
@@ -31,26 +32,29 @@
                         </div>
                         <div class="text-center" *ngIf="dto.items!.length === 0">
                             <br>
-                            <p class="text-secondary">Nenhuma roupa adicionada</p>
+                            <p class="text-secondary">Para adicionar uma roupa, selecione o tipo da peça e informe a quantidade</p>
                             <br>
                         </div>
                     </div>
                 </div>
                 <hr class="bg-dark border-1 border-top border-dark">
                 <form [formGroup]="orderForm" class="row g-3">
-                    <div class="col-4">
+                    <div class="col-auto">
                         <select class="form-control" formControlName="clothingId" id="clothingId">
                             <option value="">Selecionar peça de roupa</option>
                             <option *ngFor="let clothing of clothings" [value]="clothing.id">{{clothing.name}}</option>
                         </select>
                     </div>
-                    <div class="col-2">
+                    <div class="col-auto">
                         <input type="text" formControlName="clothingQuantity" name="clothingQuantity" id="clothingQuantity" class="form-control" placeholder="Quantidade" required>
                     </div>
                     <div class="col-auto">
                         <button type="button" class="btn btn-secondary" (click)="addNewClothing()">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         </button>
+                    </div>
+                    <div *ngIf="addNewClothingMessage !== undefined" class="alert alert-danger">
+                        <div>{{ addNewClothingMessage }}</div>
                     </div>
                 </form>
                 <br>
@@ -65,6 +69,11 @@
                 <button type="button" class="btn btn-success" (click)="showOrderSummary()">
                     Criar orçamento
                 </button>
+                <br>
+                <br>
+                <div *ngIf="createMessage !== undefined" class="alert alert-danger">
+                    <div>{{ createMessage }}</div>
+                </div>
                 <br>
             </div>
         </div>

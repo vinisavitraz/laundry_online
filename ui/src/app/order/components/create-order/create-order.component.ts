@@ -8,6 +8,7 @@ import {ClothingService} from "../../../clothing/services/clothing.service";
 import {ItemOrderRequestDto} from "../../dto/request/item-order-request.dto";
 import {User} from "../../../commons/models/user.model";
 import {AuthService} from "../../../auth/services/auth.service";
+import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
 
 @Component({
   selector: 'app-create-order',
@@ -26,6 +27,8 @@ export class CreateOrderComponent {
   totalQuantity: number;
   totalWashTime: number;
   totalWashPrice: number;
+  createMessage: string | undefined;
+  addNewClothingMessage: string | undefined;
 
   constructor(
       private authService: AuthService,
@@ -59,15 +62,18 @@ export class CreateOrderComponent {
   }
 
   public addNewClothing(): void {
-    console.log(this.totalQuantity);
+    this.createMessage = undefined;
+    this.addNewClothingMessage = undefined;
     const clothingId: number = Number(this.clothingId.getRawValue());
     const clothingQuantity: number = Number(this.clothingQuantity.getRawValue());
 
     if (isNaN(clothingId) || isNaN(clothingQuantity)) {
+      this.addNewClothingMessage = ErrorMessagesEnum.INVALID_ITEM_INPUT
       return;
     }
 
     if (clothingId <= 0 || clothingQuantity <= 0) {
+      this.addNewClothingMessage = ErrorMessagesEnum.INVALID_ITEM_INPUT
       return;
     }
 
@@ -113,9 +119,12 @@ export class CreateOrderComponent {
   }
 
   public showOrderSummary(): void {
+    this.createMessage = undefined;
+    this.addNewClothingMessage = undefined;
     console.log('showOrderSummary');
 
     if (this.dto.items!.length === 0) {
+      this.createMessage = ErrorMessagesEnum.ORDER_WITHOUT_CLOTHINGS
       return;
     }
 

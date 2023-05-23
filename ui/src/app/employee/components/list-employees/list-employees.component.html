@@ -1,40 +1,42 @@
-<div class="container-fluid">
-    <br>
-    <div class="row g-5">
-        <div class="col-12 col-sm-12 col-md-6 col-lg-8">
-            <h1>Funcionários</h1>
+<div class="container-fluid d-flex justify-content-center">
+    <div class="col-11">
+        <br>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+                <h1>Funcionários</h1>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4 d-flex justify-content-end">
+                <a [routerLink]="'/employees/create'" href="#" title="Adicionar" class="btn btn-lg btn-success">
+                    Adicionar
+                </a>
+            </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-            <a [routerLink]="'/employees/create'" href="#" title="Adicionar" class="btn btn-lg btn-success">
-                Adicionar
-            </a>
-        </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="row g-3">
-        <div class="col-md-12 col-lg-10">
-            <div *ngIf="employees.length > 0">
-                <div class="card my-3" *ngFor="let employee of employees">
-                    <h5 class="card-header bg-secondary text-white">#{{ employee.id }} - {{ employee.name }}</h5>
-                    <div class="card-body">
-                        <br>
-                        <p class="card-text">Email: {{ employee.email }}</p>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div *ngIf="employees.length > 0">
+                    <div class="card my-3" *ngFor="let employee of employees">
+                        <h5 class="card-header bg-secondary text-white">#{{ employee.id }} - {{ employee.name }}</h5>
+                        <div class="card-body bg-light">
+                            <br>
+                            <p class="card-text">Email: {{ employee.email }}</p>
 
-                        <a [routerLink]="'/employees/edit/' + employee.id" title="Editar" class="btn btn-xs btn-warning mx-2">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </a>
-                        <a href="#" (click)="remove($event, employee)" title="Remover" class="btn btn-xs btn-danger">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
+                            <a [routerLink]="'/employees/edit/' + employee.id" title="Editar" class="btn btn-xs btn-warning mx-2">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" (click)="remove($event, employee)" title="Remover" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="text-center" *ngIf="employees.length === 0">
-                <br>
-                <p class="text-secondary">Nenhum funcionário cadastrada</p>
-                <br>
+                <div class="text-center" *ngIf="employees.length === 0">
+                    <br>
+                    <p class="text-secondary">Nenhum funcionário cadastrada</p>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

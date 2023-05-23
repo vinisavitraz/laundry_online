@@ -1,8 +1,12 @@
 <body>
 <div class="container-fluid d-flex align-items-center justify-content-center bg-light">
-    <div class="border bg-white border-2 rounded">
+    <div class="col-11 border bg-white border-2 rounded">
+        <br>
+        <br>
+        <br>
         <br>
         <div class="mx-5 d-flex justify-content-center">
+            <br>
             <h1>LOL - Lavanderia OnLine</h1>
         </div>
 <!--        <div class="mx-5">-->
@@ -16,63 +20,118 @@
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="name" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="name" name="name" value="" formControlName="name" placeholder="Ex: João Silva" required autofocus>
+                            <input type="text" class="form-control" id="name" name="name" value="" formControlName="name" placeholder="Ex: João Silva" required minlength="2" maxlength="100" autofocus>
+                            <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('name')?.errors?.['required']" >Digite o nome</div>
+                                <div *ngIf="!registerForm.get('name')?.errors?.['minlength']" >O nome deve conter ao menos 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('name')?.errors?.['maxlength']" >O nome deve conter no máximo 100 caracteres</div>
+                            </div>
                         </div>
 
                         <div class="col-sm-6">
                             <label for="email" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" value="" formControlName="email" placeholder="Ex: joao.silva@mail.com" required>
+                            <input type="text" class="form-control" id="email" name="email" value="" formControlName="email" placeholder="Ex: joao.silva@mail.com" minlength="2" maxlength="100" required>
+                            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('email')?.errors?.['required']" >Digite o email</div>
+                                <div *ngIf="!registerForm.get('email')?.errors?.['minlength']" >O email deve conter ao menos 2 caracteres</div>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="document" class="form-label">CPF</label>
-                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 806.949.290-26" formControlName="document"  required>
+                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 80694929026" formControlName="document" minlength="11" maxlength="11" required>
+                            <div *ngIf="registerForm.get('document')?.invalid && (registerForm.get('document')?.dirty || registerForm.get('document')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('document')?.errors?.['required']" >Digite o CPF</div>
+                                <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 11 caracteres</div>
+                                <div *ngIf="!registerForm.get('document')?.errors?.['maxlength']" >O CPF deve conter 11 caracteres</div>
+                            </div>
                         </div>
 
                         <div class="col-sm-6">
                             <label for="phone" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="" formControlName="phone" placeholder="Ex: (41)99999-9999">
+                            <input type="text" class="form-control" id="phone" name="phone" value="" formControlName="phone" placeholder="Ex: (41)99999-9999" minlength="6" maxlength="14" required>
+                            <div *ngIf="registerForm.get('phone')?.invalid && (registerForm.get('phone')?.dirty || registerForm.get('phone')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('phone')?.errors?.['required']" >Digite o telefone</div>
+                                <div *ngIf="!registerForm.get('phone')?.errors?.['minlength']" >O telefone deve conter ao menos 6 caracteres</div>
+                                <div *ngIf="!registerForm.get('phone')?.errors?.['maxlength']" >O telefone deve conter no máximo 16 caracteres</div>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <div class="col-12">
                         <label for="cep" class="form-label">CEP</label>
-                        <input type="cep" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" value="">
+                        <input type="text" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" minlength="8" maxlength="8" required>
+                        <div *ngIf="registerForm.get('cep')?.invalid && (registerForm.get('cep')?.dirty || registerForm.get('cep')?.touched)" class="alert alert-danger">
+                            <div *ngIf="!registerForm.get('cep')?.errors?.['required']" >Digite o CEP</div>
+                            <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 8 caracteres</div>
+                            <div *ngIf="!registerForm.get('document')?.errors?.['maxlength']" >O CPF deve conter 8 caracteres</div>
+                        </div>
                     </div>
                     <br>
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="street" class="form-label">Rua</label>
-                            <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" required>
+                            <input id="street" type="text" class="form-control" name="street" placeholder="Ex: Rua Amarela" formControlName="street" minlength="2" maxlength="100" required>
+                            <div *ngIf="registerForm.get('street')?.invalid && (registerForm.get('street')?.dirty || registerForm.get('street')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('street')?.errors?.['required']" >Digite o nome da rua</div>
+                                <div *ngIf="!registerForm.get('street')?.errors?.['minlength']" >O nome da rua deve conter ao menos 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('street')?.errors?.['maxlength']" >O nome da rua deve conter no máximo 100 caracteres</div>
+                            </div>
                         </div>
 
                         <div class="col-sm-6">
                             <label for="streetNumber" class="form-label">Número</label>
-                            <input type="streetNumber" class="form-control" id="streetNumber" name="streetNumber" value="" formControlName="streetNumber" placeholder="Ex: 123">
+                            <input type="text" class="form-control" id="streetNumber" name="streetNumber" value="" formControlName="streetNumber" placeholder="Ex: 123" minlength="1" maxlength="10" required>
+                            <div *ngIf="registerForm.get('streetNumber')?.invalid && (registerForm.get('streetNumber')?.dirty || registerForm.get('streetNumber')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('streetNumber')?.errors?.['required']" >Digite o número da rua</div>
+                                <div *ngIf="!registerForm.get('streetNumber')?.errors?.['minlength']" >O número da rua deve conter ao menos 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('streetNumber')?.errors?.['maxlength']" >O número da rua deve conter no máximo 100 caracteres</div>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <div class="row g-3">
                         <div class="col-sm-4">
                             <label for="district" class="form-label">Bairro</label>
-                            <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Centro" formControlName="district" required>
+                            <input id="district" type="text" class="form-control" name="district" placeholder="Ex: Centro" formControlName="district" minlength="2" maxlength="100" required>
+                            <div *ngIf="registerForm.get('district')?.invalid && (registerForm.get('district')?.dirty || registerForm.get('district')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('district')?.errors?.['required']" >Digite o bairro</div>
+                                <div *ngIf="!registerForm.get('district')?.errors?.['minlength']" >O bairro deve conter ao menos 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('district')?.errors?.['maxlength']" >O bairro deve conter no máximo 100 caracteres</div>
+                            </div>
                         </div>
                         <div class="col-sm-4">
                             <label for="city" class="form-label">Cidade</label>
-                            <input id="city" type="city" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" required>
+                            <input id="city" type="text" class="form-control" name="city" placeholder="Ex: Curitiba" formControlName="city" minlength="2" maxlength="100" required>
+                            <div *ngIf="registerForm.get('city')?.invalid && (registerForm.get('city')?.dirty || registerForm.get('city')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('city')?.errors?.['required']" >Digite a cidade</div>
+                                <div *ngIf="!registerForm.get('city')?.errors?.['minlength']" >A cidade deve conter ao menos 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('district')?.errors?.['maxlength']" >A cidade deve conter no máximo 100 caracteres</div>
+                            </div>
                         </div>
 
                         <div class="col-sm-4">
                             <label for="state" class="form-label">Estado</label>
-                            <input type="state" class="form-control" id="state" name="state" value="" formControlName="state" placeholder="Ex: PR">
+                            <input type="text" class="form-control" id="state" name="state" value="" formControlName="state" placeholder="Ex: PR" minlength="2" maxlength="2" required>
+                            <div *ngIf="registerForm.get('state')?.invalid && (registerForm.get('state')?.dirty || registerForm.get('state')?.touched)" class="alert alert-danger">
+                                <div *ngIf="!registerForm.get('state')?.errors?.['required']" >Digite a sigla do estado</div>
+                                <div *ngIf="!registerForm.get('state')?.errors?.['minlength']" >A sigla do estado CPF deve conter 2 caracteres</div>
+                                <div *ngIf="!registerForm.get('state')?.errors?.['maxlength']" >A sigla do estado CPF deve conter 2 caracteres</div>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <hr class="my-4">
                     <div class="row mx-5">
                         <button type="button" (click)="registerUser()" [disabled]="!registerForm.valid"  class="btn btn-success btn-lg ms-auto">Criar nova conta</button>
+                    </div>
+                    <br>
+                    <div class="row mx-5">
+                        <div *ngIf="message !== undefined" class="alert alert-danger">
+                            <div>{{ message }}</div>
+                        </div>
                     </div>
                     <br>
                     <div class="row mx-5">

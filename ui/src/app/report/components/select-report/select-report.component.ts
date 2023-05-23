@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class SelectReportComponent {
 
+  reportName: string;
+  showFilter: boolean;
+
+  constructor() {
+    this.reportName = '';
+    this.showFilter = false;
+  }
+  public generateReport(): void {
+
+  }
 }

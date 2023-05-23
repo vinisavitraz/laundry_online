@@ -5,7 +5,7 @@ import {Customer} from "../../commons/models/customer.model";
 import {User} from "../../commons/models/user.model";
 import {Employee} from "../../commons/models/employee.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
-import {Clothing} from "../../commons";
+import {RegisterResponseDto} from "../../auth/dto/response/register-response.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,15 @@ export class UserService {
 
   constructor() { }
 
-  public registerCustomer(dto: RequestRegisterDto): Observable<Customer> {
+  public registerCustomer(dto: RequestRegisterDto): Observable<RegisterResponseDto> {
+    // try {
+    //   this.validateRequestRegister(dto);
+    // } catch (error) {
+    //   // @ts-ignore
+    //   console.log(error.message)
+    // }
+
+
     const password: string = '';
     const users: User[] = this.getUsers();
 
@@ -29,7 +37,7 @@ export class UserService {
       localStorage.setItem(UserService.USERS_KEY, JSON.stringify([user]));
       localStorage.setItem(UserService.CUSTOMERS_KEY, JSON.stringify([customer]));
 
-      return of(customer);
+      return of(new RegisterResponseDto(customer));
     }
 
     const customers: Customer[] = this.getCustomers();
@@ -45,7 +53,7 @@ export class UserService {
     localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users));
     localStorage.setItem(UserService.CUSTOMERS_KEY, JSON.stringify(customers));
 
-    return of(customer);
+    return of(new RegisterResponseDto(customer));
   }
 
   public registerEmployee(employee: Employee): Observable<Employee> {
@@ -181,5 +189,9 @@ export class UserService {
         email,
         role,
     );
+  }
+
+  private validateRequestRegister(dto: RequestRegisterDto): void {
+
   }
 }

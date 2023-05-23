@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../commons/models/user.model";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {RolesEnum} from "../../../commons/enums/roles.enum";
+import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   dto: RequestLoginDto;
   loading: boolean;
-  message!: string;
+  message: string | undefined;
 
   constructor(
       private authService: AuthService,
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.dto = new RequestLoginDto();
     this.loading = false;
+    this.message = undefined;
 
     const authenticatedUser: User | null = this.authService.getAuthenticatedUser();
 
@@ -49,16 +51,21 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService.login(this.dto).subscribe((authenticatedUser) => {
+    this.authService.login(this.dto).subscribe((loginResponseDto) => {
       this.loading = false;
 
-      if (authenticatedUser === null) {
-        this.message = 'Usuário ou senha inválidos';
+      if (loginResponseDto.user !== null) {
+        this.authService.setAuthenticatedUser(loginResponseDto.user);
+        this.routeToHomePage(loginResponseDto.user);
         return;
       }
 
-      this.authService.setAuthenticatedUser(authenticatedUser);
-      this.routeToHomePage(authenticatedUser);
+      if (loginResponseDto.errorMessage === null) {
+        this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
+        return;
+      }
+
+      this.message = loginResponseDto.errorMessage;
     });
   }
 

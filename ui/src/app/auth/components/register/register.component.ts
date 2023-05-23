@@ -5,6 +5,7 @@ import {CepService} from "../../../commons/services/cep.service";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {Router} from "@angular/router";
 import {UserService} from "../../../user/services/user.service";
+import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,7 @@ export class RegisterComponent {
   cityInput!: FormControl;
   stateInput!: FormControl;
   dto: RequestRegisterDto;
+  message: string | undefined;
 
   constructor(
       private cepService: CepService,
@@ -31,6 +33,7 @@ export class RegisterComponent {
       private router: Router,
   ) {
     this.dto = new RequestRegisterDto();
+    this.message = undefined;
   }
 
   ngOnInit(): void {
@@ -99,8 +102,18 @@ export class RegisterComponent {
     this.dto.state = this.stateInput.getRawValue();
 
 
-    this.userService.registerCustomer(this.dto).subscribe((customer) => {
-      this.router.navigate([RoutesEnum.LOGIN]);
+    this.userService.registerCustomer(this.dto).subscribe((registerResponseDto) => {
+      if (registerResponseDto.customer !== null) {
+        this.router.navigate([RoutesEnum.LOGIN]);
+        return;
+      }
+
+      if (registerResponseDto.errorMessage === null) {
+        this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
+        return;
+      }
+
+      this.message = registerResponseDto.errorMessage;
     });
   }
 }
