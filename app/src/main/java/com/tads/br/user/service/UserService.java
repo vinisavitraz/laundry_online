@@ -20,6 +20,11 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    public UserEntity findUserByEmail(String email) {
+        return this.repository.findByEmail(email);
+    }
+
+    @Override
     public UserEntity registerUser(RegisterUserRequestDto registerUserRequestDto) {
         String password = this.generatePassword();
 

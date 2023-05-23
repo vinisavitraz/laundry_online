@@ -1,16 +1,16 @@
-package com.tads.br.user.dto.request;
+package com.tads.br.auth.dto.request;
 
-public class AuthUserRequestDto {
+public class AuthRequestDto {
 
     private String email;
     private String password;
 
-    public AuthUserRequestDto(String email, String password) {
+    public AuthRequestDto(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public AuthUserRequestDto() {
+    public AuthRequestDto() {
     }
 
     public String getEmail() {

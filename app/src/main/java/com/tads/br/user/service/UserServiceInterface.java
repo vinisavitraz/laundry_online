@@ -7,5 +7,7 @@ public interface UserServiceInterface {
 
     UserEntity findById(Long id);
 
+    UserEntity findUserByEmail(String email);
+
     UserEntity registerUser(RegisterUserRequestDto registerUserRequestDto);
 }

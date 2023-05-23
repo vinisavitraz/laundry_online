@@ -1,7 +1,6 @@
 package com.tads.br.user.controller;
 
 import com.tads.br.core.dto.response.EntityResponseDto;
-import com.tads.br.user.dto.request.AuthUserRequestDto;
 import com.tads.br.user.dto.request.RegisterUserRequestDto;
 import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.service.UserServiceInterface;
@@ -27,14 +26,6 @@ public class UserController {
 
         return new EntityResponseDto<>(user);
     }
-
-//    @PostMapping("/user/auth")
-//    @ResponseBody
-//    public EntityResponseDto<UserEntity> authUser(@RequestBody AuthUserRequestDto authUserRequestDto) {
-//        UserEntity user = this.service.authUser(authUserRequestDto);
-//
-//        return new EntityResponseDto<>(user);
-//    }
 
     @PostMapping("/user/register")
     @ResponseBody

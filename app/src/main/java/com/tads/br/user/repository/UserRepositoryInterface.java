@@ -7,4 +7,6 @@ public interface UserRepositoryInterface {
     Long create(UserEntity user, String password);
 
     UserEntity findById(Long id);
+
+    UserEntity findByEmail(String email);
 }

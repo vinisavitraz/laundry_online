@@ -16,6 +16,7 @@ public class UserRepository implements UserRepositoryInterface {
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO users (id, name, document, phone, password, cep, street, streetNumber, district, city, state) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
+    private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -76,6 +77,16 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_ID,
                     BeanPropertyRowMapper.newInstance(UserEntity.class), id);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        try {
+            return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_EMAIL,
+                    BeanPropertyRowMapper.newInstance(UserEntity.class), email);
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
