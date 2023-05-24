@@ -1,79 +1,61 @@
 import { Injectable } from '@angular/core';
 import {Clothing} from "../../commons";
+import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.constants";
+import {ClothingsResponseDto} from "../dto/response/clothings-response.dto";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {ClothingResponseDto} from "../dto/response/clothing-response.dto";
+import {CreateClothingRequestDto} from "../dto/request/create-clothing-request.dto";
+import {UpdateClothingRequestDto} from "../dto/request/update-clothing-request.dto";
+import {StatusResponseDto} from "../../commons/dto/response/status-response.dto";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClothingService {
 
-  static CLOTHINGS_KEY = 'clothings';
+  static GET_CLOTHINGS = '/clothings';
+  static GET_CLOTHING_BY_ID = '/clothings/';
+  static CREATE_CLOTHING = '/clothings';
+  static UPDATE_CLOTHING = '/clothings';
+  static DELETE_CLOTHING_BY_ID = '/clothings/';
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
-  public getClothings(): Clothing[] {
-    const clothingsStorage: string | null = localStorage.getItem(ClothingService.CLOTHINGS_KEY);
-
-    if (clothingsStorage === null) {
-      return [];
-    }
-
-    return JSON.parse(clothingsStorage);
+  public getClothings(): Observable<ClothingsResponseDto> {
+    return this.httpClient.get<ClothingsResponseDto>(
+        BASE_URL + ClothingService.GET_CLOTHINGS, DEFAULT_HEADERS
+    );
   }
 
-  public saveClothing(clothing: Clothing): void {
-    console.log('saveclothing');
-    const clothings: Clothing[] = this.getClothings();
-
-    if (clothings.length === 0) {
-      clothing.id = this.getNextId();
-
-      console.log('empty');
-      console.log(clothing);
-
-      localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify([clothing]));
-      return;
-    }
-
+  public saveClothing(clothing: Clothing): Observable<ClothingResponseDto> {
     if (clothing.id === undefined) {
-      clothing.id = this.getNextId(clothings);
-      clothings.push(clothing);
-
-      localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(clothings));
-      return;
+      const createClothingDto: CreateClothingRequestDto = new CreateClothingRequestDto(clothing);
+      return this.httpClient.post<ClothingResponseDto>(
+          BASE_URL + ClothingService.CREATE_CLOTHING,
+          createClothingDto,
+          DEFAULT_HEADERS,
+      );
     }
 
-    let index: number = clothings.findIndex(clothingArray => clothingArray.id === clothing.id);
-    clothings[index] = clothing;
-
-    localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(clothings));
+    const updateClothingRequestDto: UpdateClothingRequestDto = new UpdateClothingRequestDto(clothing);
+    return this.httpClient.put<ClothingResponseDto>(
+        BASE_URL + ClothingService.UPDATE_CLOTHING,
+        updateClothingRequestDto,
+        DEFAULT_HEADERS
+    );
   }
 
-  public findById(id: number): Clothing | undefined {
-    const clothings: Clothing[] = this.getClothings();
-
-    return clothings.find(clothing => clothing.id === id);
+  public findById(id: number): Observable<ClothingResponseDto> {
+    return this.httpClient.get<ClothingResponseDto>(
+        BASE_URL + ClothingService.GET_CLOTHING_BY_ID + id, DEFAULT_HEADERS
+    );
   }
 
-  public remove(clothing: Clothing): void {
-    const clothings: Clothing[] = this.getClothings();
-    const newClothings: Clothing[] = clothings.filter(clothingArray => clothingArray.id !== clothing.id);
-
-    localStorage.setItem(ClothingService.CLOTHINGS_KEY, JSON.stringify(newClothings));
-  }
-
-  private getNextId(clothings: Clothing[] = []): number {
-    if (clothings.length === 0) {
-      return 1;
-    }
-
-    let nextId: number = 0;
-
-    clothings.forEach(clothing => {
-      if (clothing.id! > nextId) {
-        nextId = clothing.id!;
-      }
-    });
-
-    return nextId + 1;
+  public remove(clothing: Clothing): Observable<StatusResponseDto> {
+    return this.httpClient.delete<StatusResponseDto>(
+        BASE_URL + ClothingService.DELETE_CLOTHING_BY_ID + clothing.id,
+        DEFAULT_HEADERS
+    );
   }
 }

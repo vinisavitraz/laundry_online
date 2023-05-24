@@ -38,7 +38,7 @@ export class CreateOrderComponent {
       private formBuilder: FormBuilder,
   ) {
     this.dto = new CreateOrderRequestDto([]);
-    this.clothings = this.listClothings();
+    this.clothings = [];
     this.edit = false;
     this.totalQuantity = 0;
     this.totalWashTime = 0;
@@ -49,6 +49,12 @@ export class CreateOrderComponent {
   ngOnInit(): void {
     this.createForm();
     this.user = this.authService.getAuthenticatedUser();
+
+    this.clothingService.getClothings().subscribe(clothings => {
+      if (clothings.entities) {
+        this.clothings = clothings.entities!;
+      } //treat error?
+    });
   }
 
   private createForm(): void {
@@ -77,45 +83,50 @@ export class CreateOrderComponent {
       return;
     }
 
-    for (let i = 0; i < this.dto.items!.length; i++) {
-      const item: ItemOrderRequestDto = this.dto.items![i];
-
-      if (item.clothing!.id === clothingId) {
-        if (this.edit) {
-          this.totalWashPrice -= (item.quantity! * item.clothing!.washPrice!);
-          this.totalQuantity -= this.dto.items![i].quantity!;
-
-          this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
-          this.totalQuantity += clothingQuantity;
-          this.dto.items![i].quantity! = clothingQuantity;
-
-          this.edit = false;
-        } else {
-          this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
-          this.totalQuantity += clothingQuantity;
-          this.dto.items![i].quantity! += clothingQuantity;
-        }
-        this.clothingId.setValue('');
-        this.clothingQuantity.setValue('');
-        console.log(this.totalQuantity);
-        return;
+    this.clothingService.findById(clothingId).subscribe(clothingResponseDto => {
+      if (clothingResponseDto.entity === null) {
+        throw new Error('Clothing not found. ID: ' + clothingId);
       }
-    }
+      const clothing: Clothing = clothingResponseDto.entity!;
 
-    const clothing: Clothing | undefined = this.clothingService.findById(Number(clothingId));
-    const item: ItemOrderRequestDto = new ItemOrderRequestDto(clothing, Number(clothingQuantity));
+      for (let i = 0; i < this.dto.items!.length; i++) {
+        const item: ItemOrderRequestDto = this.dto.items![i];
 
-    if (item.clothing!.washTime! > this.totalWashTime) {
-      this.totalWashTime = item.clothing!.washTime!;
-    }
+        if (item.clothing!.id === clothingId) {
+          if (this.edit) {
+            this.totalWashPrice -= (item.quantity! * item.clothing!.washPrice!);
+            this.totalQuantity -= this.dto.items![i].quantity!;
 
-    this.totalWashPrice += (item.quantity! * item.clothing!.washPrice!);
-    this.totalQuantity += item.quantity!;
-    this.dto.items!.push(item);
+            this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
+            this.totalQuantity += clothingQuantity;
+            this.dto.items![i].quantity! = clothingQuantity;
 
-    this.clothingId.setValue('');
-    this.clothingQuantity.setValue('');
-    console.log(this.totalQuantity);
+            this.edit = false;
+          } else {
+            this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
+            this.totalQuantity += clothingQuantity;
+            this.dto.items![i].quantity! += clothingQuantity;
+          }
+          this.clothingId.setValue('');
+          this.clothingQuantity.setValue('');
+          console.log(this.totalQuantity);
+          return;
+        }
+      }
+
+      const item: ItemOrderRequestDto = new ItemOrderRequestDto(clothing, Number(clothingQuantity));
+
+      if (item.clothing!.washTime! > this.totalWashTime) {
+        this.totalWashTime = item.clothing!.washTime!;
+      }
+
+      this.totalWashPrice += (item.quantity! * item.clothing!.washPrice!);
+      this.totalQuantity += item.quantity!;
+      this.dto.items!.push(item);
+
+      this.clothingId.setValue('');
+      this.clothingQuantity.setValue('');
+    });
   }
 
   public showOrderSummary(): void {
@@ -179,11 +190,6 @@ export class CreateOrderComponent {
       this.clothingId.setValue('');
       this.clothingQuantity.setValue('');
     }
-  }
-
-  private listClothings(): Clothing[] {
-    console.log(this.clothingService.getClothings());
-    return this.clothingService.getClothings();
   }
 
   private resetDetails(): void {

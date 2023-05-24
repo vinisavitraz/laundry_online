@@ -16,21 +16,26 @@ export class ListClothingsComponent {
   }
 
   ngOnInit(): void {
-    this.clothings = this.listClothings();
+    this.listClothings();
   }
 
   public remove($event: any, clothing: Clothing): void {
     $event.preventDefault();
 
     if (confirm(`Deseja realmente remover a peça de roupa ${clothing.name}?`)) {
-      this.clothingService.remove(clothing);
-      this.clothings = this.listClothings();
+      this.clothingService.remove(clothing).subscribe(statusResponseDto => {
+        if (statusResponseDto.message === 'deleted') {
+          this.listClothings();
+        } //treat error?
+      });
     }
   }
 
-  private listClothings(): Clothing[] {
-    console.log('listClothings');
-    console.log(this.clothingService.getClothings());
-    return this.clothingService.getClothings();
+  private listClothings(): void {
+    this.clothingService.getClothings().subscribe(clothings => {
+      if (clothings.entities) {
+        this.clothings = clothings.entities!;
+      } //treat error?
+    });
   }
 }

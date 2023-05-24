@@ -22,8 +22,9 @@ export class CreateClothingComponent {
 
   public async save(): Promise<void> {
     if (this.createClothingForm.form.valid) {
-      this.clothingService.saveClothing(this.clothing);
-      await this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+      this.clothingService.saveClothing(this.clothing).subscribe(clothing => {
+        this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+      });
     }
   }
 }

@@ -15,7 +15,15 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/user/{id}")
+    @PostMapping("/users/register")
+    @ResponseBody
+    public EntityResponseDto<UserEntity> registerUser(@RequestBody RegisterUserRequestDto registerUserRequestDto) {
+        UserEntity user = this.service.registerUser(registerUserRequestDto);
+
+        return new EntityResponseDto<>(user);
+    }
+
+    @GetMapping("/users/{id}")
     @ResponseBody
     public EntityResponseDto<UserEntity> getUserById(@PathVariable("id") long id) {
         UserEntity user = this.service.findById(id);
@@ -23,14 +31,6 @@ public class UserController {
         if (user == null) {
             return new EntityResponseDto<>(null);
         }
-
-        return new EntityResponseDto<>(user);
-    }
-
-    @PostMapping("/user/register")
-    @ResponseBody
-    public EntityResponseDto<UserEntity> registerUser(@RequestBody RegisterUserRequestDto registerUserRequestDto) {
-        UserEntity user = this.service.registerUser(registerUserRequestDto);
 
         return new EntityResponseDto<>(user);
     }

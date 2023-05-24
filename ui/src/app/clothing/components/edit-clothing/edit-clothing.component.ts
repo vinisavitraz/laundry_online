@@ -22,19 +22,21 @@ export class EditClothingComponent {
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.params['id'];
-    const clothing: Clothing | undefined = this.clothingService.findById(id);
 
-    if (clothing === undefined) {
-      throw new Error('Clothing not found. ID: ' + id);
-    }
-
-    this.clothing = clothing;
+    this.clothingService.findById(id).subscribe(clothingResponseDto => {
+      if (clothingResponseDto.entity === null) {
+        throw new Error('Clothing not found. ID: ' + id);
+      }
+      console.log(clothingResponseDto.entity!);
+      this.clothing = clothingResponseDto.entity!;
+    });
   }
 
   public async save(): Promise<void> {
     if (this.editClothingForm.form.valid) {
-      this.clothingService.saveClothing(this.clothing);
-      await this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+      this.clothingService.saveClothing(this.clothing).subscribe(clothing => {
+        this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+      });
     }
   }
 }

@@ -1,20 +1,12 @@
 package com.tads.br.auth.controller;
 
-import com.tads.br.app.dto.response.AddressResponseDto;
-import com.tads.br.app.dto.response.ApiStatusResponseDto;
-import com.tads.br.app.entity.AddressEntity;
-import com.tads.br.app.service.AppServiceInterface;
-import com.tads.br.auth.dto.request.AuthRequestDto;
 import com.tads.br.auth.dto.response.AuthResponseDto;
 import com.tads.br.auth.provider.UserAuthProvider;
 import com.tads.br.user.entity.UserEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class AuthController {
 
     private final UserAuthProvider userAuthProvider;
@@ -30,9 +22,6 @@ public class AuthController {
         response.setToken(this.userAuthProvider.createToken(user.getEmail()));
 
         return response;
-//        UserEntity user = this.service.authUser(authUserRequestDto);
-//
-//        return new EntityResponseDto<>(user);
     }
 //    private final AppServiceInterface service;
 //
