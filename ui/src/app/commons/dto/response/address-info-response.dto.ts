@@ -1,4 +1,4 @@
-export class AddressInfo {
+export class AddressInfoResponseDto {
     constructor(
         public cep?: string,
         public street?: string,

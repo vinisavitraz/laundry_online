@@ -1,9 +1,12 @@
 package com.tads.br.user.service;
 
+import com.tads.br.clothing.entity.ClothingEntity;
 import com.tads.br.user.dto.request.RegisterUserRequestDto;
 import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.repository.UserRepositoryInterface;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService implements UserServiceInterface {
@@ -35,6 +38,11 @@ public class UserService implements UserServiceInterface {
 
     private String generatePassword() {
         return "123";
+    }
+
+    @Override
+    public List<UserEntity> findEmployees() {
+        return this.repository.findEmployees();
     }
 
 }

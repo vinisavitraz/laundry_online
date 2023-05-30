@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, throwError} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
 import {RequestLoginDto} from "../dto/request/request-login.dto";
 import {UserService} from "../../user/services/user.service";
 import {LoginResponseDto} from "../dto/response/login-response.dto";
@@ -18,10 +18,22 @@ export class AuthService {
   static TOKEN_JWT_KEY = 'token_jwt';
   static USER_ROLE_KEY = 'user_role_jwt';
 
+  private authenticated: Observable<boolean>;
+
   constructor(
       private userService: UserService,
       private httpClient: HttpClient,
-  ) {}
+  ) {
+    this.authenticated = of(false);
+  }
+
+  public isAuthenticated(): Observable<boolean> {
+    return this.authenticated;
+  }
+
+  public setAuthenticated(authenticated: boolean): void {
+    this.authenticated = of(authenticated);
+  }
 
   public getAuthenticatedUser(): Observable<AuthenticatedUserResponseDto> {
     return this.httpClient.get<AuthenticatedUserResponseDto>(

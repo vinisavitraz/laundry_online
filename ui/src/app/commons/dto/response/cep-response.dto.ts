@@ -1,8 +1,8 @@
-import {AddressInfo} from "../../models/address-info.model";
+import {AddressInfoResponseDto} from "./address-info-response.dto";
 
 export class CepResponseDto {
     constructor(
-        public address?: AddressInfo,
+        public address?: AddressInfoResponseDto,
     ) {
     }
 }

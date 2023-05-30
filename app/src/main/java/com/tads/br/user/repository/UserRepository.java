@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class UserRepository implements UserRepositoryInterface {
@@ -16,6 +17,7 @@ public class UserRepository implements UserRepositoryInterface {
     private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, password) VALUES (?,?,?,?,?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+    private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee'";
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -55,6 +57,11 @@ public class UserRepository implements UserRepositoryInterface {
         } catch (IncorrectResultSizeDataAccessException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<UserEntity> findEmployees() {
+        return jdbcTemplate.query(UserRepository.QUERY_FIND_EMPLOYEES, BeanPropertyRowMapper.newInstance(UserEntity.class));
     }
 
 //    @Override
