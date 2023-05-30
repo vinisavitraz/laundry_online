@@ -29,18 +29,13 @@ export class LoginComponent implements OnInit {
     this.dto = new RequestLoginDto();
     this.loading = false;
     this.message = undefined;
-
-    const authenticatedUser: User | null = this.authService.getAuthenticatedUser();
-
-    if (authenticatedUser != null) {
-      this.routeToHomePage(authenticatedUser);
-    }
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.message = params['error'];
     });
+    this.routeToHomePageIfAuthenticated();
   }
 
   public executeLogin(): void {
@@ -51,31 +46,52 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authService.login(this.dto).subscribe((loginResponseDto) => {
-      this.loading = false;
+    this.authService.login(this.dto).subscribe({
+      next: (loginResponseDto) => {
+        console.log('loginResponseDto');
+        console.log(loginResponseDto);
+        this.loading = false;
 
-      if (loginResponseDto.user !== null) {
-        this.authService.setAuthenticatedUser(loginResponseDto.user);
-        this.routeToHomePage(loginResponseDto.user);
-        return;
+        this.authService.saveTokenJWT(loginResponseDto.token);
+        this.authService.saveUserRole(loginResponseDto.userRole);
+
+        this.routeToHomePageIfAuthenticated();
+      },
+      error: (err) => {
+        console.log(err);
+        // if (loginResponseDto.errorMessage === null) {
+        //   this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
+        //   return;
+        // }
+        //
+        // this.message = loginResponseDto.errorMessage;
       }
-
-      if (loginResponseDto.errorMessage === null) {
-        this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
-        return;
-      }
-
-      this.message = loginResponseDto.errorMessage;
     });
   }
 
-  private async routeToHomePage(authenticatedUser: User): Promise<void> {
-    if (authenticatedUser.role === RolesEnum.CUSTOMER) {
-      await this.router.navigate([RoutesEnum.CUSTOMER_HOME]);
-      return;
-    }
-    if (authenticatedUser.role === RolesEnum.EMPLOYEE) {
-      await this.router.navigate([RoutesEnum.EMPLOYEE_HOME]);
-    }
+  private routeToHomePageIfAuthenticated(): void {
+    console.log('routeToHomePageIfAuthenticated');
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUserDto) => {
+        console.log('return routeToHomePageIfAuthenticated');
+        console.log(authenticatedUserDto.entity);
+        if (!authenticatedUserDto.entity) {
+          return;
+        }
+
+        const role: string = authenticatedUserDto.entity.role!;
+
+        if (role === RolesEnum.CUSTOMER) {
+          this.router.navigate([RoutesEnum.CUSTOMER_HOME]);
+          return;
+        }
+        if (role === RolesEnum.EMPLOYEE) {
+          this.router.navigate([RoutesEnum.EMPLOYEE_HOME]);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

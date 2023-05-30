@@ -17,7 +17,7 @@ import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
 })
 export class CreateOrderComponent {
 
-  user: User | null;
+  user: User | undefined;
   clothings: Clothing[];
   orderForm!: FormGroup;
   clothingId!: FormControl;
@@ -43,12 +43,20 @@ export class CreateOrderComponent {
     this.totalQuantity = 0;
     this.totalWashTime = 0;
     this.totalWashPrice = 0;
-    this.user = null;
+    this.user = undefined;
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.user = this.authService.getAuthenticatedUser();
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUserDto) => {
+        this.user = authenticatedUserDto.entity;
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
 
     this.clothingService.getClothings().subscribe(clothings => {
       if (clothings.entities) {

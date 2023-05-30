@@ -13,7 +13,7 @@ import {AuthService} from "../../../auth/services/auth.service";
 })
 export class SearchOrderComponent {
   order!: Order | undefined;
-  user: User | null;
+  user: User | undefined;
   orderId: string;
   notFound: boolean;
 
@@ -22,13 +22,21 @@ export class SearchOrderComponent {
       private orderService: OrderService,
       private router: Router,
   ) {
-    this.user = null;
+    this.user = undefined;
     this.orderId = '';
     this.notFound = false;
   }
 
   ngOnInit(): void {
-    this.user = this.authService.getAuthenticatedUser();
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUserDto) => {
+        this.user = authenticatedUserDto.entity;
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
   }
 
   public searchOrder(): void {

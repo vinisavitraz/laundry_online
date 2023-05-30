@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tads.br.auth.dto.request.AuthRequestDto;
-import com.tads.br.auth.service.AuthService;
+import com.tads.br.auth.entity.TokenEntity;
 import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.service.UserService;
 import jakarta.annotation.PostConstruct;
@@ -21,14 +21,12 @@ import java.util.Date;
 @Component
 public class UserAuthProvider {
 
-    private final AuthService authService;
     private final UserService userService;
 
     @Value("$(security.jwt.token.secret-key:secret-key)")
     private String secretKey;
 
-    public UserAuthProvider(AuthService authService, UserService userService) {
-        this.authService = authService;
+    public UserAuthProvider(UserService userService) {
         this.userService = userService;
     }
 
@@ -37,15 +35,17 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String email) {
+    public TokenEntity buildToken(UserEntity user) {
         Date now = new Date();
         Date validDate = new Date(now.getTime() + 3600000);
 
-        return JWT.create()
-                .withIssuer(email)
+        String token = JWT.create()
+                .withIssuer(user.getEmail())
                 .withIssuedAt(now)
                 .withExpiresAt(validDate)
                 .sign(Algorithm.HMAC256(secretKey));
+
+        return new TokenEntity(0L, token, validDate, user.getId());
     }
 
     public Authentication validateToken(String token) {
@@ -60,7 +60,9 @@ public class UserAuthProvider {
     }
 
     public Authentication validateCredentials(AuthRequestDto authRequestDto) {
-        UserEntity user = this.authService.authenticate(authRequestDto);
+        UserEntity user = this.userService.findUserByEmail(authRequestDto.getEmail());
+
+        //add validation logic and password
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

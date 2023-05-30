@@ -1,21 +1,33 @@
 package com.tads.br.auth.dto.response;
 
+import com.tads.br.auth.entity.TokenEntity;
+
 public class AuthResponseDto {
 
-    private String token;
+    private TokenEntity token;
+    private String userRole;
 
-    public AuthResponseDto(String token) {
+    public AuthResponseDto(TokenEntity token, String userRole) {
         this.token = token;
+        this.userRole = userRole;
     }
 
     public AuthResponseDto() {
     }
 
-    public String getToken() {
+    public TokenEntity getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(TokenEntity token) {
         this.token = token;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

@@ -1,6 +1,8 @@
 package com.tads.br.auth.filter;
 
+import com.tads.br.auth.entity.TokenEntity;
 import com.tads.br.auth.provider.UserAuthProvider;
+import com.tads.br.auth.service.AuthServiceInterface;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,29 +15,45 @@ import java.io.IOException;
 
 public class JWTAuthFilter extends OncePerRequestFilter {
 
-    private final UserAuthProvider provider;
+    private final UserAuthProvider userAuthProvider;
+    private final AuthServiceInterface authService;
 
-    public JWTAuthFilter(UserAuthProvider provider) {
-        this.provider = provider;
+    public JWTAuthFilter(UserAuthProvider userAuthProvider, AuthServiceInterface authService) {
+        this.userAuthProvider = userAuthProvider;
+        this.authService = authService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header != null) {
-            String[] authElements = header.split(" ");
+        if (header == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
-                try {
-                    SecurityContextHolder.getContext().setAuthentication(
-                            provider.validateToken(authElements[1])
-                    );
-                } catch (RuntimeException e) {
-                    SecurityContextHolder.clearContext();
-                    throw e;
-                }
+        String[] authElements = header.split(" ");
+
+        if (authElements.length != 2 || !"Bearer".equals(authElements[0])) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String tokenFromRequest = authElements[1];
+
+        try {
+            TokenEntity token = this.authService.getToken(tokenFromRequest);
+
+            if (token == null) {
+                throw new RuntimeException("Token from request not found");
             }
+
+            SecurityContextHolder.getContext().setAuthentication(
+                    userAuthProvider.validateToken(tokenFromRequest)
+            );
+        } catch (RuntimeException e) {
+            SecurityContextHolder.clearContext();
+            throw e;
         }
 
         filterChain.doFilter(request, response);

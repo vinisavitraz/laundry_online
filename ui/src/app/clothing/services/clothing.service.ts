@@ -8,23 +8,21 @@ import {ClothingResponseDto} from "../dto/response/clothing-response.dto";
 import {CreateClothingRequestDto} from "../dto/request/create-clothing-request.dto";
 import {UpdateClothingRequestDto} from "../dto/request/update-clothing-request.dto";
 import {StatusResponseDto} from "../../commons/dto/response/status-response.dto";
+import {AuthService} from "../../auth/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClothingService {
 
-  static GET_CLOTHINGS = '/clothings';
-  static GET_CLOTHING_BY_ID = '/clothings/';
-  static CREATE_CLOTHING = '/clothings';
-  static UPDATE_CLOTHING = '/clothings';
-  static DELETE_CLOTHING_BY_ID = '/clothings/';
-
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+      private authService: AuthService,
+      private httpClient: HttpClient,
+  ) { }
 
   public getClothings(): Observable<ClothingsResponseDto> {
     return this.httpClient.get<ClothingsResponseDto>(
-        BASE_URL + ClothingService.GET_CLOTHINGS, DEFAULT_HEADERS
+        BASE_URL + '/clothings', DEFAULT_HEADERS,
     );
   }
 
@@ -32,7 +30,7 @@ export class ClothingService {
     if (clothing.id === undefined) {
       const createClothingDto: CreateClothingRequestDto = new CreateClothingRequestDto(clothing);
       return this.httpClient.post<ClothingResponseDto>(
-          BASE_URL + ClothingService.CREATE_CLOTHING,
+          BASE_URL + '/clothings',
           createClothingDto,
           DEFAULT_HEADERS,
       );
@@ -40,7 +38,7 @@ export class ClothingService {
 
     const updateClothingRequestDto: UpdateClothingRequestDto = new UpdateClothingRequestDto(clothing);
     return this.httpClient.put<ClothingResponseDto>(
-        BASE_URL + ClothingService.UPDATE_CLOTHING,
+        BASE_URL + '/clothings',
         updateClothingRequestDto,
         DEFAULT_HEADERS
     );
@@ -48,13 +46,13 @@ export class ClothingService {
 
   public findById(id: number): Observable<ClothingResponseDto> {
     return this.httpClient.get<ClothingResponseDto>(
-        BASE_URL + ClothingService.GET_CLOTHING_BY_ID + id, DEFAULT_HEADERS
+        BASE_URL + '/clothings/' + id, DEFAULT_HEADERS
     );
   }
 
   public remove(clothing: Clothing): Observable<StatusResponseDto> {
     return this.httpClient.delete<StatusResponseDto>(
-        BASE_URL + ClothingService.DELETE_CLOTHING_BY_ID + clothing.id,
+        BASE_URL + '/clothings/' + clothing.id,
         DEFAULT_HEADERS
     );
   }

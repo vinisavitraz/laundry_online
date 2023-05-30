@@ -1,57 +1,85 @@
 import { Injectable } from '@angular/core';
-import {User} from "../../commons/models/user.model";
-import {Observable, of} from "rxjs";
+import {Observable, throwError} from "rxjs";
 import {RequestLoginDto} from "../dto/request/request-login.dto";
 import {UserService} from "../../user/services/user.service";
 import {LoginResponseDto} from "../dto/response/login-response.dto";
 import {ErrorMessagesEnum} from "../../commons/enums/error-messages.enum";
+import {HttpClient} from "@angular/common/http";
+import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.constants";
+import {Token} from "../../commons/models/token.model";
+import {AuthenticatedUserResponseDto} from "../dto/response/authenticated-user-response.dto";
+import {LogoutResponseDto} from "../dto/response/logout-response.dto";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  static AUTHENTICATED_USER_KEY = 'authenticatedUser';
+  static TOKEN_JWT_KEY = 'token_jwt';
+  static USER_ROLE_KEY = 'user_role_jwt';
+
   constructor(
       private userService: UserService,
+      private httpClient: HttpClient,
   ) {}
 
-  public getAuthenticatedUser(): User | null {
-    const authenticatedUser: string | null = localStorage.getItem(AuthService.AUTHENTICATED_USER_KEY);
-
-    if (authenticatedUser === null) {
-      return null;
-    }
-
-    return JSON.parse(authenticatedUser);
-  }
-
-  public setAuthenticatedUser(authenticatedUser: User): void {
-    localStorage.setItem(AuthService.AUTHENTICATED_USER_KEY, JSON.stringify(authenticatedUser));
+  public getAuthenticatedUser(): Observable<AuthenticatedUserResponseDto> {
+    return this.httpClient.get<AuthenticatedUserResponseDto>(
+        BASE_URL + '/authenticated-user',
+        DEFAULT_HEADERS
+    );
   }
 
   public login(requestLoginDto: RequestLoginDto): Observable<LoginResponseDto> {
     if (requestLoginDto.email === undefined) {
-      return of(new LoginResponseDto(null, ErrorMessagesEnum.EMAIL_NOT_PROVIDED));
+      return throwError(() => ErrorMessagesEnum.EMAIL_NOT_PROVIDED);
     }
     if (requestLoginDto.password === undefined) {
-      return of(new LoginResponseDto(null, ErrorMessagesEnum.PASSWORD_NOT_PROVIDED));
+      return throwError(() => ErrorMessagesEnum.PASSWORD_NOT_PROVIDED);
     }
 
-    const user: User | undefined = this.userService.findUserByEmail(requestLoginDto.email);
-
-    if (user === undefined) {
-      return of(new LoginResponseDto(null, ErrorMessagesEnum.EMAIL_NOT_FOUND));
-    }
-
-    if (requestLoginDto.password != '1234') {
-      return of(new LoginResponseDto(null, ErrorMessagesEnum.INVALID_PASSWORD));
-    }
-
-    return of(new LoginResponseDto(user));
+    return this.httpClient.post<LoginResponseDto>(
+        BASE_URL + '/auth',
+        requestLoginDto,
+        DEFAULT_HEADERS
+    );
   }
 
-  public logout(): void {
-    localStorage.removeItem(AuthService.AUTHENTICATED_USER_KEY);
+  public logout(): Observable<LogoutResponseDto> {
+    localStorage.removeItem(AuthService.TOKEN_JWT_KEY);
+    localStorage.removeItem(AuthService.USER_ROLE_KEY);
+
+    return this.httpClient.post<LogoutResponseDto>(
+        BASE_URL + '/log-out',
+        DEFAULT_HEADERS
+    );
+  }
+
+  public getTokenJWT(): Token | null {
+    const tokenStorage: string | null = localStorage.getItem(AuthService.TOKEN_JWT_KEY);
+
+    if (tokenStorage == null) {
+      return null;
+    }
+
+    return JSON.parse(tokenStorage);
+  }
+
+  public getUserRole(): string | null {
+    const userRole: string | null = localStorage.getItem(AuthService.USER_ROLE_KEY);
+
+    if (userRole == null) {
+      return null;
+    }
+
+    return JSON.parse(userRole);
+  }
+
+  public saveTokenJWT(tokenJWT: Token): void {
+    localStorage.setItem(AuthService.TOKEN_JWT_KEY, JSON.stringify(tokenJWT));
+  }
+
+  public saveUserRole(userRole: string): void {
+    localStorage.setItem(AuthService.USER_ROLE_KEY, JSON.stringify(userRole));
   }
 }

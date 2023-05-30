@@ -6,16 +6,31 @@ CREATE TABLE IF NOT EXISTS users
 (
     id BIGINT NOT NULL PRIMARY KEY,
     name VARCHAR(250) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(250) NOT NULL,
     document VARCHAR(11) UNIQUE NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    email VARCHAR(150) NOT NULL,
-    password VARCHAR(250) NOT NULL,
-    cep VARCHAR(12) NOT NULL,
-    street VARCHAR(250) NOT NULL,
-    streetNumber VARCHAR(10) NOT NULL,
-    district VARCHAR(250) NOT NULL,
-    city VARCHAR(250) NOT NULL,
-    state CHAR(2) NOT NULL
+    cep VARCHAR(12) NULL,
+    street VARCHAR(250) NULL,
+    streetNumber VARCHAR(10) NULL,
+    district VARCHAR(250) NULL,
+    city VARCHAR(250) NULL,
+    state CHAR(2) NULL,
+    birthDate DATE NULL,
+    role VARCHAR(20) NOT NULL
+);
+
+CREATE SEQUENCE IF NOT EXISTS tokens_sequence
+    INCREMENT 1
+    START 1;
+
+CREATE TABLE IF NOT EXISTS tokens
+(
+    id BIGINT NOT NULL PRIMARY KEY,
+    token VARCHAR(250) NOT NULL,
+    expiresAt DATE NULL,
+    userId BIGINT NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE IF NOT EXISTS clothings_sequence

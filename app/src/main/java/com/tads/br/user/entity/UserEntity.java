@@ -1,12 +1,12 @@
 package com.tads.br.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Date;
 
 public class UserEntity {
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
     private String name;
     private String email;
+    private String password;
     private String document;
     private String phone;
     private String cep;
@@ -15,11 +15,14 @@ public class UserEntity {
     private String district;
     private String city;
     private String state;
+    private Date birthDate;
+    private String role;
 
-    public UserEntity(Long id, String name, String email, String document, String phone, String cep, String street, String streetNumber, String district, String city, String state) {
+    public UserEntity(Long id, String name, String email, String password, String document, String phone, String cep, String street, String streetNumber, String district, String city, String state, Date birthDate, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.document = document;
         this.phone = phone;
         this.cep = cep;
@@ -28,6 +31,8 @@ public class UserEntity {
         this.district = district;
         this.city = city;
         this.state = state;
+        this.birthDate = birthDate;
+        this.role = role;
     }
 
     public UserEntity() {
@@ -55,6 +60,14 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDocument() {
@@ -119,5 +132,21 @@ public class UserEntity {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

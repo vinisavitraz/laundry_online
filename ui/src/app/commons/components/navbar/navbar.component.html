@@ -1,4 +1,4 @@
-<nav *ngIf="authenticatedUser !== null" class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav *ngIf="authenticatedUser !== undefined" class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
         <ul class="navbar-nav">
             <button type="button" (click)="goToOption('home', '/')" class="navbar-brand btn btn-dark bg-dark btn-outline-dark">LOL - Lavanderia Online</button>

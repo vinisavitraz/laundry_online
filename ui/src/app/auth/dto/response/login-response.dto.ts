@@ -1,9 +1,9 @@
-import {User} from "../../../commons/models/user.model";
+import {Token} from "../../../commons/models/token.model";
 
 export class LoginResponseDto {
     constructor(
-        public user: User | null,
-        public errorMessage: string | null = null,
+        public token: Token,
+        public userRole: string,
     ) {
     }
 }

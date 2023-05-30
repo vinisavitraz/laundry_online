@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class CustomerHomeComponent {
 
-  user: User | null;
+  user: User | undefined;
   openOrders: Order[];
 
   constructor(
@@ -21,17 +21,26 @@ export class CustomerHomeComponent {
       private authService: AuthService,
       private router: Router,
   ) {
-    this.user = null;
+    this.user = undefined;
     this.openOrders = [];
   }
 
   ngOnInit(): void {
-    this.user = this.authService.getAuthenticatedUser();
-    this.openOrders = this.listOpenOrders();
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUserDto) => {
+        this.user = authenticatedUserDto.entity;
+
+        this.openOrders = this.listOpenOrders();
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
   }
 
   private listOpenOrders(): Order[] {
-    if (this.user === null) {
+    if (this.user === undefined) {
       return [];
     }
 

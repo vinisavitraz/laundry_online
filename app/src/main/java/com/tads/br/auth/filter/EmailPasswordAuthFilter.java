@@ -16,10 +16,10 @@ import java.io.IOException;
 public class EmailPasswordAuthFilter extends OncePerRequestFilter {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private final UserAuthProvider provider;
+    private final UserAuthProvider userAuthProvider;
 
-    public EmailPasswordAuthFilter(UserAuthProvider provider) {
-        this.provider = provider;
+    public EmailPasswordAuthFilter(UserAuthProvider userAuthProvider) {
+        this.userAuthProvider = userAuthProvider;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class EmailPasswordAuthFilter extends OncePerRequestFilter {
         AuthRequestDto authRequestDto = MAPPER.readValue(request.getInputStream(), AuthRequestDto.class);
 
         try {
-            SecurityContextHolder.getContext().setAuthentication(provider.validateCredentials(authRequestDto));
+            SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateCredentials(authRequestDto));
         } catch (RuntimeException e) {
             SecurityContextHolder.clearContext();
             throw e;

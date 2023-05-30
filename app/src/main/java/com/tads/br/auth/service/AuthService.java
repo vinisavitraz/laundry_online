@@ -1,20 +1,41 @@
 package com.tads.br.auth.service;
 
-import com.tads.br.auth.dto.request.AuthRequestDto;
+import com.tads.br.auth.entity.TokenEntity;
+import com.tads.br.auth.provider.UserAuthProvider;
+import com.tads.br.auth.repository.AuthRepositoryInterface;
 import com.tads.br.user.entity.UserEntity;
-import com.tads.br.user.repository.UserRepositoryInterface;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+@Component
 @Service
-public class AuthService {
+public class AuthService implements AuthServiceInterface {
 
-    private final UserRepositoryInterface repository;
+    private final UserAuthProvider userAuthProvider;
+    private final AuthRepositoryInterface repository;
 
-    public AuthService(UserRepositoryInterface repository) {
+    public AuthService(AuthRepositoryInterface repository, UserAuthProvider userAuthProvider) {
         this.repository = repository;
+        this.userAuthProvider = userAuthProvider;
     }
 
-    public UserEntity authenticate(AuthRequestDto authRequestDto) {
-        return this.repository.findByEmail(authRequestDto.getEmail());
+    public TokenEntity createToken(UserEntity user) {
+        TokenEntity tokenDb = this.repository.findByUser(user);
+
+        if (tokenDb != null) {
+            return tokenDb;
+        }
+
+        TokenEntity token = this.userAuthProvider.buildToken(user);
+
+        return this.repository.create(token, user);
+    }
+
+    public TokenEntity getToken(String token) {
+        return this.repository.findByToken(token);
+    }
+
+    public void logoutUser(UserEntity user) {
+        this.repository.removeTokensFromUser(user);
     }
 }

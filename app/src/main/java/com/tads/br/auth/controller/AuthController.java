@@ -1,49 +1,53 @@
 package com.tads.br.auth.controller;
 
 import com.tads.br.auth.dto.response.AuthResponseDto;
-import com.tads.br.auth.provider.UserAuthProvider;
+import com.tads.br.auth.entity.TokenEntity;
+import com.tads.br.auth.service.AuthServiceInterface;
+import com.tads.br.core.dto.response.EntityResponseDto;
+import com.tads.br.core.dto.response.StatusResponseDto;
 import com.tads.br.user.entity.UserEntity;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
 
-    private final UserAuthProvider userAuthProvider;
+    private final AuthServiceInterface service;
 
-    public AuthController(UserAuthProvider userAuthProvider) {
-        this.userAuthProvider = userAuthProvider;
+    public AuthController(AuthServiceInterface service) {
+        this.service = service;
     }
 
     @PostMapping("/auth")
     @ResponseBody
     public AuthResponseDto authUser(@AuthenticationPrincipal UserEntity user) {
-        AuthResponseDto response = new AuthResponseDto();
-        response.setToken(this.userAuthProvider.createToken(user.getEmail()));
+        TokenEntity token = this.service.createToken(user);
 
-        return response;
+        return new AuthResponseDto(token, user.getRole());
     }
-//    private final AppServiceInterface service;
-//
-//    public AuthController(AppServiceInterface service) {
-//        this.service = service;
-//    }
-//
-//    @RequestMapping(value="/")
-//    public ApiStatusResponseDto getApiStatus() {
-//        return new ApiStatusResponseDto("API em funcionamento");
-//    }
-//
-//    @GetMapping("/cep/{cep}")
-//    @ResponseBody
-//    public AddressResponseDto getAddressByCep(@PathVariable("cep") String cep) throws IOException, InterruptedException {
-//        AddressEntity address = this.service.findAddressByCep(cep);
-//
-//        if (address == null) {
-//            return new AddressResponseDto(null);
-//        }
-//
-//        return new AddressResponseDto(address);
-//    }
+
+    @GetMapping("/authenticated-user")
+    @ResponseBody
+    public EntityResponseDto<UserEntity> getAuthenticatedUser(@AuthenticationPrincipal UserEntity user) {
+        return new EntityResponseDto<>(user);
+    }
+
+    @PostMapping("/log-out")
+    @ResponseBody
+    public StatusResponseDto logoutUser(@AuthenticationPrincipal UserEntity user, HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+            this.service.logoutUser(user);
+        }
+
+        return new StatusResponseDto("User is now logged out");
+    }
 
 }

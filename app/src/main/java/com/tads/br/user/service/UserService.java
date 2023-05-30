@@ -30,8 +30,6 @@ public class UserService implements UserServiceInterface {
 
         Long userId = this.repository.create(registerUserRequestDto.getEntity(), password);
 
-        System.out.println(userId);
-
         return this.repository.findById(userId);
     }
 

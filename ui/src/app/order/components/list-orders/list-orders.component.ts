@@ -15,7 +15,7 @@ export class ListOrdersComponent {
 
   statusFilter: string;
   filtering: boolean;
-  user: User | null;
+  user: User | undefined;
   orders: Order[];
   allOrders: Order[];
 
@@ -24,7 +24,7 @@ export class ListOrdersComponent {
       private orderService: OrderService,
       private router: Router,
   ) {
-    this.user = null;
+    this.user = undefined;
     this.filtering = false;
     this.orders = [];
     this.allOrders = [];
@@ -32,13 +32,21 @@ export class ListOrdersComponent {
   }
 
   ngOnInit(): void {
-    this.user = this.authService.getAuthenticatedUser();
-    this.orders = this.listOrders();
-    this.allOrders = this.orders;
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUserDto) => {
+        this.user = authenticatedUserDto.entity;
+        this.orders = this.listOrders();
+        this.allOrders = this.orders;
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
   }
 
   private listOrders(): Order[] {
-    if (this.user === null) {
+    if (this.user === undefined) {
       return [];
     }
 

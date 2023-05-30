@@ -6,6 +6,8 @@ import { RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./services/auth.service";
 import {UserModule} from "../user/user.module";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 
 @NgModule({
   declarations: [
@@ -20,6 +22,12 @@ import {UserModule} from "../user/user.module";
     UserModule,
   ],
   providers: [
+    JwtInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
     AuthService
   ],
 })

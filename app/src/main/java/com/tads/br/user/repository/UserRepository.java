@@ -5,7 +5,6 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.sql.SQLException;
 
 @Repository
@@ -14,7 +13,7 @@ public class UserRepository implements UserRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
-    private static final String QUERY_CREATE = "INSERT INTO users (id, name, document, phone, password, cep, street, streetNumber, district, city, state) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, password) VALUES (?,?,?,?,?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 
@@ -33,9 +32,29 @@ public class UserRepository implements UserRepositoryInterface {
         });
 
         jdbcTemplate.update(UserRepository.QUERY_CREATE,
-                id, user.getName(), user.getDocument(), user.getPhone(), password, user.getCep(), user.getStreet(), user.getStreetNumber(), user.getDistrict(), user.getCity(), user.getState());
+                id, user.getName(), user.getEmail(), password);
 
         return id;
+    }
+
+    @Override
+    public UserEntity findById(Long id) {
+        try {
+            return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_ID,
+                    BeanPropertyRowMapper.newInstance(UserEntity.class), id);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        try {
+            return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_EMAIL,
+                    BeanPropertyRowMapper.newInstance(UserEntity.class), email);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
 //    @Override
@@ -71,25 +90,4 @@ public class UserRepository implements UserRepositoryInterface {
 //    public int deleteAll() {
 //        return jdbcTemplate.update("DELETE from tutorials");
 //    }
-
-    @Override
-    public UserEntity findById(Long id) {
-        try {
-            return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_ID,
-                    BeanPropertyRowMapper.newInstance(UserEntity.class), id);
-        } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public UserEntity findByEmail(String email) {
-        try {
-            return jdbcTemplate.queryForObject(UserRepository.QUERY_FIND_BY_EMAIL,
-                    BeanPropertyRowMapper.newInstance(UserEntity.class), email);
-        } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
-    }
-
 }

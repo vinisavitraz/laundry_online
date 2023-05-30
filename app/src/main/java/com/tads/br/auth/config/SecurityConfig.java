@@ -3,6 +3,8 @@ package com.tads.br.auth.config;
 import com.tads.br.auth.filter.EmailPasswordAuthFilter;
 import com.tads.br.auth.filter.JWTAuthFilter;
 import com.tads.br.auth.provider.UserAuthProvider;
+import com.tads.br.auth.service.AuthService;
+import com.tads.br.auth.service.AuthServiceInterface;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,10 +27,12 @@ public class SecurityConfig {
 
     private final UserAuthEntryPoint userAuthEntryPoint;
     private final UserAuthProvider userAuthProvider;
+    private final AuthServiceInterface authService;
 
-    public SecurityConfig(UserAuthEntryPoint userAuthEntryPoint, UserAuthProvider userAuthProvider) {
+    public SecurityConfig(UserAuthEntryPoint userAuthEntryPoint, UserAuthProvider userAuthProvider, AuthServiceInterface authService) {
         this.userAuthEntryPoint = userAuthEntryPoint;
         this.userAuthProvider = userAuthProvider;
+        this.authService = authService;
     }
 
     @Bean
@@ -37,23 +41,24 @@ public class SecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(userAuthEntryPoint)
                 .and()
                 .addFilterBefore(new EmailPasswordAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JWTAuthFilter(userAuthProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTAuthFilter(userAuthProvider, authService), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .cors()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(requests -> requests
-                        .anyRequest().permitAll()
-//                        .requestMatchers(
-//                                HttpMethod.POST,
-//                                "/auth",
-//                                "/register",
-//                                "/cep",
-//                                "/clothings"
-//                        ).permitAll()
-//                        .anyRequest().authenticated()
-
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/auth",
+                                "/register",
+                                "/cep"
+                        ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/cep"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .build();
     }
@@ -65,9 +70,9 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedOrigins("http://localhost:4200")
+                        .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("Content-Type");
+                        .allowedHeaders("Content-Type", "Authorization");
             }
         };
     }
