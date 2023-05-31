@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class OrderRepository implements OrderRepositoryInterface {
@@ -16,6 +17,8 @@ public class OrderRepository implements OrderRepositoryInterface {
     private static final String QUERY_SEQUENCE = "SELECT nextval('orders_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO orders (id, status, washPrice, washTime, createDate, paymentDate, customerId, employeeId) VALUES (?,?,?,?,?,?,?,?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM orders WHERE id = ?";
+    private static final String QUERY_FIND_OPEN_ORDERS = "SELECT * FROM orders WHERE status = ?";
+    private static final String QUERY_FIND_OPEN_ORDERS_BY_CUSTOMER = "SELECT * FROM orders WHERE customerId = ? AND status = ?";
 
     public OrderRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -46,4 +49,15 @@ public class OrderRepository implements OrderRepositoryInterface {
             return null;
         }
     }
+
+    @Override
+    public List<OrderEntity> findOrdersByStatus(String status) {
+        return jdbcTemplate.query(OrderRepository.QUERY_FIND_OPEN_ORDERS, BeanPropertyRowMapper.newInstance(OrderEntity.class), status);
+    }
+
+    @Override
+    public List<OrderEntity> findOpenOrdersByCustomerAndStatus(Long customerId, String status) {
+        return jdbcTemplate.query(OrderRepository.QUERY_FIND_OPEN_ORDERS_BY_CUSTOMER, BeanPropertyRowMapper.newInstance(OrderEntity.class), customerId, status);
+    }
+
 }

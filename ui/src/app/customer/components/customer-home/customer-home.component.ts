@@ -30,7 +30,7 @@ export class CustomerHomeComponent {
       next: (authenticatedUserDto) => {
         this.user = authenticatedUserDto.entity;
 
-        this.openOrders = this.listOpenOrders();
+        this.listOpenOrders();
       },
       error: (err) => {
         console.log(err);
@@ -39,17 +39,19 @@ export class CustomerHomeComponent {
     });
   }
 
-  private listOpenOrders(): Order[] {
+  private listOpenOrders(): void {
     if (this.user === undefined) {
-      return [];
+      return;
     }
 
-    return this.orderService.listOpenOrders(this.user);
+    this.orderService.listOrdersByUserAndStatus(this.user, 'open').subscribe(responseDto => {
+      this.openOrders = responseDto.entities ?? [];
+    });
   }
 
   public setStatus(order: Order, status: string): void {
     this.orderService.setStatus(order.id!, status);
-    this.openOrders = this.listOpenOrders();
+    this.listOpenOrders();
   }
 
   public showSummary(order: Order): void {

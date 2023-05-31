@@ -1,12 +1,17 @@
 package com.tads.br.order.controller;
 
+import com.tads.br.core.dto.response.EntitiesResponseDto;
 import com.tads.br.core.dto.response.EntityResponseDto;
 import com.tads.br.order.entity.OrderEntity;
 import com.tads.br.order.service.OrderServiceInterface;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+@RestController
 public class OrderController {
 
     private final OrderServiceInterface service;
@@ -22,4 +27,13 @@ public class OrderController {
 
         return new EntityResponseDto<>(order);
     }
+
+    @GetMapping("/orders/user/{userId}/status/{status}")
+    @ResponseBody
+    public EntitiesResponseDto<OrderEntity> getOrdersByUserAndStatus(@PathVariable("userId") long userId, @PathVariable("status") String status) {
+        List<OrderEntity> orders = this.service.getOrdersByUserAndStatus(userId, status);
+
+        return new EntitiesResponseDto<>(orders);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.tads.br.user.controller;
 
-import com.tads.br.clothing.entity.ClothingEntity;
 import com.tads.br.core.dto.response.EntitiesResponseDto;
 import com.tads.br.core.dto.response.EntityResponseDto;
 import com.tads.br.user.dto.request.RegisterUserRequestDto;

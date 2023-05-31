@@ -32,8 +32,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.removeItem('user_role_jwt');
-    localStorage.removeItem('token_jwt');
     this.route.queryParams.subscribe(params => {
       this.message = params['error'];
     });

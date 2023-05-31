@@ -8,6 +8,11 @@ import {OrderItem} from "../../commons/models/order-item.model";
 import {User} from "../../commons/models/user.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
 import {UserService} from "../../user/services/user.service";
+import {AuthService} from "../../auth/services/auth.service";
+import {HttpClient} from "@angular/common/http";
+import {ClothingsResponseDto} from "../../clothing/dto/response/clothings-response.dto";
+import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.constants";
+import {OrdersResponseDto} from "../dto/response/orders-response.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +21,11 @@ export class OrderService {
 
   static ORDERS_KEY = 'orders';
 
-  constructor(private userService: UserService) { }
+  constructor(
+      private userService: UserService,
+      private authService: AuthService,
+      private httpClient: HttpClient,
+  ) { }
 
   public listOrders(user: User): Order[] {
     const orders: Order[] = this.getOrders();
@@ -50,20 +59,23 @@ export class OrderService {
         });
   }
 
-  public listOpenOrders(user: User): Order[] {
-    const orders: Order[] = this.getOrders();
-
-    console.log(orders);
-
-    if (user.role === RolesEnum.EMPLOYEE) {
-      return orders.filter(order => {
-        return order.status === OrderStatusEnum.OPEN
-      })
-    }
-
-    return orders.filter(order => {
-      return order.customerId === user.id && order.status === OrderStatusEnum.OPEN
-    })
+  public listOrdersByUserAndStatus(user: User, status: string): Observable<OrdersResponseDto> {
+    return this.httpClient.get<OrdersResponseDto>(
+        BASE_URL + '/orders/user/' + user.id + '/status/' + status , DEFAULT_HEADERS,
+    );
+    // const orders: Order[] = this.getOrders();
+    //
+    // console.log(orders);
+    //
+    // if (user.role === RolesEnum.EMPLOYEE) {
+    //   return orders.filter(order => {
+    //     return order.status === OrderStatusEnum.OPEN
+    //   })
+    // }
+    //
+    // return orders.filter(order => {
+    //   return order.customerId === user.id && order.status === OrderStatusEnum.OPEN
+    // })
   }
 
   public getOrders(): Order[] {

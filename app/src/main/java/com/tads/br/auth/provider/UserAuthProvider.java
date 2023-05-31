@@ -21,6 +21,7 @@ import java.util.Date;
 @Component
 public class UserAuthProvider {
 
+    private static Integer TOKEN_EXPIRE_TIME_IN_SECONDS = 86400;
     private final UserService userService;
 
     @Value("$(security.jwt.token.secret-key:secret-key)")
@@ -37,7 +38,7 @@ public class UserAuthProvider {
 
     public TokenEntity buildToken(UserEntity user) {
         Date now = new Date();
-        Date validDate = new Date(now.getTime() + 3600000);
+        Date validDate = new Date(now.getTime() + UserAuthProvider.TOKEN_EXPIRE_TIME_IN_SECONDS * 60);
 
         String token = JWT.create()
                 .withIssuer(user.getEmail())
