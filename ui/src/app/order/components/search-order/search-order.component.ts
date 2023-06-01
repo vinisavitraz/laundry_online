@@ -48,18 +48,13 @@ export class SearchOrderComponent {
       return;
     }
 
-    console.log('search order'  + orderId);
-
     const order: Order | undefined = this.orderService.findById(orderId);
 
-    console.log(order);
     if (order === undefined) {
       this.notFound = true;
       return;
     }
 
-    console.log(order!.customerId);
-    console.log(this.user!.id);
     if (order!.customerId !== this.user!.id) {
       this.notFound = true;
       return;

@@ -1,7 +1,8 @@
 package com.tads.br.user.service;
 
-import com.tads.br.clothing.entity.ClothingEntity;
-import com.tads.br.user.dto.request.RegisterUserRequestDto;
+import com.tads.br.user.dto.request.CreateEmployeeRequestDto;
+import com.tads.br.user.dto.request.CreateCustomerRequestDto;
+import com.tads.br.user.dto.request.UpdateEmployeeRequestDto;
 import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.repository.UserRepositoryInterface;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,14 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserEntity registerUser(RegisterUserRequestDto registerUserRequestDto) {
+    public UserEntity createCustomer(CreateCustomerRequestDto createCustomerRequestDto) {
         String password = this.generatePassword();
 
-        Long userId = this.repository.create(registerUserRequestDto.getEntity(), password);
+        createCustomerRequestDto.getEntity().setPassword(password);
 
-        return this.repository.findById(userId);
+        Long customerId = this.repository.createUser(createCustomerRequestDto.getEntity());
+
+        return this.repository.findById(customerId);
     }
 
     private String generatePassword() {
@@ -45,4 +48,32 @@ public class UserService implements UserServiceInterface {
         return this.repository.findEmployees();
     }
 
+    @Override
+    public boolean deleteUserById(Long id) {
+        int deleted = this.repository.deleteById(id);
+
+        if (deleted == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public UserEntity createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto) {
+        Long employeeId = this.repository.createUser(createEmployeeRequestDto.getEntity());
+
+        return this.repository.findById(employeeId);
+    }
+
+    @Override
+    public UserEntity updateEmployee(UpdateEmployeeRequestDto updateEmployeeRequestDto) {
+        int updated = this.repository.update(updateEmployeeRequestDto.getEntity());
+
+        if (updated == 1) {
+            return updateEmployeeRequestDto.getEntity();
+        }
+
+        return null;
+    }
 }

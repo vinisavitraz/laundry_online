@@ -30,8 +30,6 @@ export class OrderService {
   public listOrders(user: User): Order[] {
     const orders: Order[] = this.getOrders();
 
-    console.log(orders);
-
     if (user.role === RolesEnum.EMPLOYEE) {
       orders.sort(function (a, b) {
         const newDateA: Date = new Date(a.createDate!);
@@ -43,12 +41,8 @@ export class OrderService {
       return orders;
     }
 
-    console.log(orders);
-
     return orders
         .filter(function (order) {
-          console.log(order.customerId);
-          console.log(user.id);
           return order.customerId === user.id;
         })
         .sort(function (a, b) {
@@ -65,7 +59,6 @@ export class OrderService {
     );
     // const orders: Order[] = this.getOrders();
     //
-    // console.log(orders);
     //
     // if (user.role === RolesEnum.EMPLOYEE) {
     //   return orders.filter(order => {
@@ -89,12 +82,9 @@ export class OrderService {
   }
 
   public createOrder(dto: CreateOrderRequestDto): Observable<Order | null> {
-    console.log('createOrder');
-    console.log(dto.customerId!);
     const user: User | undefined = this.userService.findById(dto.customerId!);
 
     if (user === undefined) {
-      console.log('createOrder undefined');
       return of(null);
     }
 

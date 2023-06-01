@@ -2,15 +2,15 @@ package com.tads.br.user.dto.request;
 
 import com.tads.br.user.entity.UserEntity;
 
-public class RegisterUserRequestDto {
+public class UpdateEmployeeRequestDto {
 
     private UserEntity entity;
 
-    public RegisterUserRequestDto(UserEntity entity) {
+    public UpdateEmployeeRequestDto(UserEntity entity) {
         this.entity = entity;
     }
 
-    public RegisterUserRequestDto() {
+    public UpdateEmployeeRequestDto() {
     }
 
     public UserEntity getEntity() {

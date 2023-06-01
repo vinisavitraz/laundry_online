@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // localStorage.clear();
     this.route.queryParams.subscribe(params => {
       this.message = params['error'];
     });
@@ -48,8 +49,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.dto).subscribe({
       next: (loginResponseDto) => {
-        console.log('loginResponseDto');
-        console.log(loginResponseDto);
         this.loading = false;
 
         this.authService.saveTokenJWT(loginResponseDto.token);
@@ -70,11 +69,8 @@ export class LoginComponent implements OnInit {
   }
 
   private routeToHomePageIfAuthenticated(): void {
-    console.log('routeToHomePageIfAuthenticated');
     this.authService.getAuthenticatedUser().subscribe({
       next: (authenticatedUserDto) => {
-        console.log('return routeToHomePageIfAuthenticated');
-        console.log(authenticatedUserDto.entity);
         if (!authenticatedUserDto.entity) {
           return;
         }

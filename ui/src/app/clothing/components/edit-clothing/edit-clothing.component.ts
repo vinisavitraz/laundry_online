@@ -27,7 +27,7 @@ export class EditClothingComponent {
       if (clothingResponseDto.entity === null) {
         throw new Error('Clothing not found. ID: ' + id);
       }
-      console.log(clothingResponseDto.entity!);
+
       this.clothing = clothingResponseDto.entity!;
     });
   }

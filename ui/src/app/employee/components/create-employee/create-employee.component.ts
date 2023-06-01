@@ -18,12 +18,21 @@ export class CreateEmployeeComponent {
 
   ngOnInit(): void {
     this.employee = new Employee();
+    this.employee.role = 'employee';
   }
 
   public async save(): Promise<void> {
     if (this.createEmployeeForm.form.valid) {
-      this.employeeService.saveEmployee(this.employee);
-      await this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
+      this.employeeService.saveEmployee(this.employee).subscribe(
+          {
+            next: (dto) => {
+              this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          }
+      );
     }
   }
 }

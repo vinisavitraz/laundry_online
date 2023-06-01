@@ -6,6 +6,9 @@ import {User} from "../../commons/models/user.model";
 import {Employee} from "../../commons/models/employee.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
 import {RegisterResponseDto} from "../../auth/dto/response/register-response.dto";
+import {ClothingsResponseDto} from "../../clothing/dto/response/clothings-response.dto";
+import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.constants";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +19,13 @@ export class UserService {
   static CUSTOMERS_KEY = 'customers';
   static EMPLOYEES_KEY = 'employees';
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
   public registerCustomer(dto: RequestRegisterDto): Observable<RegisterResponseDto> {
     // try {
     //   this.validateRequestRegister(dto);
     // } catch (error) {
     //   // @ts-ignore
-    //   console.log(error.message)
     // }
 
 
@@ -93,25 +95,9 @@ export class UserService {
     localStorage.setItem(UserService.EMPLOYEES_KEY, JSON.stringify(employees));
   }
 
-  public removeEmployee(employee: Employee): void {
-    const users: User[] = this.getUsers();
-    const newUsers: User[] = users.filter(userArray => userArray.id !== employee.id);
-    const employees: Employee[] = this.getEmployees();
-    const newEmployees: Employee[] = employees.filter(employeeArray => employeeArray.id !== employee.id);
-
-    localStorage.setItem(UserService.USERS_KEY, JSON.stringify(newUsers));
-    localStorage.setItem(UserService.EMPLOYEES_KEY, JSON.stringify(newEmployees));
-  }
-
-  public findUserByEmail(email: string): User | undefined {
-    const users: User[] = this.getUsers();
-
-    return users.find(user => user.email === email);
-  }
-
   public findById(id: number): User | undefined {
     const users: User[] = this.getUsers();
-    console.log(users);
+
     return users.find(user => user.id === id);
   }
 
@@ -191,7 +177,4 @@ export class UserService {
     );
   }
 
-  private validateRequestRegister(dto: RequestRegisterDto): void {
-
-  }
 }

@@ -16,19 +16,26 @@ export class ListEmployeesComponent {
   }
 
   ngOnInit(): void {
-    this.employees = this.listEmployees();
+    this.listEmployees();
   }
 
   public remove($event: any, employee: Employee): void {
     $event.preventDefault();
 
     if (confirm(`Deseja realmente remover o funcionário ${employee.name}?`)) {
-      this.employeeService.remove(employee);
-      this.employees = this.listEmployees();
+      this.employeeService.remove(employee).subscribe(responseDto => {
+        if (responseDto.message === 'deleted') {
+          this.listEmployees();
+        } //treat error?
+      });
     }
   }
 
-  private listEmployees(): Employee[] {
-    return this.employeeService.getEmployees();
+  private listEmployees(): void {
+    this.employeeService.getEmployees().subscribe(responseDto => {
+      if (responseDto.entities) {
+        this.employees = responseDto.entities!;
+      } //treat error?
+    });
   }
 }

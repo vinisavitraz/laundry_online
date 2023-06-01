@@ -36,7 +36,6 @@ export class NavbarComponent {
       },
       error: (err) => {
         this.authService.setAuthenticated(false);
-        console.log(err);
         this.authenticatedUser = undefined;
       },
     });

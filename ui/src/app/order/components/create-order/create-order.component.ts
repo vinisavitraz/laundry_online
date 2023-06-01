@@ -117,7 +117,6 @@ export class CreateOrderComponent {
           }
           this.clothingId.setValue('');
           this.clothingQuantity.setValue('');
-          console.log(this.totalQuantity);
           return;
         }
       }
@@ -140,7 +139,6 @@ export class CreateOrderComponent {
   public showOrderSummary(): void {
     this.createMessage = undefined;
     this.addNewClothingMessage = undefined;
-    console.log('showOrderSummary');
 
     if (this.dto.items!.length === 0) {
       this.createMessage = ErrorMessagesEnum.ORDER_WITHOUT_CLOTHINGS

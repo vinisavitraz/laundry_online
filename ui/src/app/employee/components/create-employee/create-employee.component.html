@@ -8,6 +8,7 @@
     <div class="row g-5">
         <div class="col-md-12 col-lg-10">
             <form #createEmployeeForm="ngForm">
+                <input type="hidden" id="role" name="role" [(ngModel)]="employee.role" />
                 <div class="form-group">
                     <label for="name">Nome</label>
                     <input type="text" [(ngModel)]="employee.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" required>
@@ -42,9 +43,6 @@
                     <button type="button" class="btn btn-success ms-2" (click)="save()" [disabled]="!createEmployeeForm.form.valid">
                         <i class="fa fa-save" aria-hidden="true"></i> Salvar
                     </button>
-                    <a [routerLink]="'/employees/list'" class="btn btn-secondary ms-2">
-                        <i class="fa arrow-left" aria-hidden="true"></i> Voltar
-                    </a>
                 </div>
             </form>
         </div>

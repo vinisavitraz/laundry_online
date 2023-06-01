@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface UserRepositoryInterface {
 
-    Long create(UserEntity user, String password);
+    Long createUser(UserEntity user);
+
+    int update(UserEntity user);
 
     UserEntity findById(Long id);
 
@@ -14,4 +16,5 @@ public interface UserRepositoryInterface {
 
     List<UserEntity> findEmployees();
 
+    int deleteById(Long id);
 }

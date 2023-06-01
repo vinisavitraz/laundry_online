@@ -15,16 +15,18 @@ public class UserRepository implements UserRepositoryInterface {
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, password) VALUES (?,?,?,?,?)";
+    private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee'";
+    private static final String QUERY_DELETE = "DELETE FROM users WHERE id = ?";
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Long create(UserEntity user, String password) {
+    public Long createUser(UserEntity user) {
         Long id = jdbcTemplate.query(UserRepository.QUERY_SEQUENCE, rs -> {
             if (rs.next()) {
                 return rs.getLong(1);
@@ -34,9 +36,15 @@ public class UserRepository implements UserRepositoryInterface {
         });
 
         jdbcTemplate.update(UserRepository.QUERY_CREATE,
-                id, user.getName(), user.getEmail(), password);
+                id, user.getName(), user.getEmail(), user.getRole(), user.getPassword());
 
         return id;
+    }
+
+    @Override
+    public int update(UserEntity user) {
+        return jdbcTemplate.update(UserRepository.QUERY_UPDATE,
+                user.getName(), user.getEmail(), user.getPassword(), user.getId());
     }
 
     @Override
@@ -64,37 +72,9 @@ public class UserRepository implements UserRepositoryInterface {
         return jdbcTemplate.query(UserRepository.QUERY_FIND_EMPLOYEES, BeanPropertyRowMapper.newInstance(UserEntity.class));
     }
 
-//    @Override
-//    public int update(Tutorial tutorial) {
-//        return jdbcTemplate.update("UPDATE tutorials SET title=?, description=?, published=? WHERE id=?",
-//                new Object[] { tutorial.getTitle(), tutorial.getDescription(), tutorial.isPublished(), tutorial.getId() });
-//    }
-//
-//    @Override
-//    public int deleteById(Long id) {
-//        return jdbcTemplate.update("DELETE FROM tutorials WHERE id=?", id);
-//    }
-//
-//    @Override
-//    public List<Tutorial> findAll() {
-//        return jdbcTemplate.query("SELECT * from tutorials", BeanPropertyRowMapper.newInstance(Tutorial.class));
-//    }
-//
-//    @Override
-//    public List<Tutorial> findByPublished(boolean published) {
-//        return jdbcTemplate.query("SELECT * from tutorials WHERE published=?",
-//                BeanPropertyRowMapper.newInstance(Tutorial.class), published);
-//    }
-//
-//    @Override
-//    public List<Tutorial> findByTitleContaining(String title) {
-//        String q = "SELECT * from tutorials WHERE title LIKE '%" + title + "%'";
-//
-//        return jdbcTemplate.query(q, BeanPropertyRowMapper.newInstance(Tutorial.class));
-//    }
-//
-//    @Override
-//    public int deleteAll() {
-//        return jdbcTemplate.update("DELETE from tutorials");
-//    }
+    @Override
+    public int deleteById(Long id) {
+        return jdbcTemplate.update(UserRepository.QUERY_DELETE, id);
+    }
+
 }

@@ -34,7 +34,6 @@ export class OrderSummaryComponent {
 
     for (let i = 0; i < order.items!.length; i++) {
       const item: OrderItem = order.items![i];
-      console.log(item);
       this.totalProducts += item.totalQuantity ?? 0;
     }
   }

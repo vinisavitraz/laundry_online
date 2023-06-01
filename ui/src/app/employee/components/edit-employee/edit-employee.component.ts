@@ -22,19 +22,21 @@ export class EditEmployeeComponent {
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.params['id'];
-    const employee: Employee | undefined = this.employeeService.findById(id);
 
-    if (employee === undefined) {
-      throw new Error('Employee not found. ID: ' + id);
-    }
+    this.employeeService.findById(id).subscribe(responseDto => {
+      if (responseDto.entity === null) {
+        throw new Error('Employee not found. ID: ' + id);
+      }
 
-    this.employee = employee;
+      this.employee = responseDto.entity!;
+    });
   }
 
   public async save(): Promise<void> {
     if (this.editEmployeeForm.form.valid) {
-      this.employeeService.saveEmployee(this.employee);
-      await this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
+      this.employeeService.saveEmployee(this.employee).subscribe(employee => {
+        this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
+      });
     }
   }
 }

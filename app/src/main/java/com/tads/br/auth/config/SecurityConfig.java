@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/auth",
-                                "/register",
+                                "/users/customer",
                                 "/cep"
                         ).permitAll()
                         .requestMatchers(
