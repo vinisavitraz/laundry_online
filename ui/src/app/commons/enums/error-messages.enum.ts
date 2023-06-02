@@ -5,5 +5,6 @@ export enum ErrorMessagesEnum {
     EMAIL_NOT_FOUND = 'Email não encontrado',
     INVALID_PASSWORD = 'Senha inválida',
     ORDER_WITHOUT_CLOTHINGS = 'Adicione roupas no pedido',
+    ORDER_INVALID = 'Pedido inválido',
     INVALID_ITEM_INPUT = 'Peça de roupa/Quantidade inválida',
 }

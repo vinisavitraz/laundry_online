@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, of, throwError} from "rxjs";
 import {RequestLoginDto} from "../dto/request/request-login.dto";
-import {UserService} from "../../user/services/user.service";
 import {LoginResponseDto} from "../dto/response/login-response.dto";
 import {ErrorMessagesEnum} from "../../commons/enums/error-messages.enum";
 import {HttpClient} from "@angular/common/http";
@@ -9,6 +8,7 @@ import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.cons
 import {Token} from "../../commons/models/token.model";
 import {AuthenticatedUserResponseDto} from "../dto/response/authenticated-user-response.dto";
 import {LogoutResponseDto} from "../dto/response/logout-response.dto";
+import {CustomerService} from "../../customer/services/customer.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AuthService {
   private authenticated: Observable<boolean>;
 
   constructor(
-      private userService: UserService,
+      private customerService: CustomerService,
       private httpClient: HttpClient,
   ) {
     this.authenticated = of(false);

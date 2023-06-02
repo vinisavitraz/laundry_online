@@ -1,9 +1,10 @@
-import {ItemOrderRequestDto} from "./item-order-request.dto";
+import {OrderItem} from "../../../commons/models/order-item.model";
+import {Order} from "../../../commons";
 
 export class CreateOrderRequestDto {
     constructor(
-        public items?: ItemOrderRequestDto[],
-        public customerId?: number,
+        public entity?: Order,
+        public items?: OrderItem[],
     ) {
     }
 }

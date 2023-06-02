@@ -9,6 +9,7 @@ import { ListOrdersComponent } from './components/list-orders/list-orders.compon
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ClothingModule} from "../clothing/clothing.module";
 import {RouterLink} from "@angular/router";
+import {CustomerModule} from "../customer/customer.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {RouterLink} from "@angular/router";
         FormsModule,
         ClothingModule,
         RouterLink,
+        CustomerModule,
     ],
   providers: [
       OrderService

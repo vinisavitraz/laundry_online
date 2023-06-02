@@ -35,8 +35,7 @@ export class ListOrdersComponent {
     this.authService.getAuthenticatedUser().subscribe({
       next: (authenticatedUserDto) => {
         this.user = authenticatedUserDto.entity;
-        this.orders = this.listOrders();
-        this.allOrders = this.orders;
+        this.listOrders();
       },
       error: (err) => {
         console.log(err);
@@ -45,18 +44,29 @@ export class ListOrdersComponent {
     });
   }
 
-  private listOrders(): Order[] {
+  private listOrders(): void {
     if (this.user === undefined) {
-      return [];
+      return;
     }
 
-    return this.orderService.listOrders(this.user);
+    this.orderService.getOrdersByUser(this.user).subscribe(ordersDto => {
+      if (!ordersDto.entities) {
+        return;
+      }
+
+      this.orders = ordersDto.entities!;
+      this.allOrders = ordersDto.entities!;
+    });
   }
 
   public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status);
-    this.orders = this.listOrders();
-    this.allOrders = this.orders;
+    this.orderService.setStatus(order.id!, status).subscribe(responseDto => {
+      if (!responseDto.entity) {
+        return;
+      }
+
+      this.listOrders();
+    });
   }
 
   public showSummary(order: Order): void {

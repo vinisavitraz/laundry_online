@@ -62,9 +62,7 @@ CREATE TABLE IF NOT EXISTS orders
     createDate TIMESTAMP NOT NULL,
     paymentDate TIMESTAMP NULL,
     customerId BIGINT NOT NULL,
-    CONSTRAINT fk_order_customer FOREIGN KEY(customerId) REFERENCES users(id),
-    employeeId BIGINT NULL,
-    CONSTRAINT fk_order_employee FOREIGN KEY(employeeId) REFERENCES users(id)
+    CONSTRAINT fk_order_customer FOREIGN KEY(customerId) REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS order_items

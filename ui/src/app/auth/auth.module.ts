@@ -5,9 +5,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthService} from "./services/auth.service";
-import {UserModule} from "../user/user.module";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
+import {CustomerModule} from "../customer/customer.module";
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import {JwtInterceptor} from "./interceptors/jwt.interceptor";
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
-    UserModule,
+    CustomerModule,
   ],
   providers: [
     JwtInterceptor,

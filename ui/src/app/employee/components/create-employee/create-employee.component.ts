@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {EmployeeService} from "../../services/employee.service";
 import {Employee} from "../../../commons/models/employee.model";
+import {RolesEnum} from "../../../commons/enums/roles.enum";
 
 @Component({
   selector: 'app-create-employee',
@@ -18,7 +19,7 @@ export class CreateEmployeeComponent {
 
   ngOnInit(): void {
     this.employee = new Employee();
-    this.employee.role = 'employee';
+    this.employee.role = RolesEnum.EMPLOYEE;
   }
 
   public async save(): Promise<void> {

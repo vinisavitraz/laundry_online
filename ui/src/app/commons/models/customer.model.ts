@@ -12,6 +12,7 @@ export class Customer {
         public district?: string,
         public city?: string,
         public state?: string,
+        public role?: string,
     ) {
     }
 }

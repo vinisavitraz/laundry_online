@@ -24,18 +24,18 @@ export class OrderSummaryComponent {
 
   ngOnInit(): void {
     const id: number = +this.route.snapshot.params['id'];
-    const order: Order | undefined = this.orderService.findById(id);
+    this.orderService.findById(id).subscribe(orderDto => {
+      if (orderDto.entity === undefined) {
+        throw new Error('Order not found. ID: ' + id);
+      }
 
-    if (order === undefined) {
-      throw new Error('Order not found. ID: ' + id);
-    }
+      this.order = orderDto.entity;
 
-    this.order = order;
-
-    for (let i = 0; i < order.items!.length; i++) {
-      const item: OrderItem = order.items![i];
-      this.totalProducts += item.totalQuantity ?? 0;
-    }
+      for (let i = 0; i < orderDto.entity.items!.length; i++) {
+        const item: OrderItem = orderDto.entity.items![i];
+        this.totalProducts += item.totalQuantity ?? 0;
+      }
+    });
   }
 
   public setStatus(id: number, status: string): void {

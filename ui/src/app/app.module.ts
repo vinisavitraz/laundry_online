@@ -9,7 +9,6 @@ import {CommonsModule} from "./commons";
 import {ClothingModule} from "./clothing/clothing.module";
 import {EmployeeModule} from "./employee/employee.module";
 import {HttpClientModule} from "@angular/common/http";
-import {UserModule} from "./user/user.module";
 import {ReportModule} from "./report/report.module";
 
 @NgModule({
@@ -26,7 +25,6 @@ import {ReportModule} from "./report/report.module";
     ClothingModule,
     EmployeeModule,
     HttpClientModule,
-    UserModule,
     ReportModule,
   ],
   providers: [],

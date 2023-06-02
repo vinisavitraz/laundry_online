@@ -45,14 +45,14 @@
                                 <span class="badge bg-success text-white">Finalizado</span>
                             </p>
                             <br>
-                            <p class="card-text">Cliente: {{ order.customerName }}</p>
+                            <p class="card-text">Cliente: {{ order.customerId }}</p>
                             <p class="card-text">Valor total: R${{ order.washPrice }}</p>
                             <p class="card-text">Quantidade de itens: R${{ order.items!.length }}</p>
                             <p class="card-text">Entrega em: {{ order.items!.length }} dia(s)</p>
                             <p class="card-text font-weight-bold">- Roupas -</p>
                             <div class="row" *ngFor="let item of order.items!">
                                 <div class="col-md-4 col-lg-3">
-                                    <p>Item: {{ item.clothingName }}</p>
+                                    <p>Item: {{ item.clothingId }}</p>
                                 </div>
                                 <div class="col-md-4 col-lg-3">
                                     <p>Quantidade: {{ item.totalQuantity }}</p>

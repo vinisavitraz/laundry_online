@@ -50,7 +50,7 @@ export class EmployeeHomeComponent {
       return;
     }
 
-    this.orderService.listOrdersByUserAndStatus(this.user, 'open').subscribe(responseDto => {
+    this.orderService.getOrdersByUserAndStatus(this.user, 'open').subscribe(responseDto => {
       this.openOrders = responseDto.entities ?? [];
     });
   }

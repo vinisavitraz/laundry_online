@@ -48,24 +48,29 @@ export class SearchOrderComponent {
       return;
     }
 
-    const order: Order | undefined = this.orderService.findById(orderId);
+    this.orderService.findById(orderId).subscribe(orderDto => {
+      if (orderDto.entity === undefined) {
+        this.notFound = true;
+        return;
+      }
 
-    if (order === undefined) {
-      this.notFound = true;
-      return;
-    }
+      if (orderDto.entity!.customerId !== this.user!.id) {
+        this.notFound = true;
+        return;
+      }
 
-    if (order!.customerId !== this.user!.id) {
-      this.notFound = true;
-      return;
-    }
-
-    this.order = order;
+      this.order = orderDto.entity;
+    });
   }
 
   public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status);
-    this.order = this.orderService.findById(order.id!);
+    this.orderService.setStatus(order.id!, status).subscribe(dto => {
+      if (dto.entity === undefined) {
+        return;
+      }
+
+      this.order = dto.entity!;
+    });
   }
 
   public showSummary(order: Order): void {

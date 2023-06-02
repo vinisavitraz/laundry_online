@@ -4,8 +4,9 @@ import {RequestRegisterDto} from "../../dto/request/request-register.dto";
 import {CepService} from "../../../commons/services/cep.service";
 import {RoutesEnum} from "../../../commons/enums/routes.enum";
 import {Router} from "@angular/router";
-import {UserService} from "../../../user/services/user.service";
-import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
+import {CustomerService} from "../../../customer/services/customer.service";
+import {Customer} from "../../../commons/models/customer.model";
+import {RolesEnum} from "../../../commons/enums/roles.enum";
 
 @Component({
   selector: 'app-register',
@@ -29,7 +30,7 @@ export class RegisterComponent {
 
   constructor(
       private cepService: CepService,
-      private userService: UserService,
+      private customerService: CustomerService,
       private router: Router,
   ) {
     this.dto = new RequestRegisterDto();
@@ -89,30 +90,26 @@ export class RegisterComponent {
       return;
     }
 
-    this.dto.name = this.nameInput.getRawValue();
-    this.dto.email = this.emailInput.getRawValue();
-    this.dto.document = this.documentInput.getRawValue();
-    this.dto.phone = this.phoneInput.getRawValue();
-    this.dto.cep = this.cepInput.getRawValue();
-    this.dto.street = this.streetInput.getRawValue();
-    this.dto.streetNumber = this.streetNumberInput.getRawValue();
-    this.dto.district = this.districtInput.getRawValue();
-    this.dto.city = this.cityInput.getRawValue();
-    this.dto.state = this.stateInput.getRawValue();
+    const customer: Customer = new Customer();
+
+    customer.role = RolesEnum.CUSTOMER;
+    customer.name = this.nameInput.getRawValue();
+    customer.email = this.emailInput.getRawValue();
+    customer.document = this.documentInput.getRawValue();
+    customer.phone = this.phoneInput.getRawValue();
+    customer.cep = this.cepInput.getRawValue();
+    customer.street = this.streetInput.getRawValue();
+    customer.streetNumber = this.streetNumberInput.getRawValue();
+    customer.district = this.districtInput.getRawValue();
+    customer.city = this.cityInput.getRawValue();
+    customer.state = this.stateInput.getRawValue();
 
 
-    this.userService.registerCustomer(this.dto).subscribe((registerResponseDto) => {
-      if (registerResponseDto.customer !== null) {
+    this.customerService.registerCustomer(customer).subscribe((responseDto) => {
+      if (responseDto.entity !== null) {
         this.router.navigate([RoutesEnum.LOGIN]);
         return;
       }
-
-      if (registerResponseDto.errorMessage === null) {
-        this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
-        return;
-      }
-
-      this.message = registerResponseDto.errorMessage;
     });
   }
 }

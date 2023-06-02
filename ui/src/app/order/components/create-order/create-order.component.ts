@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import { FormControl, FormGroup} from "@angular/forms";
 import {CreateOrderRequestDto} from "../../dto/request/create-order-request.dto";
 import {OrderService} from "../../services/order.service";
 import {Router} from "@angular/router";
-import {Clothing} from "../../../commons";
+import {Clothing, Order} from "../../../commons";
 import {ClothingService} from "../../../clothing/services/clothing.service";
-import {ItemOrderRequestDto} from "../../dto/request/item-order-request.dto";
 import {User} from "../../../commons/models/user.model";
 import {AuthService} from "../../../auth/services/auth.service";
 import {ErrorMessagesEnum} from "../../../commons/enums/error-messages.enum";
+import {OrderItem} from "../../../commons/models/order-item.model";
 
 @Component({
   selector: 'app-create-order',
@@ -35,9 +35,8 @@ export class CreateOrderComponent {
       private orderService: OrderService,
       private clothingService: ClothingService,
       private router: Router,
-      private formBuilder: FormBuilder,
   ) {
-    this.dto = new CreateOrderRequestDto([]);
+    this.dto = new CreateOrderRequestDto(new Order, []);
     this.clothings = [];
     this.edit = false;
     this.totalQuantity = 0;
@@ -48,6 +47,7 @@ export class CreateOrderComponent {
 
   ngOnInit(): void {
     this.createForm();
+
     this.authService.getAuthenticatedUser().subscribe({
       next: (authenticatedUserDto) => {
         this.user = authenticatedUserDto.entity;
@@ -98,22 +98,22 @@ export class CreateOrderComponent {
       const clothing: Clothing = clothingResponseDto.entity!;
 
       for (let i = 0; i < this.dto.items!.length; i++) {
-        const item: ItemOrderRequestDto = this.dto.items![i];
+        const item: OrderItem = this.dto.items![i];
 
-        if (item.clothing!.id === clothingId) {
+        if (item.clothingId === clothingId) {
           if (this.edit) {
-            this.totalWashPrice -= (item.quantity! * item.clothing!.washPrice!);
-            this.totalQuantity -= this.dto.items![i].quantity!;
+            this.totalWashPrice -= (item.totalQuantity! * item.totalWashPrice!);
+            this.totalQuantity -= this.dto.items![i].totalQuantity!;
 
-            this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
+            this.totalWashPrice += (clothingQuantity * item.totalWashPrice!);
             this.totalQuantity += clothingQuantity;
-            this.dto.items![i].quantity! = clothingQuantity;
+            this.dto.items![i].totalQuantity! = clothingQuantity;
 
             this.edit = false;
           } else {
-            this.totalWashPrice += (clothingQuantity * item.clothing!.washPrice!);
+            this.totalWashPrice += (clothingQuantity * item.totalWashPrice!);
             this.totalQuantity += clothingQuantity;
-            this.dto.items![i].quantity! += clothingQuantity;
+            this.dto.items![i].totalQuantity! += clothingQuantity;
           }
           this.clothingId.setValue('');
           this.clothingQuantity.setValue('');
@@ -121,14 +121,14 @@ export class CreateOrderComponent {
         }
       }
 
-      const item: ItemOrderRequestDto = new ItemOrderRequestDto(clothing, Number(clothingQuantity));
+      const item: OrderItem = new OrderItem(0, clothing.id, Number(clothingQuantity), clothing.washTime);
 
-      if (item.clothing!.washTime! > this.totalWashTime) {
-        this.totalWashTime = item.clothing!.washTime!;
+      if (clothing.washTime! > this.totalWashTime) {
+        this.totalWashTime = clothing.washTime!;
       }
 
-      this.totalWashPrice += (item.quantity! * item.clothing!.washPrice!);
-      this.totalQuantity += item.quantity!;
+      this.totalWashPrice += (item.totalQuantity! * item.totalWashPrice!);
+      this.totalQuantity += item.totalQuantity!;
       this.dto.items!.push(item);
 
       this.clothingId.setValue('');
@@ -140,62 +140,76 @@ export class CreateOrderComponent {
     this.createMessage = undefined;
     this.addNewClothingMessage = undefined;
 
+    if (!this.dto.entity) {
+      this.createMessage = ErrorMessagesEnum.ORDER_INVALID
+      return;
+    }
+
     if (this.dto.items!.length === 0) {
       this.createMessage = ErrorMessagesEnum.ORDER_WITHOUT_CLOTHINGS
       return;
     }
 
-    this.dto.customerId = this.user!.id;
+
+    this.dto.entity!.customerId = this.user!.id;
 
     this.orderService.createOrder(this.dto).subscribe(order => {
-      if (order === null) {
+      if (order.entity === null) {
+        alert('Erro criando pedido!');
         return;
       }
 
-      this.router.navigate(['orders/summary/' + order.id]);
+      this.router.navigate(['orders/summary/' + order.entity!.id]);
     });
   }
 
-  public editItem(item: ItemOrderRequestDto): void {
+  public editItem(item: OrderItem): void {
     this.edit = true;
-    this.clothingId.setValue(item.clothing!.id);
-    this.clothingQuantity.setValue(item.quantity);
+    this.clothingId.setValue(item.clothingId!);
+    this.clothingQuantity.setValue(item.totalQuantity);
   }
 
-  public removeItem($event: any, itemToDelete: ItemOrderRequestDto): void {
-    if (confirm(`Deseja realmente remover a peça de roupa ${itemToDelete.clothing?.name!}?`)) {
-
-      this.dto.items = this.dto.items!.filter(item => item.clothing!.id !== itemToDelete.clothing!.id);
-
-      if (this.dto.items.length === 0) {
-        this.resetDetails();
-        this.clothingId.setValue('');
-        this.clothingQuantity.setValue('');
+  public removeItem($event: any, itemToDelete: OrderItem): void {
+    this.clothingService.findById(itemToDelete.clothingId!).subscribe(clothingResponseDto => {
+      if (!clothingResponseDto.entity) {
         return;
       }
 
-      this.totalQuantity -= itemToDelete.quantity!;
-      this.totalWashPrice -= (itemToDelete.clothing!.washPrice! * itemToDelete.quantity!);
+      const clothing: Clothing = clothingResponseDto.entity!;
+      if (confirm(`Deseja realmente remover a peça de roupa ${clothing.name!}?`)) {
 
-      if (itemToDelete.clothing!.washTime === this.totalWashTime) {
-        let newTotalWashTime: number = 0;
-        for (let i = 0; i < this.dto.items!.length; i++) {
-          const item: ItemOrderRequestDto = this.dto.items![i];
+        this.dto.items = this.dto.items!.filter(item => item.clothingId !== clothing.id);
 
-          if (item.clothing!.id === itemToDelete.clothing!.id) {
-            return;
-          }
-
-          if (item.clothing!.washTime! >= newTotalWashTime) {
-            newTotalWashTime = item.clothing!.washTime!;
-          }
+        if (this.dto.items.length === 0) {
+          this.resetDetails();
+          this.clothingId.setValue('');
+          this.clothingQuantity.setValue('');
+          return;
         }
-        this.totalWashTime = newTotalWashTime;
-      }
 
-      this.clothingId.setValue('');
-      this.clothingQuantity.setValue('');
-    }
+        this.totalQuantity -= itemToDelete.totalQuantity!;
+        this.totalWashPrice -= (itemToDelete.totalWashPrice! * itemToDelete.totalQuantity!);
+
+        if (clothing.washTime === this.totalWashTime) {
+          let newTotalWashTime: number = 0;
+          for (let i = 0; i < this.dto.items!.length; i++) {
+            const item: OrderItem = this.dto.items![i];
+
+            if (item.clothingId === itemToDelete.clothingId) {
+              return;
+            }
+
+            if (item.totalWashTime! >= newTotalWashTime) {
+              newTotalWashTime = item.totalWashTime!;
+            }
+          }
+          this.totalWashTime = newTotalWashTime;
+        }
+
+        this.clothingId.setValue('');
+        this.clothingQuantity.setValue('');
+      }
+    });
   }
 
   private resetDetails(): void {
