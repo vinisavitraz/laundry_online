@@ -1,7 +1,7 @@
 package com.tads.br.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tads.br.core.dto.response.ErrorResponseDto;
+import com.tads.br.commons.dto.response.ErrorResponseDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

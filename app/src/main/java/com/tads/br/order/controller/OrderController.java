@@ -1,9 +1,7 @@
 package com.tads.br.order.controller;
 
-import com.tads.br.clothing.dto.request.UpdateClothingRequestDto;
-import com.tads.br.clothing.entity.ClothingEntity;
-import com.tads.br.core.dto.response.EntitiesResponseDto;
-import com.tads.br.core.dto.response.EntityResponseDto;
+import com.tads.br.commons.dto.response.EntitiesResponseDto;
+import com.tads.br.commons.dto.response.EntityResponseDto;
 import com.tads.br.order.dto.request.CreateOrderRequestDto;
 import com.tads.br.order.entity.OrderEntity;
 import com.tads.br.order.service.OrderServiceInterface;

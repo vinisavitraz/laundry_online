@@ -1,4 +1,4 @@
-package com.tads.br.core.dto.response;
+package com.tads.br.commons.dto.response;
 
 public class ErrorResponseDto {
 

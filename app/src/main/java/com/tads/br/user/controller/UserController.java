@@ -1,8 +1,8 @@
 package com.tads.br.user.controller;
 
-import com.tads.br.core.dto.response.EntitiesResponseDto;
-import com.tads.br.core.dto.response.EntityResponseDto;
-import com.tads.br.core.dto.response.StatusResponseDto;
+import com.tads.br.commons.dto.response.EntitiesResponseDto;
+import com.tads.br.commons.dto.response.EntityResponseDto;
+import com.tads.br.commons.dto.response.StatusResponseDto;
 import com.tads.br.user.dto.request.CreateEmployeeRequestDto;
 import com.tads.br.user.dto.request.CreateCustomerRequestDto;
 import com.tads.br.user.dto.request.UpdateEmployeeRequestDto;
