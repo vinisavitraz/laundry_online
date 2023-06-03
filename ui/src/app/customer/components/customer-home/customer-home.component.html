@@ -3,7 +3,7 @@
         <br>
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
-                <h1>Pedidos em aberto</h1>
+                <h1>Cliente - Pedidos em aberto</h1>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-end">
                 <a [routerLink]="'/orders/create'" href="#" title="Novo pedido" class="btn btn-lg btn-success">
@@ -14,77 +14,6 @@
         <br>
         <br>
         <br>
-        <div class="row">
-            <div class="col">
-                <div *ngIf="openOrders.length > 0">
-                    <div class="card my-3" *ngFor="let order of openOrders">
-                        <h5 class="card-header bg-secondary text-white">#{{ order.id }}</h5>
-                        <div class="card-body bg-light">
-                            <p *ngIf="order.status === 'created'">
-                                <span class="badge bg-dark text-white">Criado</span>
-                            </p>
-                            <p *ngIf="order.status === 'open'">
-                                <span class="badge bg-warning text-dark">Em aberto</span>
-                            </p>
-                            <p *ngIf="order.status === 'rejected'">
-                                <span class="badge bg-danger text-white">Rejeitado</span>
-                            </p>
-                            <p *ngIf="order.status === 'canceled'">
-                                <span class="badge bg-danger text-white">Cancelado</span>
-                            </p>
-                            <p *ngIf="order.status === 'collected'">
-                                <span class="badge bg-secondary text-white">Recolhido</span>
-                            </p>
-                            <p *ngIf="order.status === 'waiting_payment'">
-                                <span class="badge bg-primary text-white">Aguardando pagamento</span>
-                            </p>
-                            <p *ngIf="order.status === 'paid'">
-                                <span class="badge bg-orange text-white">Pago</span>
-                            </p>
-                            <p *ngIf="order.status === 'finished'">
-                                <span class="badge bg-success text-white">Finalizado</span>
-                            </p>
-                            <br>
-                            <p class="card-text">Cliente: {{ order.customerId }}</p>
-                            <p class="card-text">Valor total: R${{ order.washPrice }}</p>
-                            <p class="card-text">Quantidade de itens: R${{ order.items!.length }}</p>
-                            <p class="card-text">Entrega em: {{ order.items!.length }} dia(s)</p>
-                            <p class="card-text font-weight-bold">- Roupas -</p>
-                            <div class="row" *ngFor="let item of order.items!">
-                                <div class="col-md-4 col-lg-3">
-                                    <p>Item: {{ item.clothingId }}</p>
-                                </div>
-                                <div class="col-md-4 col-lg-3">
-                                    <p>Quantidade: {{ item.totalQuantity }}</p>
-                                </div>
-                                <div class="col-md-4 col-lg-3">
-                                    <p>Valor: R${{ item.totalWashPrice! }}</p>
-                                </div>
-                            </div>
-                            <button class="btn btn-secondary text-white" *ngIf="order.status == 'created' && user?.role === 'customer'" (click)="showSummary(order)" type="button" title="Criado">
-                                Ver orçamento
-                            </button>
-                            <button class="btn btn-secondary text-white" *ngIf="order.status == 'open' && user?.role === 'employee'" (click)="setStatus(order, 'collected')" type="button" title="Coletado">
-                                Coletar
-                            </button>
-                            <button class="btn btn-secondary text-white" *ngIf="order.status == 'collected' && user?.role === 'employee'" (click)="setStatus(order, 'waiting_payment')" type="button" title="Confirmar lavagem">
-                                Confirmar lavagem
-                            </button>
-                            <button class="btn btn-secondary text-white" *ngIf="order.status == 'waiting_payment' && user?.role === 'customer'" (click)="setStatus(order, 'paid')" type="button" title="Confirmar pagamento">
-                                Confirmar pagamento
-                            </button>
-                            <button class="btn btn-secondary text-white" *ngIf="order.status == 'paid' && user?.role === 'employee'" (click)="setStatus(order, 'finished')" type="button" title="Finalizar">
-                                Finalizar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center" *ngIf="openOrders.length === 0">
-                    <br>
-                    <p class="text-secondary">Nenhum pedido em aberto</p>
-                    <br>
-                </div>
-            </div>
-        </div>
+        <app-orders [orders]="openOrders"></app-orders>
     </div>
 </div>

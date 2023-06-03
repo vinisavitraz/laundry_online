@@ -3,8 +3,6 @@ import {Order} from "../../../commons";
 import {OrderService} from "../../../order/services/order.service";
 import {AuthService} from "../../../auth/services/auth.service";
 import {User} from "../../../commons/models/user.model";
-import {RoutesEnum} from "../../../commons/enums/routes.enum";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-customer-home',
@@ -19,7 +17,6 @@ export class CustomerHomeComponent {
   constructor(
       private orderService: OrderService,
       private authService: AuthService,
-      private router: Router,
   ) {
     this.user = undefined;
     this.openOrders = [];
@@ -27,8 +24,8 @@ export class CustomerHomeComponent {
 
   ngOnInit(): void {
     this.authService.getAuthenticatedUser().subscribe({
-      next: (authenticatedUserDto) => {
-        this.user = authenticatedUserDto.entity;
+      next: (authenticatedUser) => {
+        this.user = authenticatedUser;
 
         this.listOpenOrders();
       },
@@ -47,14 +44,5 @@ export class CustomerHomeComponent {
     this.orderService.getOrdersByUserAndStatus(this.user, 'open').subscribe(responseDto => {
       this.openOrders = responseDto.entities ?? [];
     });
-  }
-
-  public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status);
-    this.listOpenOrders();
-  }
-
-  public showSummary(order: Order): void {
-    this.router.navigate([RoutesEnum.ORDER_SUMMARY.replace(':id', order.id!.toString())])
   }
 }

@@ -7,6 +7,8 @@ public interface AuthServiceInterface {
 
     TokenEntity createToken(UserEntity user);
 
+    boolean deleteToken(TokenEntity token);
+
     TokenEntity getToken(String token);
 
     void logoutUser(UserEntity user);

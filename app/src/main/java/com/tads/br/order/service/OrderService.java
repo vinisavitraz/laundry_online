@@ -2,6 +2,7 @@ package com.tads.br.order.service;
 
 import com.tads.br.order.dto.request.CreateOrderRequestDto;
 import com.tads.br.order.entity.OrderEntity;
+import com.tads.br.order.entity.OrderItemEntity;
 import com.tads.br.order.repository.OrderItemRepositoryInterface;
 import com.tads.br.order.repository.OrderRepositoryInterface;
 import com.tads.br.user.entity.UserEntity;
@@ -25,12 +26,27 @@ public class OrderService implements OrderServiceInterface {
 
     @Override
     public OrderEntity findOrderById(Long id) {
-        return this.orderRepository.findById(id);
+        OrderEntity order = this.orderRepository.findById(id);
+
+        if (order == null) {
+            return null;
+        }
+
+        List<OrderItemEntity> items = this.orderItemRepository.getOrderItemsByOrder(order);
+        order.setItems(items);
+
+        return order;
     }
 
     @Override
     public List<OrderEntity> getOrders() {
-        return this.orderRepository.findOrders();
+        List<OrderEntity> orders = this.orderRepository.findOrders();
+
+        orders.forEach(orderEntity -> {
+            orderEntity.setItems(this.orderItemRepository.getOrderItemsByOrder(orderEntity));
+        });
+
+        return orders;
     }
 
     @Override
@@ -99,11 +115,13 @@ public class OrderService implements OrderServiceInterface {
             throw new RuntimeException("Customer with ID " + customerId + " not found");
         }
 
-        if ("employee".equals(user.getRole())) {
-            return this.orderRepository.findOrdersByStatus(status);
-        }
+        List<OrderEntity> orders = this.orderRepository.findOrdersByCustomerAndStatus(user.getId(), status);
 
-        return this.orderRepository.findOpenOrdersByCustomerAndStatus(user.getId(), status);
+        orders.forEach(orderEntity -> {
+            orderEntity.setItems(this.orderItemRepository.getOrderItemsByOrder(orderEntity));
+        });
+
+        return orders;
     }
 
     @Override
@@ -114,6 +132,24 @@ public class OrderService implements OrderServiceInterface {
             throw new RuntimeException("Customer with ID " + customerId + " not found");
         }
 
-        return this.orderRepository.findOrdersByCustomer(customerId);
+        List<OrderEntity> orders = this.orderRepository.findOrdersByCustomer(customerId);
+
+        orders.forEach(orderEntity -> {
+            orderEntity.setItems(this.orderItemRepository.getOrderItemsByOrder(orderEntity));
+        });
+
+        return orders;
     }
+
+    @Override
+    public List<OrderEntity> getOrdersByStatus(String status) {
+        List<OrderEntity> orders = this.orderRepository.findOrdersByStatus(status);
+
+        orders.forEach(orderEntity -> {
+            orderEntity.setItems(this.orderItemRepository.getOrderItemsByOrder(orderEntity));
+        });
+
+        return orders;
+    }
+
 }

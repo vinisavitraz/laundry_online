@@ -14,7 +14,7 @@ public interface OrderRepositoryInterface {
 
     List<OrderEntity> findOrdersByCustomer(Long customerId);
 
-    List<OrderEntity> findOpenOrdersByCustomerAndStatus(Long customerId, String status);
+    List<OrderEntity> findOrdersByCustomerAndStatus(Long customerId, String status);
 
     List<OrderEntity> findOrders();
 

@@ -12,4 +12,6 @@ public interface AuthRepositoryInterface {
     int removeTokensFromUser(UserEntity user);
 
     TokenEntity findByUser(UserEntity user);
+
+    int deleteToken(TokenEntity token);
 }

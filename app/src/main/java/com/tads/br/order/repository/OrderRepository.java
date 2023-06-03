@@ -66,7 +66,7 @@ public class OrderRepository implements OrderRepositoryInterface {
     }
 
     @Override
-    public List<OrderEntity> findOpenOrdersByCustomerAndStatus(Long customerId, String status) {
+    public List<OrderEntity> findOrdersByCustomerAndStatus(Long customerId, String status) {
         return jdbcTemplate.query(OrderRepository.QUERY_FIND_OPEN_ORDERS_BY_CUSTOMER, BeanPropertyRowMapper.newInstance(OrderEntity.class), customerId, status);
     }
 

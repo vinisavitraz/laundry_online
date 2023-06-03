@@ -51,8 +51,7 @@ export class LoginComponent implements OnInit {
       next: (loginResponseDto) => {
         this.loading = false;
 
-        this.authService.saveTokenJWT(loginResponseDto.token);
-        this.authService.saveUserRole(loginResponseDto.userRole);
+        this.authService.saveAuthUserInfo(loginResponseDto.token, loginResponseDto.userRole);
 
         this.routeToHomePageIfAuthenticated();
       },
@@ -69,11 +68,13 @@ export class LoginComponent implements OnInit {
   }
 
   private routeToHomePageIfAuthenticated(): void {
-    this.authService.getAuthenticatedUser().subscribe({
+    this.authService.getAuthenticatedUserOnWS().subscribe({
       next: (authenticatedUserDto) => {
         if (!authenticatedUserDto.entity) {
           return;
         }
+
+        this.authService.setAuthenticatedUser(authenticatedUserDto.entity);
 
         const role: string = authenticatedUserDto.entity.role!;
 

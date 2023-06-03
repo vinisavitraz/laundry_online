@@ -10,15 +10,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ClothingModule} from "../clothing/clothing.module";
 import {RouterLink} from "@angular/router";
 import {CustomerModule} from "../customer/customer.module";
+import {CommonsModule} from "../commons";
 
 @NgModule({
-  declarations: [
-    OrderDetailComponent,
-    CreateOrderComponent,
-    OrderSummaryComponent,
-    SearchOrderComponent,
-    ListOrdersComponent
-  ],
+    declarations: [
+        OrderDetailComponent,
+        CreateOrderComponent,
+        OrderSummaryComponent,
+        SearchOrderComponent,
+        ListOrdersComponent,
+    ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -26,9 +27,10 @@ import {CustomerModule} from "../customer/customer.module";
         ClothingModule,
         RouterLink,
         CustomerModule,
+        CommonsModule,
     ],
-  providers: [
-      OrderService
-  ],
+    providers: [
+        OrderService
+    ],
 })
 export class OrderModule { }

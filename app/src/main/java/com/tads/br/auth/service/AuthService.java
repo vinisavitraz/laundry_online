@@ -31,6 +31,16 @@ public class AuthService implements AuthServiceInterface {
         return this.repository.create(token, user);
     }
 
+    public boolean deleteToken(TokenEntity token) {
+        int deleted = this.repository.deleteToken(token);
+
+        if (deleted == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
     public TokenEntity getToken(String token) {
         return this.repository.findByToken(token);
     }

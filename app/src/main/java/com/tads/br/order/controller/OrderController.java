@@ -4,6 +4,7 @@ import com.tads.br.commons.dto.response.EntitiesResponseDto;
 import com.tads.br.commons.dto.response.EntityResponseDto;
 import com.tads.br.order.dto.request.CreateOrderRequestDto;
 import com.tads.br.order.entity.OrderEntity;
+import com.tads.br.order.entity.OrderItemEntity;
 import com.tads.br.order.service.OrderServiceInterface;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,14 @@ public class OrderController {
     @ResponseBody
     public EntitiesResponseDto<OrderEntity> getOrdersByCustomer(@PathVariable("customerId") long customerId) {
         List<OrderEntity> orders = this.service.getOrdersByCustomer(customerId);
+
+        return new EntitiesResponseDto<>(orders);
+    }
+
+    @GetMapping("/orders/status/{status}")
+    @ResponseBody
+    public EntitiesResponseDto<OrderEntity> getOrdersByStatus(@PathVariable("status") String status) {
+        List<OrderEntity> orders = this.service.getOrdersByStatus(status);
 
         return new EntitiesResponseDto<>(orders);
     }

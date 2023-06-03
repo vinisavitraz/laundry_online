@@ -12,8 +12,6 @@ import {Observable, of} from "rxjs";
 })
 export class NavbarComponent {
 
-  authenticated: boolean;
-
   authenticatedUser: User | undefined;
 
   constructor(
@@ -21,21 +19,14 @@ export class NavbarComponent {
       private authService: AuthService,
   ) {
     this.authenticatedUser = undefined;
-    this.authenticated = false;
   }
 
   ngOnInit(): void {
-    this.authService.isAuthenticated().subscribe(authenticated => {
-      this.authenticated = authenticated;
-    });
-
     this.authService.getAuthenticatedUser().subscribe({
-      next: (authenticatedUserDto) => {
-        this.authenticatedUser = authenticatedUserDto.entity;
-        this.authService.setAuthenticated(true);
+      next: (authenticatedUser) => {
+        this.authenticatedUser = authenticatedUser;
       },
       error: (err) => {
-        this.authService.setAuthenticated(false);
         this.authenticatedUser = undefined;
       },
     });
@@ -45,13 +36,9 @@ export class NavbarComponent {
     this.router.navigate([uri]);
   }
 
-  // get authenticatedUser(): User | null {
-  //   return this.authService.getAuthenticatedUser();
-  // }
-
   public logout(): void {
     this.authService.logout().subscribe(message => {
-      this.authService.setAuthenticated(false);
+      this.authService.setAuthenticatedUser(undefined);
       this.router.navigate([RoutesEnum.LOGIN]);
     });
   }

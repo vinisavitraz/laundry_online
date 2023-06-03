@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, of, throwError} from "rxjs";
+import {BehaviorSubject, Observable, of, Subject, throwError} from "rxjs";
 import {RequestLoginDto} from "../dto/request/request-login.dto";
 import {LoginResponseDto} from "../dto/response/login-response.dto";
 import {ErrorMessagesEnum} from "../../commons/enums/error-messages.enum";
@@ -9,6 +9,7 @@ import {Token} from "../../commons/models/token.model";
 import {AuthenticatedUserResponseDto} from "../dto/response/authenticated-user-response.dto";
 import {LogoutResponseDto} from "../dto/response/logout-response.dto";
 import {CustomerService} from "../../customer/services/customer.service";
+import {User} from "../../commons/models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +19,26 @@ export class AuthService {
   static TOKEN_JWT_KEY = 'token_jwt';
   static USER_ROLE_KEY = 'user_role_jwt';
 
-  private authenticated: Observable<boolean>;
+  private authenticatedUserSubject: Subject<User | undefined>;
+  private readonly authenticatedUser: Observable<User | undefined>;
 
   constructor(
       private customerService: CustomerService,
       private httpClient: HttpClient,
   ) {
-    this.authenticated = of(false);
+    this.authenticatedUserSubject = new BehaviorSubject<User | undefined>(undefined);
+    this.authenticatedUser = this.authenticatedUserSubject.asObservable();
   }
 
-  public isAuthenticated(): Observable<boolean> {
-    return this.authenticated;
+  public getAuthenticatedUser(): Observable<User | undefined> {
+    return this.authenticatedUser;
   }
 
-  public setAuthenticated(authenticated: boolean): void {
-    this.authenticated = of(authenticated);
+  public setAuthenticatedUser(authenticatedUser: User | undefined): void {
+    this.authenticatedUserSubject.next(authenticatedUser);
   }
 
-  public getAuthenticatedUser(): Observable<AuthenticatedUserResponseDto> {
+  public getAuthenticatedUserOnWS(): Observable<AuthenticatedUserResponseDto> {
     return this.httpClient.get<AuthenticatedUserResponseDto>(
         BASE_URL + '/authenticated-user',
         DEFAULT_HEADERS
@@ -87,11 +90,13 @@ export class AuthService {
     return JSON.parse(userRole);
   }
 
-  public saveTokenJWT(tokenJWT: Token): void {
+  public saveAuthUserInfo(tokenJWT: Token, userRole: string): void {
     localStorage.setItem(AuthService.TOKEN_JWT_KEY, JSON.stringify(tokenJWT));
+    localStorage.setItem(AuthService.USER_ROLE_KEY, JSON.stringify(userRole));
   }
 
-  public saveUserRole(userRole: string): void {
-    localStorage.setItem(AuthService.USER_ROLE_KEY, JSON.stringify(userRole));
+  public clearAuthUserInfo(): void {
+    localStorage.removeItem(AuthService.TOKEN_JWT_KEY);
+    localStorage.removeItem(AuthService.USER_ROLE_KEY);
   }
 }

@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS tokens
 (
     id BIGINT NOT NULL PRIMARY KEY,
     token VARCHAR(250) NOT NULL,
-    expiresAt DATE NULL,
+    expiresAt TIMESTAMP NOT NULL,
     userId BIGINT NOT NULL,
     CONSTRAINT fk_token_user FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
 );

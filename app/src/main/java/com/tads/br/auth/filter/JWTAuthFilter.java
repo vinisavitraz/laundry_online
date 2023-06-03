@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class JWTAuthFilter extends OncePerRequestFilter {
 
@@ -46,6 +47,11 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
             if (token == null) {
                 throw new RuntimeException("Token from request not found");
+            }
+
+            if (new Date().after(token.getExpiresAt())) {
+                this.authService.deleteToken(token);
+                throw new RuntimeException("Token is expired");
             }
 
             SecurityContextHolder.getContext().setAuthentication(

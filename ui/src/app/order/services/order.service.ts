@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {CreateOrderRequestDto} from "../dto/request/create-order-request.dto";
 import {User} from "../../commons/models/user.model";
 import {RolesEnum} from "../../commons/enums/roles.enum";
@@ -28,6 +28,12 @@ export class OrderService {
 
     return this.httpClient.get<OrdersResponseDto>(
         BASE_URL + '/orders/customer/' + user.id, DEFAULT_HEADERS,
+    );
+  }
+
+  public getOrdersByStatus(status: string): Observable<OrdersResponseDto> {
+    return this.httpClient.get<OrdersResponseDto>(
+        BASE_URL + '/orders/status/' + status , DEFAULT_HEADERS,
     );
   }
 

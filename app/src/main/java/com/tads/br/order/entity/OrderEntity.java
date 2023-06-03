@@ -1,6 +1,8 @@
 package com.tads.br.order.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OrderEntity {
     private Long id;
@@ -11,8 +13,9 @@ public class OrderEntity {
     private Date paymentDate;
     private Long customerId;
     private Long employeeId;
+    private List<OrderItemEntity> items;
 
-    public OrderEntity(Long id, String status, Double washPrice, Integer washTime, Date createDate, Date paymentDate, Long customerId, Long employeeId) {
+    public OrderEntity(Long id, String status, Double washPrice, Integer washTime, Date createDate, Date paymentDate, Long customerId, Long employeeId, List<OrderItemEntity> items) {
         this.id = id;
         this.status = status;
         this.washPrice = washPrice;
@@ -21,9 +24,11 @@ public class OrderEntity {
         this.paymentDate = paymentDate;
         this.customerId = customerId;
         this.employeeId = employeeId;
+        this.items = items;
     }
 
     public OrderEntity() {
+        this.items = new ArrayList<>();
     }
 
     public Long getId() {
@@ -88,5 +93,13 @@ public class OrderEntity {
 
     public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public List<OrderItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemEntity> items) {
+        this.items = items;
     }
 }

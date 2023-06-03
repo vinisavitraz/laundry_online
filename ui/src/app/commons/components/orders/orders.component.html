@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col">
+        <div *ngIf="orders.length > 0">
+            <div class="card my-3" *ngFor="let order of orders">
+                <app-order [order]="order" [user]="user"></app-order>
+            </div>
+        </div>
+        <div class="text-center" *ngIf="orders.length === 0">
+            <br>
+            <p class="text-secondary">Nenhum pedido encontrado</p>
+            <br>
+        </div>
+    </div>
+</div>

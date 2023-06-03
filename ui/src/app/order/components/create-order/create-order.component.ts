@@ -48,7 +48,7 @@ export class CreateOrderComponent {
   ngOnInit(): void {
     this.createForm();
 
-    this.authService.getAuthenticatedUser().subscribe({
+    this.authService.getAuthenticatedUserOnWS().subscribe({
       next: (authenticatedUserDto) => {
         this.user = authenticatedUserDto.entity;
       },

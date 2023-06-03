@@ -18,7 +18,8 @@ public class AuthRepository implements AuthRepositoryInterface {
     private static final String QUERY_CREATE = "INSERT INTO tokens (id, token, expiresAt, userId) VALUES (?,?,?,?)";
     private static final String QUERY_FIND_BY_TOKEN = "SELECT * FROM tokens WHERE token = ?";
     private static final String QUERY_FIND_BY_USER = "SELECT * FROM tokens WHERE userId = ? LIMIT 1";
-    private static final String QUERY_DELETE = "DELETE FROM tokens WHERE userId = ?";
+    private static final String QUERY_DELETE_BY_TOKEN = "DELETE FROM tokens WHERE token = ?";
+    private static final String QUERY_DELETE_BY_USER = "DELETE FROM tokens WHERE userId = ?";
 
     public AuthRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -54,7 +55,12 @@ public class AuthRepository implements AuthRepositoryInterface {
 
     @Override
     public int removeTokensFromUser(UserEntity user) {
-        return jdbcTemplate.update(AuthRepository.QUERY_DELETE, user.getId());
+        return jdbcTemplate.update(AuthRepository.QUERY_DELETE_BY_USER, user.getId());
+    }
+
+    @Override
+    public int deleteToken(TokenEntity token) {
+        return jdbcTemplate.update(AuthRepository.QUERY_DELETE_BY_TOKEN, token.getToken());
     }
 
     @Override

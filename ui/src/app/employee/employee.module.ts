@@ -6,6 +6,7 @@ import { CreateEmployeeComponent } from './components/create-employee/create-emp
 import { EditEmployeeComponent } from './components/edit-employee/edit-employee.component';
 import {RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {CommonsModule} from "../commons";
 
 @NgModule({
   declarations: [
@@ -14,10 +15,11 @@ import {FormsModule} from "@angular/forms";
     CreateEmployeeComponent,
     EditEmployeeComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        CommonsModule,
+    ]
 })
 export class EmployeeModule { }

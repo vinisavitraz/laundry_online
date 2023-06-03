@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
     const tokenJWT: Token | null = this.authService.getTokenJWT();
 
     if (tokenJWT === null) {
