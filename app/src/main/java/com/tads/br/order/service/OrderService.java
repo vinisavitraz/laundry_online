@@ -51,42 +51,6 @@ public class OrderService implements OrderServiceInterface {
 
     @Override
     public OrderEntity createOrder(CreateOrderRequestDto createOrderRequestDto) {
-
-        // let totalWashPrice: number = 0;
-        // let totalWashTime: number = 0;
-        // const items: OrderItem[] = [];
-        //
-        // for (let i = 0; i < dto.items!.length!; i++) {
-        //   const item: ItemOrderRequestDto = dto.items![i];
-        //
-        //   const washPrice = item.clothing!.washPrice! * item.quantity!;
-        //   totalWashPrice += washPrice;
-        //
-        //   if (item.clothing!.washTime! > totalWashTime) {
-        //     totalWashTime = item.clothing!.washTime!;
-        //   }
-        //
-        //   items.push(new OrderItem(0, item.clothing!.id, item.quantity!, washPrice));
-        // }
-        //
-        // const order: Order = new Order(
-        //     undefined,
-        //     OrderStatusEnum.CREATED,
-        //     totalWashPrice,
-        //     totalWashTime,
-        //     items,
-        //     dto.entity!.customerId,
-        //     new Date(),
-        // );
-
-        //
-        //
-        //
-        // orders.push(order);
-        //
-        // localStorage.setItem(OrderService.ORDERS_KEY, JSON.stringify(orders));
-        //
-        // return of(order);
         return this.orderRepository.create(createOrderRequestDto.getEntity());
     }
 

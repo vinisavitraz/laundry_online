@@ -20,9 +20,11 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    console.log('AuthGuard');
     const tokenJWT: Token | null = this.authService.getTokenJWT();
-
+    console.log(tokenJWT);
     if (tokenJWT === null) {
+      console.log('tokenJWT === null');
       this.router.navigate([RoutesEnum.LOGIN], { queryParams: { error: 'Usuário não autenticado' } })
       return false;
     }

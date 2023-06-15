@@ -32,11 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // localStorage.clear();
     this.route.queryParams.subscribe(params => {
       this.message = params['error'];
     });
-    this.routeToHomePageIfAuthenticated();
   }
 
   public executeLogin(): void {
@@ -49,6 +47,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.dto).subscribe({
       next: (loginResponseDto) => {
+        console.log('login - next - LoginComponent');
         this.loading = false;
 
         this.authService.saveAuthUserInfo(loginResponseDto.token, loginResponseDto.userRole);
@@ -68,6 +67,7 @@ export class LoginComponent implements OnInit {
   }
 
   private routeToHomePageIfAuthenticated(): void {
+    console.log('routeToHomePageIfAuthenticated - LoginComponent');
     this.authService.getAuthenticatedUserOnWS().subscribe({
       next: (authenticatedUserDto) => {
         if (!authenticatedUserDto.entity) {
@@ -78,16 +78,21 @@ export class LoginComponent implements OnInit {
 
         const role: string = authenticatedUserDto.entity.role!;
 
-        if (role === RolesEnum.CUSTOMER) {
-          this.router.navigate([RoutesEnum.CUSTOMER_HOME]);
-          return;
-        }
-        if (role === RolesEnum.EMPLOYEE) {
-          this.router.navigate([RoutesEnum.EMPLOYEE_HOME]);
-        }
+        this.router.navigate([RoutesEnum.HOME]);
+        // if (role === RolesEnum.CUSTOMER) {
+        //   this.router.navigate([RoutesEnum.HOME]);
+        //   return;
+        // }
+        // if (role === RolesEnum.EMPLOYEE) {
+        //   this.router.navigate([RoutesEnum.EMPLOYEE_HOME]);
+        // }
       },
       error: (err) => {
         console.log(err);
+        if (err.status === 401) {
+          console.log('redirecting');
+          this.message = 'Usuário não autenticado';
+        }
       },
     });
   }

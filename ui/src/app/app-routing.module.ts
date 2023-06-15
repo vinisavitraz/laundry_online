@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {RoutesEnum} from "./commons/enums/routes.enum";
 import {LoginComponent} from "./auth/components/login/login.component";
 import {RegisterComponent} from "./auth/components/register/register.component";
@@ -19,12 +19,12 @@ import {ListEmployeesComponent} from "./employee/components/list-employees/list-
 import {CreateEmployeeComponent} from "./employee/components/create-employee/create-employee.component";
 import {EditEmployeeComponent} from "./employee/components/edit-employee/edit-employee.component";
 import {SelectReportComponent} from "./report/components/select-report/select-report.component";
+import {AppComponent} from "./app.component";
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: RoutesEnum.LOGIN,
-    pathMatch: 'full',
+    path: RoutesEnum.HOME,
+    component: AppComponent,
   },
   {
     path: RoutesEnum.LOGIN,

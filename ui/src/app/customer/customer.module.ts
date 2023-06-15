@@ -12,6 +12,6 @@ import {CommonsModule} from "../commons";
         CommonModule,
         RouterModule,
         CommonsModule,
-    ]
+    ],
 })
 export class CustomerModule { }
