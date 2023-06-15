@@ -21,7 +21,7 @@ import java.util.Date;
 @Component
 public class UserAuthProvider {
 
-    private static Integer TOKEN_EXPIRE_TIME_IN_SECONDS = 86400;
+    private static final Integer TOKEN_EXPIRE_TIME_IN_SECONDS = 86400;
     private final UserService userService;
 
     @Value("$(security.jwt.token.secret-key:secret-key)")
@@ -63,7 +63,11 @@ public class UserAuthProvider {
     public Authentication validateCredentials(AuthRequestDto authRequestDto) {
         UserEntity user = this.userService.findUserByEmail(authRequestDto.getEmail());
 
-        //add validation logic and password
+        String passwordInputHash = this.userService.hashPassword(authRequestDto.getPassword(), user.getPasswordSalt().getBytes());
+
+        if (!user.getPasswordHash().equals(passwordInputHash)) {
+            throw new RuntimeException("Wrong password!");
+        }
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

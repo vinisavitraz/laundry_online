@@ -15,7 +15,7 @@ public class OrderRepository implements OrderRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('orders_sequence')";
-    private static final String QUERY_CREATE = "INSERT INTO orders (id, status, washPrice, washTime, createDate, paymentDate, customerId, employeeId) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String QUERY_CREATE = "INSERT INTO orders (id, status, washPrice, washTime, createDate, paymentDate, customerId) VALUES (?,?,?,?,?,?,?)";
     private static final String QUERY_UPDATE = "UPDATE orders SET status = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM orders WHERE id = ?";
     private static final String QUERY_FIND_OPEN_ORDERS = "SELECT * FROM orders WHERE status = ?";
@@ -38,7 +38,7 @@ public class OrderRepository implements OrderRepositoryInterface {
         });
 
         jdbcTemplate.update(OrderRepository.QUERY_CREATE,
-                id, order.getStatus(), order.getWashPrice(), order.getWashTime(), order.getCreateDate(), order.getPaymentDate(), order.getCustomerId(), order.getEmployeeId());
+                id, order.getStatus(), order.getWashPrice(), order.getWashTime(), order.getCreateDate(), order.getPaymentDate(), order.getCustomerId());
 
         order.setId(id);
 

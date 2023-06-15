@@ -3,7 +3,6 @@ package com.tads.br.auth.config;
 import com.tads.br.auth.filter.EmailPasswordAuthFilter;
 import com.tads.br.auth.filter.JWTAuthFilter;
 import com.tads.br.auth.provider.UserAuthProvider;
-import com.tads.br.auth.service.AuthService;
 import com.tads.br.auth.service.AuthServiceInterface;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

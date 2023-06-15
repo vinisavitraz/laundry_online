@@ -6,7 +6,8 @@ public class UserEntity {
     private Long id;
     private String name;
     private String email;
-    private String password;
+    private String passwordHash;
+    private String passwordSalt;
     private String document;
     private String phone;
     private String cep;
@@ -18,11 +19,12 @@ public class UserEntity {
     private Date birthDate;
     private String role;
 
-    public UserEntity(Long id, String name, String email, String password, String document, String phone, String cep, String street, String streetNumber, String district, String city, String state, Date birthDate, String role) {
+    public UserEntity(Long id, String name, String email, String passwordHash, String passwordSalt, String document, String phone, String cep, String street, String streetNumber, String district, String city, String state, Date birthDate, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
+        this.passwordSalt = passwordSalt;
         this.document = document;
         this.phone = phone;
         this.cep = cep;
@@ -62,12 +64,20 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public String getPasswordSalt() {
+        return passwordSalt;
+    }
+
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
     }
 
     public String getDocument() {

@@ -9,6 +9,7 @@ import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.service.UserServiceInterface;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,7 +52,21 @@ public class OrderService implements OrderServiceInterface {
 
     @Override
     public OrderEntity createOrder(CreateOrderRequestDto createOrderRequestDto) {
-        return this.orderRepository.create(createOrderRequestDto.getEntity());
+        createOrderRequestDto.getEntity().setStatus("created");
+        createOrderRequestDto.getEntity().setCreateDate(new Date());
+
+        OrderEntity order = this.orderRepository.create(createOrderRequestDto.getEntity());
+
+        createOrderRequestDto.getItems().forEach(itemEntity -> {
+            itemEntity.setOrderId(order.getId());
+        });
+        System.out.println("createOrder - service");
+        System.out.println(order.getItems().size());
+        for (OrderItemEntity item : createOrderRequestDto.getItems()) {
+            order.getItems().add(this.orderItemRepository.create(item));
+        }
+
+        return order;
     }
 
     @Override

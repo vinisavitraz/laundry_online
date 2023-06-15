@@ -7,9 +7,10 @@ import java.util.List;
 
 public interface OrderItemRepositoryInterface {
 
-    Long create(OrderItemEntity orderItem);
+    OrderItemEntity create(OrderItemEntity orderItem);
 
     OrderItemEntity findById(Long id);
 
     List<OrderItemEntity> getOrderItemsByOrder(OrderEntity order);
+
 }

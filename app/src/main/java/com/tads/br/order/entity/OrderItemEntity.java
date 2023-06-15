@@ -5,12 +5,14 @@ public class OrderItemEntity {
     private Integer totalQuantity;
     private Double totalWashPrice;
     private Long clothingId;
+    private Long orderId;
 
-    public OrderItemEntity(Long id, Integer totalQuantity, Double totalWashPrice, Long clothingId) {
+    public OrderItemEntity(Long id, Integer totalQuantity, Double totalWashPrice, Long clothingId, Long orderId) {
         this.id = id;
         this.totalQuantity = totalQuantity;
         this.totalWashPrice = totalWashPrice;
         this.clothingId = clothingId;
+        this.orderId = orderId;
     }
 
     public OrderItemEntity() {
@@ -46,5 +48,13 @@ public class OrderItemEntity {
 
     public void setClothingId(Long clothingId) {
         this.clothingId = clothingId;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }

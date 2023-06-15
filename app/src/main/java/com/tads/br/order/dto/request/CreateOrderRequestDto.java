@@ -3,6 +3,7 @@ package com.tads.br.order.dto.request;
 import com.tads.br.order.entity.OrderEntity;
 import com.tads.br.order.entity.OrderItemEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateOrderRequestDto {
@@ -16,6 +17,7 @@ public class CreateOrderRequestDto {
     }
 
     public CreateOrderRequestDto() {
+        this.items = new ArrayList<>();
     }
 
     public OrderEntity getEntity() {

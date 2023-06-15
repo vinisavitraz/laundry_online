@@ -22,4 +22,7 @@ public interface UserServiceInterface {
     UserEntity createEmployee(CreateEmployeeRequestDto createClothingRequestDto);
 
     UserEntity updateEmployee(UpdateEmployeeRequestDto updateClothingRequestDto);
+
+    String hashPassword(String password, byte[] salt);
+
 }

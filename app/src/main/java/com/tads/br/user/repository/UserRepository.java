@@ -14,8 +14,8 @@ public class UserRepository implements UserRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
-    private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, password) VALUES (?,?,?,?,?)";
-    private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
+    private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, passwordHash, passwordSalt) VALUES (?,?,?,?,?,?)";
+    private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, passwordHash = ?, passwordSalt = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee'";
@@ -36,7 +36,7 @@ public class UserRepository implements UserRepositoryInterface {
         });
 
         jdbcTemplate.update(UserRepository.QUERY_CREATE,
-                id, user.getName(), user.getEmail(), user.getRole(), user.getPassword());
+                id, user.getName(), user.getEmail(), user.getRole(), user.getPasswordHash(), user.getPasswordSalt());
 
         return id;
     }
@@ -44,7 +44,7 @@ public class UserRepository implements UserRepositoryInterface {
     @Override
     public int update(UserEntity user) {
         return jdbcTemplate.update(UserRepository.QUERY_UPDATE,
-                user.getName(), user.getEmail(), user.getPassword(), user.getId());
+                user.getName(), user.getEmail(), user.getPasswordHash(), user.getPasswordSalt(), user.getId());
     }
 
     @Override

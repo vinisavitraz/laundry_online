@@ -152,6 +152,8 @@ export class CreateOrderComponent {
 
 
     this.dto.entity!.customerId = this.user!.id;
+    this.dto.entity!.washPrice = this.totalWashPrice;
+    this.dto.entity!.washTime = this.totalWashTime;
 
     this.orderService.createOrder(this.dto).subscribe(order => {
       if (order.entity === null) {

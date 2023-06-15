@@ -62,7 +62,7 @@
                     <br>
                     <div class="col-12">
                         <label for="cep" class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" minlength="8" maxlength="8" required>
+                        <input type="text" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" minlength="8" maxlength="10" required>
                         <div *ngIf="registerForm.get('cep')?.invalid && (registerForm.get('cep')?.dirty || registerForm.get('cep')?.touched)" class="alert alert-danger">
                             <div *ngIf="!registerForm.get('cep')?.errors?.['required']" >Digite o CEP</div>
                             <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 8 caracteres</div>

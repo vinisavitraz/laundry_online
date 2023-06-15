@@ -16,7 +16,7 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('order_items_sequence')";
-    private static final String QUERY_CREATE = "INSERT INTO order_items (id, totalQuantity, totalWashPrice, clothingId) VALUES (?,?,?,?)";
+    private static final String QUERY_CREATE = "INSERT INTO order_items (id, totalQuantity, totalWashPrice, clothingId, orderId) VALUES (?,?,?,?, ?)";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM order_items WHERE id = ?";
     private static final String QUERY_FIND_BY_ORDER_ID = "SELECT * FROM order_items WHERE orderId = ?";
 
@@ -25,7 +25,7 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
     }
 
     @Override
-    public Long create(OrderItemEntity orderItem) {
+    public OrderItemEntity create(OrderItemEntity orderItem) {
         Long id = jdbcTemplate.query(OrderItemRepository.QUERY_SEQUENCE, rs -> {
             if (rs.next()) {
                 return rs.getLong(1);
@@ -35,9 +35,11 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
         });
 
         jdbcTemplate.update(OrderItemRepository.QUERY_CREATE,
-                id, orderItem.getTotalQuantity(), orderItem.getTotalWashPrice(), orderItem.getClothingId());
+                id, orderItem.getTotalQuantity(), orderItem.getTotalWashPrice(), orderItem.getClothingId(), orderItem.getOrderId());
 
-        return id;
+        orderItem.setId(id);
+
+        return orderItem;
     }
 
     @Override
@@ -54,6 +56,4 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
     public List<OrderItemEntity> getOrderItemsByOrder(OrderEntity order) {
         return jdbcTemplate.query(OrderItemRepository.QUERY_FIND_BY_ORDER_ID, BeanPropertyRowMapper.newInstance(OrderItemEntity.class), order.getId());
     }
-
-
 }

@@ -12,10 +12,9 @@ public class OrderEntity {
     private Date createDate;
     private Date paymentDate;
     private Long customerId;
-    private Long employeeId;
     private List<OrderItemEntity> items;
 
-    public OrderEntity(Long id, String status, Double washPrice, Integer washTime, Date createDate, Date paymentDate, Long customerId, Long employeeId, List<OrderItemEntity> items) {
+    public OrderEntity(Long id, String status, Double washPrice, Integer washTime, Date createDate, Date paymentDate, Long customerId, List<OrderItemEntity> items) {
         this.id = id;
         this.status = status;
         this.washPrice = washPrice;
@@ -23,7 +22,6 @@ public class OrderEntity {
         this.createDate = createDate;
         this.paymentDate = paymentDate;
         this.customerId = customerId;
-        this.employeeId = employeeId;
         this.items = items;
     }
 
@@ -85,14 +83,6 @@ public class OrderEntity {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
     }
 
     public List<OrderItemEntity> getItems() {
