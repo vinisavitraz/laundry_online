@@ -17,14 +17,12 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log('AppComponent - ngOnInit');
     this.routeToHomePageIfAuthenticated();
   }
 
   private routeToHomePageIfAuthenticated(): void {
     this.authService.getAuthenticatedUserOnWS().subscribe({
       next: (authenticatedUserDto) => {
-        console.log('getAuthenticatedUserOnWS - next');
         if (!authenticatedUserDto.entity) {
           return;
         }
@@ -42,14 +40,9 @@ export class AppComponent {
         }
       },
       error: (err) => {
-        console.log('getAuthenticatedUserOnWS - err');
-        console.log(err);
         if (err.status === 401) {
-          console.log('redirecting');
           this.router.navigate([RoutesEnum.LOGIN]);
-          // this.router.navigate([RoutesEnum.LOGIN], { queryParams: { error: 'Usuário não autenticado' } })
         }
-
       },
     });
   }

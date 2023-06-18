@@ -1,0 +1,59 @@
+<div class="container-fluid  d-flex justify-content-center">
+    <div class="col-11">
+        <br>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-8">
+                <h1>Relatórios</h1>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-md-12 col-lg-10">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                    <label for="reportName" class="form-label">Nome</label>
+                    <select (change)="selectReport($event)" class="form-select form-control" id="reportName" name="reportName">
+                        <option value="">Selecionar...</option>
+                        <option value="receipts">Receitas</option>
+                        <option value="all_customers">Clientes</option>
+                        <option value="loyal_customers">Clientes fiéis</option>
+                    </select>
+                </div>
+                <br>
+                <div *ngIf="showFilter">
+                    <div class="row g-5">
+                        <div class="col-3 form-group">
+                            <label for="startDate">Data inícial</label>
+                            <input type="date" [(ngModel)]="startDate" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <div class="col-3 form-group">
+                            <label for="endDate">Data final</label>
+                            <input type="date" [(ngModel)]="endDate" class="form-control" id="endDate" name="endDate">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <button type="button" (click)="generateReport()" class="btn btn-success border border-3">Gerar relatório</button>
+            </div>
+        </div>
+        <div class="row invisible">
+            <div #content class="content">
+                <div class="col-12">
+                    <h2 class="mx-5 my-3" style="font-size:10px;">{{ reportTitle }}</h2>
+                </div>
+                <div class="col-12">
+                    <table>
+                        <tr>
+                            <th style="font-size:6px;" *ngFor="let header of reportResponseDto?.header">{{ header.value }}</th>
+                        </tr>
+                        <tr style="font-size:6px;" *ngFor="let row of reportResponseDto?.content">
+                            <td style="font-size:6px;" *ngFor="let column of row.content">{{ column.value }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>

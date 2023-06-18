@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.dto).subscribe({
       next: (loginResponseDto) => {
-        console.log('login - next - LoginComponent');
         this.loading = false;
 
         this.authService.saveAuthUserInfo(loginResponseDto.token, loginResponseDto.userRole);
@@ -67,7 +66,6 @@ export class LoginComponent implements OnInit {
   }
 
   private routeToHomePageIfAuthenticated(): void {
-    console.log('routeToHomePageIfAuthenticated - LoginComponent');
     this.authService.getAuthenticatedUserOnWS().subscribe({
       next: (authenticatedUserDto) => {
         if (!authenticatedUserDto.entity) {
@@ -90,7 +88,6 @@ export class LoginComponent implements OnInit {
       error: (err) => {
         console.log(err);
         if (err.status === 401) {
-          console.log('redirecting');
           this.message = 'Usuário não autenticado';
         }
       },

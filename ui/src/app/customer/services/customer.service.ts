@@ -4,7 +4,7 @@ import {BASE_URL, DEFAULT_HEADERS} from "../../commons/constants/app-client.cons
 import {Customer} from "../../commons/models/customer.model";
 import {HttpClient} from "@angular/common/http";
 import {CustomerResponseDto} from "../dto/response/customer-response.dto";
-import {CreateCustomerRequestDto} from "../dto/requst/create-customer-request.dto";
+import {CreateCustomerRequestDto} from "../dto/request/create-customer-request.dto";
 
 @Injectable({
   providedIn: 'root'

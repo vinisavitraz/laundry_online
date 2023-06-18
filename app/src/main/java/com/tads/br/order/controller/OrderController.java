@@ -62,9 +62,6 @@ public class OrderController {
     @PostMapping("/orders")
     @ResponseBody
     public EntityResponseDto<OrderEntity> createOrder(@RequestBody CreateOrderRequestDto createOrderRequestDto) {
-        System.out.println("createOrder order controller");
-        System.out.println("createOrder order controller - size");
-        System.out.println(createOrderRequestDto.getItems().size());
         OrderEntity order = this.service.createOrder(createOrderRequestDto);
 
         return new EntityResponseDto<>(order);

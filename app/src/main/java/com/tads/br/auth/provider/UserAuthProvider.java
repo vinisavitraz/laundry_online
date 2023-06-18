@@ -63,6 +63,10 @@ public class UserAuthProvider {
     public Authentication validateCredentials(AuthRequestDto authRequestDto) {
         UserEntity user = this.userService.findUserByEmail(authRequestDto.getEmail());
 
+        if (user == null) {
+            throw new RuntimeException("Email not found!");
+        }
+
         String passwordInputHash = this.userService.hashPassword(authRequestDto.getPassword(), user.getPasswordSalt().getBytes());
 
         if (!user.getPasswordHash().equals(passwordInputHash)) {

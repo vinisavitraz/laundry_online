@@ -60,8 +60,7 @@ public class OrderService implements OrderServiceInterface {
         createOrderRequestDto.getItems().forEach(itemEntity -> {
             itemEntity.setOrderId(order.getId());
         });
-        System.out.println("createOrder - service");
-        System.out.println(order.getItems().size());
+
         for (OrderItemEntity item : createOrderRequestDto.getItems()) {
             order.getItems().add(this.orderItemRepository.create(item));
         }
