@@ -40,6 +40,7 @@ export class SearchOrderComponent {
   }
 
   public searchOrder(): void {
+    this.order = undefined;
     this.notFound = false;
 
     const orderId: number = Number(this.orderId);
@@ -49,7 +50,7 @@ export class SearchOrderComponent {
     }
 
     this.orderService.findById(orderId).subscribe(orderDto => {
-      if (orderDto.entity === undefined) {
+      if (!orderDto.entity) {
         this.notFound = true;
         return;
       }
@@ -61,19 +62,5 @@ export class SearchOrderComponent {
 
       this.order = orderDto.entity;
     });
-  }
-
-  public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status).subscribe(dto => {
-      if (dto.entity === undefined) {
-        return;
-      }
-
-      this.order = dto.entity!;
-    });
-  }
-
-  public showSummary(order: Order): void {
-    this.router.navigate([RoutesEnum.ORDER_SUMMARY.replace(':id', order.id!.toString())])
   }
 }

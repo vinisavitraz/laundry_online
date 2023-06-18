@@ -38,8 +38,13 @@ export class OrderSummaryComponent {
     });
   }
 
-  public setStatus(id: number, status: string): void {
-    this.orderService.setStatus(id, status);
-    this.router.navigate([RoutesEnum.LIST_ORDERS]);
+  public setStatus(id: number | undefined, status: string): void {
+    if (id === undefined) {
+      return;
+    }
+
+    this.orderService.setStatus(id, status).subscribe(statusResponseDto => {
+      this.router.navigate([RoutesEnum.LIST_ORDERS]);
+    });
   }
 }

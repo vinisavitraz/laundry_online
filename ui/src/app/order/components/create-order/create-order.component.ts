@@ -155,7 +155,12 @@ export class CreateOrderComponent {
     this.dto.entity!.washPrice = this.totalWashPrice;
     this.dto.entity!.washTime = this.totalWashTime;
 
+    console.log('aaa');
+    console.log(this.dto);
+
     this.orderService.createOrder(this.dto).subscribe(order => {
+      console.log('aaa response');
+      console.log(order);
       if (order.entity === null) {
         alert('Erro criando pedido!');
         return;
