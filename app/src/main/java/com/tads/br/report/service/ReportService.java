@@ -29,10 +29,6 @@ public class ReportService implements ReportServiceInterface {
             endDate = "";
         }
 
-        System.out.print("getReceiptsContent - service");
-        System.out.print(startDate);
-        System.out.print(endDate);
-
         List<ReceiptReportEntity> receipts = this.repository.findReceipts(startDate, endDate);
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 

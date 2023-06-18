@@ -159,4 +159,25 @@ public class UserEntity {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", passwordSalt='" + passwordSalt + '\'' +
+                ", document='" + document + '\'' +
+                ", phone='" + phone + '\'' +
+                ", cep='" + cep + '\'' +
+                ", street='" + street + '\'' +
+                ", streetNumber='" + streetNumber + '\'' +
+                ", district='" + district + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", birthDate=" + birthDate +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

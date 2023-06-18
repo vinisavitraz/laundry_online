@@ -9,9 +9,6 @@
             <br>
             <h1>LOL - Lavanderia OnLine</h1>
         </div>
-<!--        <div class="mx-5">-->
-<!--            <img src="/assets/logo.png" class="img-fluid" width="300" height="100" alt="">-->
-<!--        </div>-->
         <hr class="bg-dark border-1 border-top border-dark mx-3">
         <br>
         <div class="row g-5 d-flex justify-content-center">
@@ -41,7 +38,7 @@
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="document" class="form-label">CPF</label>
-                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 80694929026" formControlName="document" minlength="11" maxlength="11" required>
+                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 80694929026" formControlName="document" minlength="11" maxlength="14" required>
                             <div *ngIf="registerForm.get('document')?.invalid && (registerForm.get('document')?.dirty || registerForm.get('document')?.touched)" class="alert alert-danger">
                                 <div *ngIf="!registerForm.get('document')?.errors?.['required']" >Digite o CPF</div>
                                 <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 11 caracteres</div>

@@ -1,8 +1,15 @@
-import {Customer} from "../../../commons/models/customer.model";
-
 export class CreateCustomerRequestDto {
     constructor(
-        public entity?: Customer,
+        public name?: string,
+        public email?: string,
+        public document?: string,
+        public phone?: string,
+        public cep?: string,
+        public street?: string,
+        public streetNumber?: string,
+        public district?: string,
+        public city?: string,
+        public state?: string,
     ) {
     }
 }

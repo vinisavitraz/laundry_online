@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {CustomerService} from "../../../customer/services/customer.service";
 import {Customer} from "../../../commons/models/customer.model";
 import {RolesEnum} from "../../../commons/enums/roles.enum";
+import {CreateCustomerRequestDto} from "../../../customer/dto/request/create-customer-request.dto";
 
 @Component({
   selector: 'app-register',
@@ -90,22 +91,20 @@ export class RegisterComponent {
       return;
     }
 
-    const customer: Customer = new Customer();
+    const createCustomerRequestDto: CreateCustomerRequestDto = new CreateCustomerRequestDto(
+        this.nameInput.getRawValue(),
+        this.emailInput.getRawValue(),
+        this.documentInput.getRawValue(),
+        this.phoneInput.getRawValue(),
+        this.cepInput.getRawValue(),
+        this.streetInput.getRawValue(),
+        this.streetNumberInput.getRawValue(),
+        this.districtInput.getRawValue(),
+        this.cityInput.getRawValue(),
+        this.stateInput.getRawValue(),
+    );
 
-    customer.role = RolesEnum.CUSTOMER;
-    customer.name = this.nameInput.getRawValue();
-    customer.email = this.emailInput.getRawValue();
-    customer.document = this.documentInput.getRawValue();
-    customer.phone = this.phoneInput.getRawValue();
-    customer.cep = this.cepInput.getRawValue();
-    customer.street = this.streetInput.getRawValue();
-    customer.streetNumber = this.streetNumberInput.getRawValue();
-    customer.district = this.districtInput.getRawValue();
-    customer.city = this.cityInput.getRawValue();
-    customer.state = this.stateInput.getRawValue();
-
-
-    this.customerService.registerCustomer(customer).subscribe((responseDto) => {
+    this.customerService.registerCustomer(createCustomerRequestDto).subscribe((responseDto) => {
       if (responseDto.entity !== null) {
         this.router.navigate([RoutesEnum.LOGIN]);
         return;

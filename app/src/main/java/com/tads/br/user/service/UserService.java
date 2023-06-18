@@ -42,12 +42,24 @@ public class UserService implements UserServiceInterface {
             String salt = this.generateSalt();
             String hashPassword = this.hashPassword(password, salt.getBytes());
 
-            createCustomerRequestDto.getEntity().setPasswordHash(hashPassword);
-            createCustomerRequestDto.getEntity().setPasswordSalt(salt);
+            UserEntity user = new UserEntity();
+            user.setName(createCustomerRequestDto.getName());
+            user.setEmail(createCustomerRequestDto.getEmail());
+            user.setPasswordHash(hashPassword);
+            user.setPasswordSalt(salt);
+            user.setDocument(createCustomerRequestDto.getDocument().replace(".", "").replace("-", ""));
+            user.setPhone(createCustomerRequestDto.getPhone());
+            user.setCep(createCustomerRequestDto.getCep().replace("-", ""));
+            user.setStreet(createCustomerRequestDto.getStreet());
+            user.setStreetNumber(createCustomerRequestDto.getStreetNumber());
+            user.setDistrict(createCustomerRequestDto.getDistrict());
+            user.setCity(createCustomerRequestDto.getCity());
+            user.setState(createCustomerRequestDto.getState());
+            user.setRole("customer");
 
-            Long customerId = this.repository.createUser(createCustomerRequestDto.getEntity());
+            Long customerId = this.repository.createUser(user);
 
-            this.emailServiceInterface.sendEmailNewUser(createCustomerRequestDto.getEntity().getEmail(), password);
+            this.emailServiceInterface.sendEmailNewUser(user.getEmail(), password);
 
             return this.repository.findById(customerId);
         } catch (NoSuchAlgorithmException e) {

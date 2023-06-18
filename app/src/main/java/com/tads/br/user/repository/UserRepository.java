@@ -14,7 +14,7 @@ public class UserRepository implements UserRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
-    private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, passwordHash, passwordSalt) VALUES (?,?,?,?,?,?)";
+    private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, passwordHash, passwordSalt, document, phone, cep, street, streetNumber, district, city, state, birthDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, passwordHash = ?, passwordSalt = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
@@ -36,7 +36,7 @@ public class UserRepository implements UserRepositoryInterface {
         });
 
         jdbcTemplate.update(UserRepository.QUERY_CREATE,
-                id, user.getName(), user.getEmail(), user.getRole(), user.getPasswordHash(), user.getPasswordSalt());
+                id, user.getName(), user.getEmail(), user.getRole(), user.getPasswordHash(), user.getPasswordSalt(), user.getDocument(), user.getPhone(), user.getCep(), user.getStreet(), user.getStreetNumber(), user.getDistrict(), user.getCity(), user.getState(), user.getBirthDate());
 
         return id;
     }

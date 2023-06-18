@@ -13,9 +13,7 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public registerCustomer(customer: Customer): Observable<CustomerResponseDto> {
-    const createCustomerRequestDto: CreateCustomerRequestDto = new CreateCustomerRequestDto(customer);
-
+  public registerCustomer(createCustomerRequestDto: CreateCustomerRequestDto): Observable<CustomerResponseDto> {
     return this.httpClient.post<CustomerResponseDto>(
         BASE_URL + '/users/customer',
         createCustomerRequestDto,
