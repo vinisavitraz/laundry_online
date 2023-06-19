@@ -97,23 +97,31 @@ export class CreateOrderComponent {
       }
       const clothing: Clothing = clothingResponseDto.entity!;
 
+      console.log('to aqui antes do edit kkkk');
       for (let i = 0; i < this.dto.items!.length; i++) {
         const item: OrderItem = this.dto.items![i];
+        console.log(item);
 
         if (item.clothingId === clothingId) {
           if (this.edit) {
-            this.totalWashPrice -= (item.totalQuantity! * item.totalWashPrice!);
+            console.log('to aqui on edit kkkk');
+            this.totalWashPrice -= (item.totalQuantity! * item.washPrice!);
             this.totalQuantity -= this.dto.items![i].totalQuantity!;
 
-            this.totalWashPrice += (clothingQuantity * item.totalWashPrice!);
+            this.totalWashPrice += (clothingQuantity * item.washPrice!);
             this.totalQuantity += clothingQuantity;
             this.dto.items![i].totalQuantity! = clothingQuantity;
+            this.dto.items![i].totalWashPrice! = this.dto.items![i].totalQuantity! * item.washPrice!;
 
             this.edit = false;
           } else {
-            this.totalWashPrice += (clothingQuantity * item.totalWashPrice!);
+            console.log('to aqui no else edit kkkk');
+            this.totalWashPrice += (clothingQuantity * item.washPrice!);
             this.totalQuantity += clothingQuantity;
             this.dto.items![i].totalQuantity! += clothingQuantity;
+            this.dto.items![i].totalWashPrice = this.dto.items![i].totalQuantity! * item.washPrice!;
+
+            console.log(this.dto.items![i]);
           }
           this.clothingId.setValue('');
           this.clothingQuantity.setValue('');
@@ -121,13 +129,13 @@ export class CreateOrderComponent {
         }
       }
 
-      const item: OrderItem = new OrderItem(0, clothing.id, Number(clothingQuantity), clothing.washTime);
+      const item: OrderItem = new OrderItem(0, clothing.name, clothing.id, Number(clothingQuantity), clothing.washPrice, clothing.washPrice! * Number(clothingQuantity), clothing.washTime);
 
       if (clothing.washTime! > this.totalWashTime) {
         this.totalWashTime = clothing.washTime!;
       }
 
-      this.totalWashPrice += (item.totalQuantity! * item.totalWashPrice!);
+      this.totalWashPrice += (item.totalQuantity! * item.washPrice!);
       this.totalQuantity += item.totalQuantity!;
       this.dto.items!.push(item);
 
@@ -195,7 +203,7 @@ export class CreateOrderComponent {
         }
 
         this.totalQuantity -= itemToDelete.totalQuantity!;
-        this.totalWashPrice -= (itemToDelete.totalWashPrice! * itemToDelete.totalQuantity!);
+        this.totalWashPrice -= (itemToDelete.washPrice! * itemToDelete.totalQuantity!);
 
         if (clothing.washTime === this.totalWashTime) {
           let newTotalWashTime: number = 0;

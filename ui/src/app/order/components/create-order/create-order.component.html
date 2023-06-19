@@ -17,10 +17,11 @@
                     <div class="col-md-12 col-lg-10">
                         <div class="feature col" *ngFor="let orderItem of dto.items!">
                             <div class="card text-dark bg-white mb-3">
-                                <div class="card-header bg-secondary text-white">Peça de roupa: {{ orderItem.clothingId }} - {{ orderItem.totalWashTime }} dia(s)</div>
+                                <div class="card-header bg-secondary text-white">Peça de roupa: {{ orderItem.name }} - {{ orderItem.totalWashTime }} dia(s)</div>
                                 <div class="card-body">
                                     <p class="card-text">Quantidade: {{ orderItem.totalQuantity }}</p>
-                                    <p class="card-text">Preço unitário: R${{ orderItem.totalWashPrice }}</p>
+                                    <p class="card-text">Preço unitário: R${{ orderItem.washPrice }}</p>
+                                    <p class="card-text">Preço total: R${{ orderItem.totalWashPrice }}</p>
                                     <button type="button" (click)="editItem(orderItem)" class="btn btn-xs btn-warning ms-2" title="Editar">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>

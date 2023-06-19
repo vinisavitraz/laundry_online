@@ -17,8 +17,8 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('order_items_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO order_items (id, totalQuantity, totalWashPrice, clothingId, orderId) VALUES (?,?,?,?, ?)";
-    private static final String QUERY_FIND_BY_ID = "SELECT * FROM order_items WHERE id = ?";
-    private static final String QUERY_FIND_BY_ORDER_ID = "SELECT * FROM order_items WHERE orderId = ?";
+    private static final String QUERY_FIND_BY_ID = "SELECT item.*, c.name FROM order_items AS item LEFT JOIN clothings c ON item.clothingId = c.id WHERE id = ?";
+    private static final String QUERY_FIND_BY_ORDER_ID = "SELECT item.*, c.name AS name FROM order_items AS item LEFT JOIN clothings c ON item.clothingId = c.id WHERE orderId = ?";
 
     public OrderItemRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

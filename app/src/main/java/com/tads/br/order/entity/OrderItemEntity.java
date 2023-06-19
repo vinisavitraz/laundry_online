@@ -2,13 +2,15 @@ package com.tads.br.order.entity;
 
 public class OrderItemEntity {
     private Long id;
+    private String name;
     private Integer totalQuantity;
     private Double totalWashPrice;
     private Long clothingId;
     private Long orderId;
 
-    public OrderItemEntity(Long id, Integer totalQuantity, Double totalWashPrice, Long clothingId, Long orderId) {
+    public OrderItemEntity(Long id, String name, Integer totalQuantity, Double totalWashPrice, Long clothingId, Long orderId) {
         this.id = id;
+        this.name = name;
         this.totalQuantity = totalQuantity;
         this.totalWashPrice = totalWashPrice;
         this.clothingId = clothingId;
@@ -24,6 +26,14 @@ public class OrderItemEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getTotalQuantity() {
