@@ -82,7 +82,7 @@ public class OrderService implements OrderServiceInterface {
             throw new RuntimeException("Order with ID " + id + " not updated");
         }
 
-        return order;
+        return this.findOrderById(id);
     }
 
     @Override

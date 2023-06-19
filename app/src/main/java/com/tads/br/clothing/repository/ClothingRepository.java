@@ -18,7 +18,7 @@ public class ClothingRepository implements ClothingRepositoryInterface {
     private static final String QUERY_CREATE = "INSERT INTO clothings (id, name, washPrice, washTime) VALUES (?,?,?,?)";
     private static final String QUERY_UPDATE = "UPDATE clothings SET name = ?, washPrice = ?, washTime = ? WHERE id = ?";
     private static final String QUERY_DELETE = "DELETE FROM clothings WHERE id = ?";
-    private static final String QUERY_FIND_ALL = "SELECT * FROM clothings";
+    private static final String QUERY_FIND_ALL = "SELECT * FROM clothings ORDER BY id";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM clothings WHERE id = ?";
 
     public ClothingRepository(JdbcTemplate jdbcTemplate) {

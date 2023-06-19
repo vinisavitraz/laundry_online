@@ -27,7 +27,14 @@ export class EmployeeService {
 
   public saveEmployee(employee: Employee): Observable<EmployeeResponseDto> {
     if (employee.id === undefined) {
-      const createEmployeeRequestDto: CreateEmployeeRequestDto = new CreateEmployeeRequestDto(employee);
+      const createEmployeeRequestDto: CreateEmployeeRequestDto = new CreateEmployeeRequestDto(
+          employee.name,
+          employee.email,
+          employee.password,
+          employee.birthDate,
+      );
+
+      console.log(createEmployeeRequestDto);
 
       return this.httpClient.post<ClothingResponseDto>(
           BASE_URL + '/users/employee',

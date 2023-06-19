@@ -18,7 +18,7 @@ public class UserRepository implements UserRepositoryInterface {
     private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, passwordHash = ?, passwordSalt = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
-    private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee'";
+    private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee' ORDER BY id";
     private static final String QUERY_DELETE = "DELETE FROM users WHERE id = ?";
 
     public UserRepository(JdbcTemplate jdbcTemplate) {

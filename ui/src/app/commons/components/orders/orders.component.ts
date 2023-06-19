@@ -15,23 +15,8 @@ export class OrdersComponent {
 
   @Input()
   orders: Order[];
-  @Input()
-  user: User | undefined;
 
-  constructor(
-      private orderService: OrderService,
-      private authService: AuthService,
-      private router: Router,
-  ) {
+  constructor() {
     this.orders = [];
-    this.user = undefined;
-  }
-
-  public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status);
-  }
-
-  public showSummary(order: Order): void {
-    this.router.navigate([RoutesEnum.ORDER_SUMMARY.replace(':id', order.id!.toString())])
   }
 }

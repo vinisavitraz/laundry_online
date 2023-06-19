@@ -1,8 +1,9 @@
-import {Employee} from "../../../commons/models/employee.model";
-
 export class CreateEmployeeRequestDto {
     constructor(
-        public entity?: Employee,
+        public name?: string,
+        public email?: string,
+        public password?: string,
+        public birthDate?: Date,
     ) {
     }
 }

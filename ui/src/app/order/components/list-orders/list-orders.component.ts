@@ -3,8 +3,6 @@ import {Order} from "../../../commons";
 import {OrderService} from "../../services/order.service";
 import {AuthService} from "../../../auth/services/auth.service";
 import {User} from "../../../commons/models/user.model";
-import {RoutesEnum} from "../../../commons/enums/routes.enum";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-orders',
@@ -22,7 +20,6 @@ export class ListOrdersComponent {
   constructor(
       private authService: AuthService,
       private orderService: OrderService,
-      private router: Router,
   ) {
     this.user = undefined;
     this.filtering = false;
@@ -57,20 +54,6 @@ export class ListOrdersComponent {
       this.orders = ordersDto.entities!;
       this.allOrders = ordersDto.entities!;
     });
-  }
-
-  public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status).subscribe(responseDto => {
-      if (!responseDto.entity) {
-        return;
-      }
-
-      this.listOrders();
-    });
-  }
-
-  public showSummary(order: Order): void {
-    this.router.navigate([RoutesEnum.ORDER_SUMMARY.replace(':id', order.id!.toString())])
   }
 
   public filterOrders(): void {

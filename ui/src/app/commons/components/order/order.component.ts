@@ -13,8 +13,8 @@ import {RoutesEnum} from "../../enums/routes.enum";
 })
 export class OrderComponent {
   @Input()
-  order: Order | undefined;
-  @Input()
+  order!: Order;
+
   user: User | undefined;
 
   constructor(
@@ -24,8 +24,22 @@ export class OrderComponent {
   ) {
   }
 
+  ngOnInit(): void {
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUser) => {
+        this.user = authenticatedUser;
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
+  }
+
   public setStatus(order: Order, status: string): void {
-    this.orderService.setStatus(order.id!, status);
+    this.orderService.setStatus(order.id!, status).subscribe(statusResponseDto => {
+      this.order = statusResponseDto.entity!;
+    });
   }
 
   public showSummary(order: Order): void {

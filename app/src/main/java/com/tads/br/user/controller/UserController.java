@@ -60,6 +60,7 @@ public class UserController {
     @PostMapping("/users/employee")
     @ResponseBody
     public EntityResponseDto<UserEntity> createEmployee(@RequestBody CreateEmployeeRequestDto createEmployeeRequestDto) {
+        System.out.println(createEmployeeRequestDto);
         UserEntity user = this.service.createEmployee(createEmployeeRequestDto);
 
         return new EntityResponseDto<>(user);

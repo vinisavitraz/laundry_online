@@ -26,7 +26,7 @@
                             <a [routerLink]="'/employees/edit/' + employee.id" title="Editar" class="btn btn-xs btn-warning mx-2">
                                 <i class="fa fa-edit" aria-hidden="true"></i>
                             </a>
-                            <a href="#" (click)="remove($event, employee)" title="Remover" class="btn btn-xs btn-danger">
+                            <a *ngIf="employee.id !== user?.id" href="#" (click)="remove($event, employee)" title="Remover" class="btn btn-xs btn-danger">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
                             </a>
                         </div>

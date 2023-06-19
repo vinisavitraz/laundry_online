@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {Employee} from "../../../commons/models/employee.model";
 import {EmployeeService} from "../../services/employee.service";
+import {AuthService} from "../../../auth/services/auth.service";
+import {User} from "../../../commons/models/user.model";
 
 @Component({
   selector: 'app-list-employees',
@@ -10,13 +12,24 @@ import {EmployeeService} from "../../services/employee.service";
 export class ListEmployeesComponent {
 
   employees: Employee[];
+  user: User | undefined;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService, private authService: AuthService) {
     this.employees = [];
   }
 
   ngOnInit(): void {
-    this.listEmployees();
+    this.authService.getAuthenticatedUser().subscribe({
+      next: (authenticatedUser) => {
+        this.user = authenticatedUser;
+
+        this.listEmployees();
+      },
+      error: (err) => {
+        console.log(err);
+        this.user = undefined;
+      },
+    });
   }
 
   public remove($event: any, employee: Employee): void {

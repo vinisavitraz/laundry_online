@@ -19,9 +19,9 @@ public class OrderRepository implements OrderRepositoryInterface {
     private static final String QUERY_UPDATE = "UPDATE orders SET status = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM orders WHERE id = ?";
     private static final String QUERY_FIND_OPEN_ORDERS = "SELECT * FROM orders WHERE status = ?";
-    private static final String QUERY_FIND_ORDERS_BY_CUSTOMER = "SELECT * FROM orders WHERE customerId = ?";
+    private static final String QUERY_FIND_ORDERS_BY_CUSTOMER = "SELECT * FROM orders WHERE customerId = ? ORDER BY createDate DESC";
     private static final String QUERY_FIND_OPEN_ORDERS_BY_CUSTOMER = "SELECT * FROM orders WHERE customerId = ? AND status = ?";
-    private static final String QUERY_ORDERS = "SELECT * FROM orders";
+    private static final String QUERY_ORDERS = "SELECT * FROM orders ORDER BY createDate";
 
     public OrderRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

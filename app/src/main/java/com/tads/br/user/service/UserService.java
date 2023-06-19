@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -85,17 +88,24 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserEntity createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto) {
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+
         try {
             String salt = this.generateSalt();
-            String hashPassword = this.hashPassword(createEmployeeRequestDto.getEntity().getPasswordHash(), salt.getBytes());
+            String hashPassword = this.hashPassword(createEmployeeRequestDto.getPassword(), salt.getBytes());
 
-            createEmployeeRequestDto.getEntity().setPasswordHash(hashPassword);
-            createEmployeeRequestDto.getEntity().setPasswordSalt(salt);
+            UserEntity user = new UserEntity();
+            user.setName(createEmployeeRequestDto.getName());
+            user.setEmail(createEmployeeRequestDto.getEmail());
+            user.setPasswordHash(hashPassword);
+            user.setPasswordSalt(salt);
+            user.setBirthDate(dateFormatter.parse(createEmployeeRequestDto.getBirthDate()));
+            user.setRole("employee");
 
-            Long employeeId = this.repository.createUser(createEmployeeRequestDto.getEntity());
+            Long employeeId = this.repository.createUser(user);
 
             return this.repository.findById(employeeId);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,23 +1,61 @@
 package com.tads.br.user.dto.request;
 
-import com.tads.br.user.entity.UserEntity;
-
 public class CreateEmployeeRequestDto {
 
-    private UserEntity entity;
+    private String name;
+    private String email;
+    private String birthDate;
+    private String password;
 
-    public CreateEmployeeRequestDto(UserEntity entity) {
-        this.entity = entity;
+    public CreateEmployeeRequestDto(String name, String email, String birthDate, String password) {
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.password = password;
     }
 
     public CreateEmployeeRequestDto() {
     }
 
-    public UserEntity getEntity() {
-        return entity;
+    public String getName() {
+        return name;
     }
 
-    public void setEntity(UserEntity entity) {
-        this.entity = entity;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateEmployeeRequestDto{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
