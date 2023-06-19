@@ -82,6 +82,10 @@ public class OrderService implements OrderServiceInterface {
             throw new RuntimeException("Order with ID " + id + " not updated");
         }
 
+        if ("paid".equals(status)) {
+            this.orderRepository.setPaymentDate(order, new Date());
+        }
+
         return this.findOrderById(id);
     }
 

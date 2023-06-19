@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,7 @@ public class OrderRepository implements OrderRepositoryInterface {
     private static final String QUERY_SEQUENCE = "SELECT nextval('orders_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO orders (id, status, washPrice, washTime, createDate, paymentDate, customerId) VALUES (?,?,?,?,?,?,?)";
     private static final String QUERY_UPDATE = "UPDATE orders SET status = ? WHERE id = ?";
+    private static final String QUERY_UPDATE_PAYMENT_DATE = "UPDATE orders SET paymentDate = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM orders WHERE id = ?";
     private static final String QUERY_FIND_OPEN_ORDERS = "SELECT * FROM orders WHERE status = ?";
     private static final String QUERY_FIND_ORDERS_BY_CUSTOMER = "SELECT * FROM orders WHERE customerId = ? ORDER BY createDate DESC";
@@ -79,6 +81,12 @@ public class OrderRepository implements OrderRepositoryInterface {
     public int setOrderStatus(OrderEntity order, String status) {
         return jdbcTemplate.update(OrderRepository.QUERY_UPDATE,
                 status, order.getId());
+    }
+
+    @Override
+    public int setPaymentDate(OrderEntity order, Date date) {
+        return jdbcTemplate.update(OrderRepository.QUERY_UPDATE_PAYMENT_DATE,
+                date, order.getId());
     }
 
 }

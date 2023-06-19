@@ -2,6 +2,7 @@ package com.tads.br.order.repository;
 
 import com.tads.br.order.entity.OrderEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderRepositoryInterface {
@@ -19,4 +20,6 @@ public interface OrderRepositoryInterface {
     List<OrderEntity> findOrders();
 
     int setOrderStatus(OrderEntity order, String status);
+
+    int setPaymentDate(OrderEntity order, Date date);
 }

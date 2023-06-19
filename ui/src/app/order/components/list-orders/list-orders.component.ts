@@ -52,6 +52,7 @@ export class ListOrdersComponent {
       }
 
       this.orders = ordersDto.entities!;
+      console.log(this.orders);
       this.allOrders = ordersDto.entities!;
     });
   }
