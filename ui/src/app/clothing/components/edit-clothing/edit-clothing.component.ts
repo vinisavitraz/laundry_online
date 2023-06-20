@@ -34,8 +34,14 @@ export class EditClothingComponent {
 
   public async save(): Promise<void> {
     if (this.editClothingForm.form.valid) {
-      this.clothingService.saveClothing(this.clothing).subscribe(clothing => {
-        this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+      this.clothingService.saveClothing(this.clothing).subscribe({
+        next: (dto) => {
+          this.router.navigate([RoutesEnum.LIST_CLOTHINGS])
+        },
+        error: (err) => {
+          alert(err.error.message);
+          console.log(err.error.message);
+        },
       });
     }
   }

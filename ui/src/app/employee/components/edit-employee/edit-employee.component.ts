@@ -34,9 +34,16 @@ export class EditEmployeeComponent {
 
   public async save(): Promise<void> {
     if (this.editEmployeeForm.form.valid) {
-      this.employeeService.saveEmployee(this.employee).subscribe(employee => {
-        this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
-      });
+      this.employeeService.saveEmployee(this.employee).subscribe({
+            next: (dto) => {
+              this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
+            },
+            error: (err) => {
+              alert(err.error.message);
+              console.log(err.error.message);
+            },
+          }
+      );
     }
   }
 }

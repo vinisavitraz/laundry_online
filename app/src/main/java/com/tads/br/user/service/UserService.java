@@ -1,12 +1,17 @@
 package com.tads.br.user.service;
 
+import com.tads.br.commons.exception.ClothingAlreadyExistsException;
+import com.tads.br.commons.exception.UserWithDocumentAlreadyExistsException;
+import com.tads.br.commons.exception.UserWithEmailAlreadyExistsException;
 import com.tads.br.email.service.EmailServiceInterface;
 import com.tads.br.user.dto.request.CreateEmployeeRequestDto;
 import com.tads.br.user.dto.request.CreateCustomerRequestDto;
 import com.tads.br.user.dto.request.UpdateEmployeeRequestDto;
 import com.tads.br.user.entity.UserEntity;
 import com.tads.br.user.repository.UserRepositoryInterface;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +43,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserEntity createCustomer(CreateCustomerRequestDto createCustomerRequestDto) {
+    public UserEntity createCustomer(CreateCustomerRequestDto createCustomerRequestDto) throws UserWithEmailAlreadyExistsException, UserWithDocumentAlreadyExistsException {
         String password = this.generatePassword();
 
         try {
@@ -65,8 +70,15 @@ public class UserService implements UserServiceInterface {
             this.emailServiceInterface.sendEmailNewUser(user.getEmail(), password);
 
             return this.repository.findById(customerId);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            if (e.getMessage().contains("duplicate key value violates unique constraint") && e.getMessage().contains("Key (email)")) {
+                throw new UserWithEmailAlreadyExistsException(createCustomerRequestDto.getEmail());
+            }
+            if (e.getMessage().contains("duplicate key value violates unique constraint") && e.getMessage().contains("Key (document)")) {
+                throw new UserWithDocumentAlreadyExistsException(createCustomerRequestDto.getDocument());
+            }
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro criando funcionário");
         }
     }
 
@@ -87,7 +99,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserEntity createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto) {
+    public UserEntity createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto) throws UserWithEmailAlreadyExistsException {
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
         try {
@@ -106,19 +118,31 @@ public class UserService implements UserServiceInterface {
 
             return this.repository.findById(employeeId);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            if (e.getMessage().contains("duplicate key value violates unique constraint") && e.getMessage().contains("Key (email)")) {
+                throw new UserWithEmailAlreadyExistsException(createEmployeeRequestDto.getEmail());
+            }
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro criando funcionário");
         }
     }
 
     @Override
-    public UserEntity updateEmployee(UpdateEmployeeRequestDto updateEmployeeRequestDto) {
-        int updated = this.repository.update(updateEmployeeRequestDto.getEntity());
+    public UserEntity updateEmployee(UpdateEmployeeRequestDto updateEmployeeRequestDto) throws UserWithEmailAlreadyExistsException {
+        try {
+            int updated = this.repository.update(updateEmployeeRequestDto.getEntity());
 
-        if (updated == 1) {
-            return updateEmployeeRequestDto.getEntity();
+            if (updated == 1) {
+                return updateEmployeeRequestDto.getEntity();
+            }
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro atualizando funcionário");
+        } catch (Exception e) {
+            if (e.getMessage().contains("duplicate key value violates unique constraint") && e.getMessage().contains("Key (email)")) {
+                throw new UserWithEmailAlreadyExistsException(updateEmployeeRequestDto.getEntity().getEmail());
+            }
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro atualizando funcionário");
         }
-
-        return null;
     }
 
     private String generateSalt() throws NoSuchAlgorithmException {

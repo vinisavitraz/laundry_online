@@ -24,15 +24,14 @@ export class CreateEmployeeComponent {
 
   public async save(): Promise<void> {
     if (this.createEmployeeForm.form.valid) {
-        console.log('CreateEmployeeComponent - save');
-        console.log(this.employee);
           this.employeeService.saveEmployee(this.employee).subscribe(
               {
                 next: (dto) => {
                   this.router.navigate([RoutesEnum.LIST_EMPLOYEES])
                 },
                 error: (err) => {
-                  console.log(err);
+                    alert(err.error.message);
+                    console.log(err.error.message);
                 },
               }
           );
