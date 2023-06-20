@@ -11,17 +11,20 @@
                 <input type="hidden" id="role" name="role" [(ngModel)]="employee.role" />
                 <div class="form-group">
                     <label for="name">Nome</label>
-                    <input type="text" [(ngModel)]="employee.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" required>
+                    <input type="text" [(ngModel)]="employee.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" maxlength="100" required>
                     <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                         <div [hidden]="!name.errors['required']" >Digite o nome do funcionário</div>
-                        <div [hidden]="!name.errors['minLength']" >O nome deve conter ao menos 2 caracteres</div>
+                        <div [hidden]="!name.errors['minlength']" >O nome deve conter ao menos 2 caracteres</div>
+                        <div [hidden]="!name.errors['maxlength']" >O nome deve conter ao máximo 100 caracteres</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="text" [(ngModel)]="employee.email" #email="ngModel" class="form-control" id="email" name="email" required>
+                    <input type="text" [(ngModel)]="employee.email" #email="ngModel" class="form-control" id="email" name="email" minlength="2" maxlength="100" required>
                     <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
                         <div [hidden]="!email.errors['required']" >Digite o email do funcionário</div>
+                        <div [hidden]="!email.errors['minlength']" >O email deve conter ao menos 2 caracteres</div>
+                        <div [hidden]="!email.errors['maxlength']" >O email deve conter ao máximo 100 caracteres</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -33,9 +36,11 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" [(ngModel)]="employee.password" #password="ngModel" class="form-control" id="password" name="password" required>
+                    <input type="password" [(ngModel)]="employee.password" #password="ngModel" class="form-control" id="password" name="password" minlength="4" maxlength="12" required>
                     <div *ngIf="password.errors && (password.dirty || password.touched)" class="alert alert-danger">
                         <div [hidden]="!password.errors['required']" >Digite a senha do funcionário</div>
+                        <div [hidden]="!password.errors['minlength']">A senha deve conter ao menos 4 caracteres</div>
+                        <div [hidden]="!password.errors['maxlength']">A senha deve conter ao máximo 12 caracteres</div>
                     </div>
                 </div>
                 <br>

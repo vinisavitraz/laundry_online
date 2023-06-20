@@ -8,6 +8,9 @@ import {AuthService} from "./services/auth.service";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import {CustomerModule} from "../customer/customer.module";
+import {NgxMaskModule, IConfig} from "ngx-mask";
+
+export const options: Partial<null|IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -20,6 +23,7 @@ import {CustomerModule} from "../customer/customer.module";
     CommonModule,
     ReactiveFormsModule,
     CustomerModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     JwtInterceptor,

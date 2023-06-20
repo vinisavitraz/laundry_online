@@ -3,10 +3,16 @@ package com.tads.br.clothing.service;
 import com.tads.br.clothing.dto.request.CreateClothingRequestDto;
 import com.tads.br.clothing.dto.request.UpdateClothingRequestDto;
 import com.tads.br.clothing.entity.ClothingEntity;
+import com.tads.br.clothing.repository.ClothingRepository;
 import com.tads.br.clothing.repository.ClothingRepositoryInterface;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ClothingService implements ClothingServiceInterface {
@@ -29,7 +35,18 @@ public class ClothingService implements ClothingServiceInterface {
 
     @Override
     public ClothingEntity createClothing(CreateClothingRequestDto createClothingRequestDto) {
-        return this.repository.create(createClothingRequestDto.getEntity());
+
+        try {
+            return this.repository.create(createClothingRequestDto.getEntity());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+
+            if (e.getMessage().contains("duplicate key value violates unique constraint")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Roupa já existe!");
+            }
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro criando roupa");
+        }
     }
 
     @Override

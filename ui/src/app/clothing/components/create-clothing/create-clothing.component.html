@@ -10,22 +10,23 @@
             <form #createClothingForm="ngForm">
                 <div class="form-group">
                     <label for="name">Nome</label>
-                    <input type="text" [(ngModel)]="clothing.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" required>
+                    <input type="text" [(ngModel)]="clothing.name" #name="ngModel" class="form-control" id="name" name="name" minlength="2" maxlength="100" required>
                     <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
                         <div [hidden]="!name.errors['required']" >Digite o nome da peça de roupa</div>
-                        <div [hidden]="!name.errors['minLength']" >O nome deve conter ao menos 2 caracteres</div>
+                        <div [hidden]="!name.errors['minlength']" >O nome deve conter ao menos 2 caracteres</div>
+                        <div [hidden]="!name.errors['maxlength']" >O nome deve conter ao máximo 100 caracteres</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="washPrice">Preço de lavagem</label>
-                    <input type="text" [(ngModel)]="clothing.washPrice" #washPrice="ngModel" class="form-control" id="washPrice" name="washPrice" required>
+                    <input type="text" [(ngModel)]="clothing.washPrice" prefix="R$" mask="separator.2" thousandSeparator="." #washPrice="ngModel" class="form-control" id="washPrice" name="washPrice" maxlength="6" required>
                     <div *ngIf="washPrice.errors && (washPrice.dirty || washPrice.touched)" class="alert alert-danger">
                         <div [hidden]="!washPrice.errors['required']" >Digite o preço de lavagem da peça de roupa</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="washTime">Tempo de lavagem em dias</label>
-                    <input type="text" [(ngModel)]="clothing.washTime" #washTime="ngModel" class="form-control" id="washTime" name="washTime" required>
+                    <input type="text" [(ngModel)]="clothing.washTime" #washTime="ngModel" mask="90" class="form-control" id="washTime" name="washTime" required>
                     <div *ngIf="washTime.errors && (washTime.dirty || washTime.touched)" class="alert alert-danger">
                         <div [hidden]="!washTime.errors['required']" >Digite o tempo de lavagem da peça de roupa</div>
                     </div>

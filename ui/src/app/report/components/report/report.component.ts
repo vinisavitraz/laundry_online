@@ -74,8 +74,8 @@ export class ReportComponent {
       if (receiptsRequestDto.startDate === undefined && receiptsRequestDto.endDate === undefined) {
         this.reportTitle = 'Relatório de receitas por período';
       } else {
-        const startDate: string = receiptsRequestDto.startDate ?? '';
-        const endDate: string = receiptsRequestDto.endDate ?? '';
+        const startDate: string = this.formatDate(receiptsRequestDto.startDate ?? '');
+        const endDate: string = this.formatDate(receiptsRequestDto.endDate ?? '');
 
         this.reportTitle = 'Relatório de receitas por período - Data Inicial: ' + startDate + ' | Data Final: ' + endDate;
       }
@@ -121,5 +121,15 @@ export class ReportComponent {
         doc.save(reportFileName + ".pdf");
       }
     });
+  }
+
+  private formatDate(input: string): string {
+    if (input === '') {
+      return input;
+    }
+
+    const inputArray: string[] = input.split('-');
+
+    return inputArray[2] + '-' + inputArray[1] + '-' + inputArray[0];
   }
 }

@@ -38,7 +38,7 @@
                     <div class="row g-3">
                         <div class="col-sm-6">
                             <label for="document" class="form-label">CPF</label>
-                            <input id="document" type="text" class="form-control" name="document" placeholder="Ex. 80694929026" formControlName="document" minlength="11" maxlength="14" required>
+                            <input id="document" type="text" class="form-control" mask="000.000.000-00" name="document" placeholder="Entre o CPF" formControlName="document" required>
                             <div *ngIf="registerForm.get('document')?.invalid && (registerForm.get('document')?.dirty || registerForm.get('document')?.touched)" class="alert alert-danger">
                                 <div *ngIf="!registerForm.get('document')?.errors?.['required']" >Digite o CPF</div>
                                 <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 11 caracteres</div>
@@ -48,18 +48,18 @@
 
                         <div class="col-sm-6">
                             <label for="phone" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="" formControlName="phone" placeholder="Ex: (41)99999-9999" minlength="6" maxlength="14" required>
+                            <input type="text" class="form-control" id="phone" name="phone" mask="(00) 00000.0009" placeholder="Entre o telefone" formControlName="phone" required>
                             <div *ngIf="registerForm.get('phone')?.invalid && (registerForm.get('phone')?.dirty || registerForm.get('phone')?.touched)" class="alert alert-danger">
                                 <div *ngIf="!registerForm.get('phone')?.errors?.['required']" >Digite o telefone</div>
-                                <div *ngIf="!registerForm.get('phone')?.errors?.['minlength']" >O telefone deve conter ao menos 6 caracteres</div>
-                                <div *ngIf="!registerForm.get('phone')?.errors?.['maxlength']" >O telefone deve conter no máximo 16 caracteres</div>
+                                <div *ngIf="!registerForm.get('phone')?.errors?.['minlength']" >O telefone deve conter ao menos 10 caracteres</div>
+                                <div *ngIf="!registerForm.get('phone')?.errors?.['maxlength']" >O telefone deve conter no máximo 12 caracteres</div>
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="col-12">
                         <label for="cep" class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep" placeholder="Ex: 83980172" formControlName="cep" name="cep" minlength="8" maxlength="10" required>
+                        <input type="text" class="form-control" id="cep" placeholder="Entre o CEP" mask="00000-000" formControlName="cep" name="cep" required>
                         <div *ngIf="registerForm.get('cep')?.invalid && (registerForm.get('cep')?.dirty || registerForm.get('cep')?.touched)" class="alert alert-danger">
                             <div *ngIf="!registerForm.get('cep')?.errors?.['required']" >Digite o CEP</div>
                             <div *ngIf="!registerForm.get('document')?.errors?.['minlength']" >O CPF deve conter 8 caracteres</div>

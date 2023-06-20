@@ -7,6 +7,7 @@ import { CreateClothingComponent } from './components/create-clothing/create-clo
 import { EditClothingComponent } from './components/edit-clothing/edit-clothing.component';
 import {CommonsModule} from "../commons";
 import { ClothingDetailComponent } from './components/clothing-detail/clothing-detail.component';
+import {NgxMaskModule} from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ClothingDetailComponent } from './components/clothing-detail/clothing-d
         RouterModule,
         FormsModule,
         CommonsModule,
+        NgxMaskModule.forRoot(),
     ]
 })
 export class ClothingModule { }

@@ -1,6 +1,7 @@
 package com.tads.br.clothing.repository;
 
 import com.tads.br.clothing.entity.ClothingEntity;
+import org.postgresql.util.PSQLException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Repository
 public class ClothingRepository implements ClothingRepositoryInterface {
