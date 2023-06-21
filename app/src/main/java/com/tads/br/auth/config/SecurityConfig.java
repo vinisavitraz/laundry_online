@@ -50,12 +50,12 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/auth",
-                                "/users/customer",
-                                "/cep"
+                                "/users/customer"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/cep"
+                                "/",
+                                "/cep/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
