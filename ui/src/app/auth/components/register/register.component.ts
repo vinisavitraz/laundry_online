@@ -104,11 +104,17 @@ export class RegisterComponent {
         this.stateInput.getRawValue(),
     );
 
-    this.customerService.registerCustomer(createCustomerRequestDto).subscribe((responseDto) => {
-      if (responseDto.entity !== null) {
-        this.router.navigate([RoutesEnum.LOGIN]);
-        return;
-      }
+    this.customerService.registerCustomer(createCustomerRequestDto).subscribe({
+      next: (dto) => {
+        if (dto.entity !== null) {
+          this.router.navigate([RoutesEnum.LOGIN]);
+          return;
+        }
+      },
+      error: (err) => {
+        alert(err.error.message);
+        console.log(err.error.message);
+      },
     });
   }
 }
