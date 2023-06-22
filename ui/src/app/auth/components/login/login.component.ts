@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
   }
 
   public executeLogin(): void {
+    this.message = undefined;
     this.loading = true;
 
     if (!this.loginForm.form.valid) {
@@ -54,13 +55,8 @@ export class LoginComponent implements OnInit {
         this.routeToHomePageIfAuthenticated();
       },
       error: (err) => {
+        this.message = 'Usuário/Senha inválidos!';
         console.log(err);
-        // if (loginResponseDto.errorMessage === null) {
-        //   this.message = ErrorMessagesEnum.UNKNOWN_ERROR;
-        //   return;
-        // }
-        //
-        // this.message = loginResponseDto.errorMessage;
       }
     });
   }
