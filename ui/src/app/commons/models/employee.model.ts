@@ -4,7 +4,7 @@ export class Employee {
         public name?: string,
         public email?: string,
         public password?: string,
-        public birthDate?: Date,
+        public birthDate?: string,
         public role?: string,
     ) {
     }

@@ -15,7 +15,7 @@ public class UserRepository implements UserRepositoryInterface {
 
     private static final String QUERY_SEQUENCE = "SELECT nextval('users_sequence')";
     private static final String QUERY_CREATE = "INSERT INTO users (id, name, email, role, passwordHash, passwordSalt, document, phone, cep, street, streetNumber, district, city, state, birthDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    private static final String QUERY_UPDATE = "UPDATE users SET name = ?, email = ?, passwordHash = ?, passwordSalt = ? WHERE id = ?";
+    private static final String QUERY_UPDATE_EMPLOYEE = "UPDATE users SET name = ?, email = ?, birthDate = ? WHERE id = ?";
     private static final String QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     private static final String QUERY_FIND_EMPLOYEES = "SELECT * FROM users WHERE role = 'employee' ORDER BY id";
@@ -42,9 +42,9 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
     @Override
-    public int update(UserEntity user) {
-        return jdbcTemplate.update(UserRepository.QUERY_UPDATE,
-                user.getName(), user.getEmail(), user.getPasswordHash(), user.getPasswordSalt(), user.getId());
+    public int updateEmployee(UserEntity user) {
+        return jdbcTemplate.update(UserRepository.QUERY_UPDATE_EMPLOYEE,
+                user.getName(), user.getEmail(), user.getBirthDate(), user.getId());
     }
 
     @Override

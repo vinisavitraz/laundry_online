@@ -8,7 +8,7 @@ public interface UserRepositoryInterface {
 
     Long createUser(UserEntity user);
 
-    int update(UserEntity user);
+    int updateEmployee(UserEntity user);
 
     UserEntity findById(Long id);
 

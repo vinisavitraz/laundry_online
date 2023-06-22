@@ -28,6 +28,36 @@
                 <br>
                 <button type="button" (click)="filterOrders()" class="btn border border-3"><i class='fa fa-search'></i> Filtrar</button>
                 <button *ngIf="filtering" type="button" (click)="cancelFilter()" class="btn btn-danger mx-2"><i class='fa fa-cancel'></i> Cancelar</button>
+                <br>
+                <br>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" *ngIf="true">
+                    <div class="row g-3 d-flex justify-content-center">
+                        <div class="col-4 form-group">
+                            <button #todayButton type="button" class="btn btn-outline-secondary" (click)="filterToday()">Pedidos de hoje</button>
+                        </div>
+                        <div class="col-4 form-group">
+                            <button #todayPeriod type="button" class="btn btn-outline-secondary" (click)="filterPeriod()">Período</button>
+                        </div>
+                        <div class="col-4 form-group">
+                            <button #todayAll type="button" class="btn btn-secondary" (click)="filterAll()">Todos os pedidos</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" *ngIf="filterPeriodOrders">
+                    <div class="row g-5">
+                        <div class="col-5 form-group">
+                            <label for="startDate">Data inícial</label>
+                            <input type="date" (ngModelChange)="setInitialDate($event)" [(ngModel)]="startDate" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <div class="col-5 form-group">
+                            <label for="endDate">Data final</label>
+                            <input type="date" (ngModelChange)="setEndDate($event)" [(ngModel)]="endDate" class="form-control" id="endDate" name="endDate">
+                        </div>
+                    </div>
+                </div>
+                <br>
+
             </div>
         </div>
         <br>

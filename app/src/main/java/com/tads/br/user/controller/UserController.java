@@ -87,6 +87,7 @@ public class UserController {
     @PutMapping("/users/employee")
     @ResponseBody
     public EntityResponseDto<UserEntity> updateEmployee(@RequestBody UpdateEmployeeRequestDto updateClothingRequestDto) throws UserWithEmailAlreadyExistsException {
+        System.out.println(updateClothingRequestDto);
         UserEntity user = this.service.updateEmployee(updateClothingRequestDto);
 
         return new EntityResponseDto<>(user);

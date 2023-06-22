@@ -1,6 +1,5 @@
 package com.tads.br.user.service;
 
-import com.tads.br.commons.exception.ClothingAlreadyExistsException;
 import com.tads.br.commons.exception.UserWithDocumentAlreadyExistsException;
 import com.tads.br.commons.exception.UserWithEmailAlreadyExistsException;
 import com.tads.br.email.service.EmailServiceInterface;
@@ -18,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -100,7 +98,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserEntity createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto) throws UserWithEmailAlreadyExistsException {
-        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
             String salt = this.generateSalt();
@@ -128,8 +126,19 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserEntity updateEmployee(UpdateEmployeeRequestDto updateEmployeeRequestDto) throws UserWithEmailAlreadyExistsException {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
         try {
-            int updated = this.repository.update(updateEmployeeRequestDto.getEntity());
+            UserEntity user = new UserEntity();
+            user.setId(updateEmployeeRequestDto.getEntity().getId());
+            user.setName(updateEmployeeRequestDto.getEntity().getName());
+            user.setEmail(updateEmployeeRequestDto.getEntity().getEmail());
+            user.setBirthDate(updateEmployeeRequestDto.getEntity().getBirthDate());
+
+            System.out.println("updateEmployee");
+            System.out.println(user);
+
+            int updated = this.repository.updateEmployee(user);
 
             if (updated == 1) {
                 return updateEmployeeRequestDto.getEntity();

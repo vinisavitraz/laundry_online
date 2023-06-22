@@ -29,10 +29,18 @@ export class EditEmployeeComponent {
       }
 
       this.employee = responseDto.entity!;
+
+      const birthDate: Date = new Date(this.employee.birthDate!);
+      console.log('ngOnInit');
+      console.log(birthDate.toISOString().split('T')[0]);
+      this.employee.birthDate = birthDate.toISOString().split('T')[0];
     });
   }
 
   public async save(): Promise<void> {
+    console.log('save');
+    console.log(this.employee.birthDate!);
+
     if (this.editEmployeeForm.form.valid) {
       this.employeeService.saveEmployee(this.employee).subscribe({
             next: (dto) => {

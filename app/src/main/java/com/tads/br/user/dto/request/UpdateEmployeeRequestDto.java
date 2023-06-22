@@ -20,4 +20,11 @@ public class UpdateEmployeeRequestDto {
     public void setEntity(UserEntity entity) {
         this.entity = entity;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateEmployeeRequestDto{" +
+                "entity=" + entity +
+                '}';
+    }
 }

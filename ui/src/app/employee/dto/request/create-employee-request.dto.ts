@@ -3,7 +3,7 @@ export class CreateEmployeeRequestDto {
         public name?: string,
         public email?: string,
         public password?: string,
-        public birthDate?: Date,
+        public birthDate?: string,
     ) {
     }
 }
